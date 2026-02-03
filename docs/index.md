@@ -1,0 +1,29 @@
+# ElectriPy Studio
+
+Production-minded Python components and recipes by Inference Stack.
+
+## Overview
+
+ElectriPy Studio is a curated collection of production-ready Python components and recipes designed to accelerate development while maintaining high code quality standards.
+
+## Features
+
+- **Core Components**: Configuration, logging, error handling, and type utilities
+- **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
+- **I/O**: JSONL read/write utilities for efficient data processing
+- **CLI**: Typer-based command-line interface with health checks
+
+## Quick Links
+
+- [Installation](getting-started/installation.md)
+- [Quickstart Guide](getting-started/quickstart.md)
+- [API Reference](api.md)
+
+## Requirements
+
+- Python 3.11 or higher
+- Modern dependency management (pip, poetry, or uv)
+
+## License
+
+MIT License - See [LICENSE](https://github.com/reactlabs-dev/electripy-studio/blob/main/LICENSE) for details.
