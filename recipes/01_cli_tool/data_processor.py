@@ -7,7 +7,7 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from electripy import Config, get_logger, setup_logging
+from electripy import get_logger, setup_logging
 from electripy.concurrency import AsyncTokenBucketRateLimiter, async_retry
 from electripy.io import read_jsonl, write_jsonl
 
@@ -64,7 +64,6 @@ def process(
     """Process JSONL data with rate limiting and retry."""
     # Setup
     setup_logging(level="DEBUG" if verbose else "INFO")
-    config = Config.from_env()
 
     console.print(f"[cyan]Processing {input_file} -> {output_file}[/cyan]")
 
@@ -79,7 +78,7 @@ def process(
         console.print("[green]✓ Processing complete![/green]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from e
 
 
 @app.command()

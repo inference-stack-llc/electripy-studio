@@ -22,18 +22,18 @@ console = Console()
 @app.command()
 def doctor() -> None:
     """Check ElectriPy installation and environment health.
-    
+
     Verifies that ElectriPy is properly installed and all dependencies
     are available.
     """
     console.print("\n[bold cyan]ElectriPy Doctor[/bold cyan]")
     console.print("=" * 50)
-    
+
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Check", style="cyan", width=30)
     table.add_column("Status", width=15)
     table.add_column("Details")
-    
+
     # Check Python version
     py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
     py_status = "✓ OK" if sys.version_info >= (3, 11) else "✗ FAIL"
@@ -43,7 +43,7 @@ def doctor() -> None:
         f"[{py_style}]{py_status}[/{py_style}]",
         py_version,
     )
-    
+
     # Check ElectriPy version
     try:
         electripy_version = get_version("electripy")
@@ -58,7 +58,7 @@ def doctor() -> None:
             "[red]✗ FAIL[/red]",
             str(e),
         )
-    
+
     # Check configuration
     try:
         config = Config.from_env()
@@ -73,7 +73,7 @@ def doctor() -> None:
             "[red]✗ FAIL[/red]",
             str(e),
         )
-    
+
     # Check dependencies
     dependencies = ["typer", "rich"]
     for dep in dependencies:
@@ -90,7 +90,7 @@ def doctor() -> None:
                 "[red]✗ FAIL[/red]",
                 "Not installed",
             )
-    
+
     console.print(table)
     console.print("\n[bold green]✓[/bold green] ElectriPy is ready to use!\n")
 

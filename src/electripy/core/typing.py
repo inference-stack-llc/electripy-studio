@@ -1,7 +1,7 @@
 """Type definitions and utilities for ElectriPy."""
 
-from typing import Any, Union
+from typing import Any
 
 # JSON types
-JSONValue = Union[str, int, float, bool, None, dict[str, Any], list[Any]]
+JSONValue = str | int | float | bool | None | dict[str, Any] | list[Any]
 JSONDict = dict[str, JSONValue]

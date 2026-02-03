@@ -17,14 +17,14 @@ class Config:
     @classmethod
     def from_env(cls) -> "Config":
         """Load configuration from environment variables.
-        
+
         Returns:
             Config instance populated from environment variables.
         """
         log_level = os.getenv("ELECTRIPY_LOG_LEVEL", "INFO")
         log_format = os.getenv("ELECTRIPY_LOG_FORMAT", "json")
         config_dir = Path(os.getenv("ELECTRIPY_CONFIG_DIR", str(Path.home() / ".electripy")))
-        
+
         return cls(
             log_level=log_level,
             log_format=log_format,
@@ -33,7 +33,7 @@ class Config:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert config to dictionary.
-        
+
         Returns:
             Dictionary representation of config.
         """

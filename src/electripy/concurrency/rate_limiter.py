@@ -2,15 +2,14 @@
 
 import asyncio
 import time
-from typing import Optional
 
 
 class AsyncTokenBucketRateLimiter:
     """Async token bucket rate limiter for controlling request rates.
-    
+
     The token bucket algorithm allows bursts up to the bucket capacity while
     maintaining an average rate over time.
-    
+
     Example:
         limiter = AsyncTokenBucketRateLimiter(rate=10, capacity=10)
         async with limiter:
@@ -18,9 +17,9 @@ class AsyncTokenBucketRateLimiter:
             await make_api_call()
     """
 
-    def __init__(self, rate: float, capacity: Optional[float] = None):
+    def __init__(self, rate: float, capacity: float | None = None):
         """Initialize the rate limiter.
-        
+
         Args:
             rate: Number of tokens to add per second
             capacity: Maximum number of tokens in bucket (defaults to rate)
@@ -33,10 +32,10 @@ class AsyncTokenBucketRateLimiter:
 
     async def acquire(self, tokens: float = 1.0) -> None:
         """Acquire tokens from the bucket, waiting if necessary.
-        
+
         Args:
             tokens: Number of tokens to acquire
-            
+
         Raises:
             ValueError: If tokens exceeds capacity
         """
@@ -47,7 +46,7 @@ class AsyncTokenBucketRateLimiter:
             while True:
                 now = time.monotonic()
                 elapsed = now - self._last_update
-                
+
                 # Add tokens based on elapsed time
                 self._tokens = min(self.capacity, self._tokens + elapsed * self.rate)
                 self._last_update = now
@@ -73,7 +72,7 @@ class AsyncTokenBucketRateLimiter:
     @property
     def available_tokens(self) -> float:
         """Get current number of available tokens (approximate).
-        
+
         Returns:
             Number of tokens currently available
         """
