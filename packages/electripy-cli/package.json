@@ -1,0 +1,25 @@
+{
+  "name": "@electripy/cli",
+  "version": "0.1.0",
+  "description": "NPM wrapper for ElectriPy CLI - Production-minded Python components",
+  "keywords": [
+    "electripy",
+    "cli",
+    "python",
+    "utilities"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactlabs-dev/electripy-studio.git",
+    "directory": "packages/electripy-cli"
+  },
+  "license": "MIT",
+  "author": "Inference Stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
