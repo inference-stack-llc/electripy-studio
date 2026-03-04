@@ -107,13 +107,13 @@ class HttpxSyncAdapter(SyncHttpPort):
                 headers=headers,
                 params=params,
                 json=json,
-                data=data,  # type: ignore[reportGeneralTypeIssues]
+                data=data,  # type: ignore[arg-type]
                 timeout=timeout,
             )
-        except (httpx.ConnectError, httpx.TimeoutException) as exc:  # type: ignore[attr-defined]
+        except (httpx.ConnectError, httpx.TimeoutException) as exc:
             logger.warning("httpx transient error", extra={"url": full_url, "error": str(exc)})
             raise TransientHttpError("Transient HTTP error") from exc
-        except httpx.HTTPError as exc:  # type: ignore[catching-anything]
+        except httpx.HTTPError as exc:
             logger.error("httpx HTTP error", extra={"url": full_url, "error": str(exc)})
             raise TransientHttpError("HTTP client error") from exc
 
@@ -186,13 +186,13 @@ class HttpxAsyncAdapter(AsyncHttpPort):
                 headers=headers,
                 params=params,
                 json=json,
-                data=data,  # type: ignore[reportGeneralTypeIssues]
+                data=data,  # type: ignore[arg-type]
                 timeout=timeout,
             )
-        except (httpx.ConnectError, httpx.TimeoutException) as exc:  # type: ignore[attr-defined]
+        except (httpx.ConnectError, httpx.TimeoutException) as exc:
             logger.warning("httpx transient error", extra={"url": full_url, "error": str(exc)})
             raise TransientHttpError("Transient HTTP error") from exc
-        except httpx.HTTPError as exc:  # type: ignore[catching-anything]
+        except httpx.HTTPError as exc:
             logger.error("httpx HTTP error", extra={"url": full_url, "error": str(exc)})
             raise TransientHttpError("HTTP client error") from exc
 

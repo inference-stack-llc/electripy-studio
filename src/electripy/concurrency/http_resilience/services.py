@@ -99,12 +99,14 @@ def _calculate_delay_s(
             except ValueError:
                 logger.debug("Invalid Retry-After header value", extra={"value": retry_after_raw})
 
-    if policy.jitter_ratio <= 0.0:
-        return delay
+    result = delay
 
-    low = max(0.0, delay * (1.0 - policy.jitter_ratio))
-    high = delay * (1.0 + policy.jitter_ratio)
-    return random.uniform(low, high)
+    if policy.jitter_ratio > 0.0:
+        low = max(0.0, delay * (1.0 - policy.jitter_ratio))
+        high = delay * (1.0 + policy.jitter_ratio)
+        result = float(random.uniform(low, high))
+
+    return result  # type: ignore[no-any-return]
 
 
 @dataclass(slots=True)
