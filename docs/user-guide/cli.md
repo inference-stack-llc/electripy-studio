@@ -46,6 +46,31 @@ Display ElectriPy version.
 electripy version
 ```
 
+### rag eval (RAG Evaluation Runner)
+
+Run retrieval-quality experiments over your own JSONL datasets.
+
+```bash
+electripy rag eval \
+    --corpus corpus.jsonl \
+    --queries queries.jsonl \
+    --top-k 3,5,10 \
+    --chunk-size 500 \
+    --chunk-overlap 100 \
+    --embedder fake \
+    --report-json out.json \
+    --report-csv out.csv
+```
+
+Key options:
+
+- `--corpus`, `--queries`: JSONL files describing corpus and queries.
+- `--top-k`: comma-separated list of cut-offs (for example `3,5,10`).
+- `--chunk-size`, `--chunk-overlap` or `--chunker-config`: chunking configuration.
+- `--embedder`: one or more embedders (for example `fake` or `fake,openai`).
+- `--report-json`, `--report-csv`: write machine-readable evaluation reports.
+- `--fail-under`: CI-friendly thresholds such as `hit_rate@5=0.85`.
+
 ### Global Options
 
 - `--verbose, -v`: Enable verbose output

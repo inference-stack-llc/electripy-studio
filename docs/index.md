@@ -16,8 +16,8 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **Core Components**: Configuration, logging, error handling, and type utilities
 - **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
 - **I/O**: JSONL read/write utilities for efficient data processing
-- **CLI**: Typer-based command-line interface with health checks
-- **AI & LLM Gateway**: Provider-agnostic LLM clients with structured output and safety seams
+- **CLI**: Typer-based command-line interface with health checks and evaluation commands
+- **AI & LLM Gateway**: Provider-agnostic LLM clients with structured output and safety seams, plus a RAG Evaluation Runner for benchmarking retrieval quality.
 
 ## Documentation Map
 

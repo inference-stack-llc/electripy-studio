@@ -16,6 +16,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and first AI building blocks are in place.
 - **Recent highlights**:
     - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
+    - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
     - Expanded documentation and user guides for core, concurrency, I/O, CLI, and AI components.
     - Added a second recipe showcasing LLM Gateway usage with an offline-friendly fake provider.
 
@@ -25,7 +26,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - ⚡ **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
 - 💻 **CLI**: Typer-based command-line interface with health checks
-- 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers
+- 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
 
 ## Quick Start
 
@@ -97,6 +98,7 @@ Full documentation is available in the [docs/](docs/) directory:
 - [I/O Utilities](docs/user-guide/io.md)
 - [CLI Guide](docs/user-guide/cli.md)
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
+- [RAG Evaluation Runner](src/electripy/ai/rag_eval_runner/README.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
