@@ -15,5 +15,6 @@ Usage:
 """
 
 __all__ = [
-    "llm_gateway",
+  "llm_gateway",
+  "rag",
 ]
