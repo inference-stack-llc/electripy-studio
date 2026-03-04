@@ -9,12 +9,15 @@ from rich.table import Table
 
 from electripy.core.config import Config
 from electripy.core.logging import setup_logging
+from electripy.cli.rag import app as rag_app
 
 app = typer.Typer(
     name="electripy",
     help="ElectriPy - Production-minded Python components and recipes",
     no_args_is_help=True,
 )
+
+app.add_typer(rag_app, name="rag")
 
 console = Console()
 
