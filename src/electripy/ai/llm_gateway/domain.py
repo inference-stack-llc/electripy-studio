@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Domain models for the LLM Gateway.
 
 Purpose:
@@ -14,19 +12,21 @@ Usage:
   Basic example::
 
     from electripy.ai.llm_gateway import LlmMessage, LlmRequest
-
     request = LlmRequest(
         model="gpt-4o-mini",
         messages=[LlmMessage.user("Hello!")],
     )
 """
 
+from __future__ import annotations
+
+from collections.abc import Mapping, MutableMapping, Sequence
 from dataclasses import dataclass, field, replace
-from enum import Enum
-from typing import Any, List, Mapping, MutableMapping, Optional, Sequence
+from enum import StrEnum
+from typing import Any
 
 
-class LlmRole(str, Enum):
+class LlmRole(StrEnum):
     """Role of a message in a chat-style LLM interaction."""
 
     SYSTEM = "system"
@@ -47,19 +47,19 @@ class LlmMessage:
     content: str
 
     @staticmethod
-    def system(content: str) -> "LlmMessage":
+    def system(content: str) -> LlmMessage:
         """Create a system message."""
 
         return LlmMessage(role=LlmRole.SYSTEM, content=content)
 
     @staticmethod
-    def user(content: str) -> "LlmMessage":
+    def user(content: str) -> LlmMessage:
         """Create a user message."""
 
         return LlmMessage(role=LlmRole.USER, content=content)
 
     @staticmethod
-    def assistant(content: str) -> "LlmMessage":
+    def assistant(content: str) -> LlmMessage:
         """Create an assistant message."""
 
         return LlmMessage(role=LlmRole.ASSISTANT, content=content)
@@ -109,13 +109,13 @@ class LlmRequest:
     """
 
     model: str
-    messages: List[LlmMessage]
+    messages: list[LlmMessage]
     temperature: float = 0.2
-    max_output_tokens: Optional[int] = None
-    max_input_chars: Optional[int] = None
+    max_output_tokens: int | None = None
+    max_input_chars: int | None = None
     metadata: Mapping[str, Any] | None = None
 
-    def clone_with_messages(self, messages: Sequence[LlmMessage]) -> "LlmRequest":
+    def clone_with_messages(self, messages: Sequence[LlmMessage]) -> LlmRequest:
         """Return a shallow copy of this request with different messages."""
 
         return replace(self, messages=list(messages))
@@ -138,11 +138,11 @@ class LlmResponse:
     """
 
     text: str
-    raw_json: Optional[Mapping[str, Any]] = None
-    usage_total_tokens: Optional[int] = None
-    finish_reason: Optional[str] = None
-    request_id: Optional[str] = None
-    model: Optional[str] = None
+    raw_json: Mapping[str, Any] | None = None
+    usage_total_tokens: int | None = None
+    finish_reason: str | None = None
+    request_id: str | None = None
+    model: str | None = None
     metadata: MutableMapping[str, Any] = field(default_factory=dict)
 
 

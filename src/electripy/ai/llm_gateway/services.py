@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Gateway services for LLM calls.
 
 Purpose:
@@ -22,11 +20,14 @@ Usage:
     )
 """
 
+from __future__ import annotations
+
 import asyncio
 import json
 import logging
 import time
-from typing import Any, Mapping, Sequence, Tuple
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 from .config import LlmGatewaySettings
 from .domain import LlmMessage, LlmRequest, LlmResponse, StructuredOutputSpec
@@ -61,7 +62,7 @@ def _enforce_token_budget(request: LlmRequest, settings: LlmGatewaySettings) -> 
 def _maybe_guard(
     request: LlmRequest,
     prompt_guard: PromptGuardPort | None,
-) -> Tuple[LlmRequest, GuardResult | None]:
+) -> tuple[LlmRequest, GuardResult | None]:
     if prompt_guard is None:
         return request, None
     result = prompt_guard.assess(request.messages)

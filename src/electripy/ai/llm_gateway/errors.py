@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Domain exceptions for the LLM Gateway.
 
 Purpose:
@@ -21,8 +19,10 @@ Usage:
         handle(exc)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Final, Optional
+from typing import Final
 
 
 class LlmGatewayError(Exception):
@@ -46,8 +46,8 @@ class RateLimitedError(LlmGatewayError):
     """
 
     message: str
-    status_code: Optional[int] = None
-    retry_after_seconds: Optional[float] = None
+    status_code: int | None = None
+    retry_after_seconds: float | None = None
 
     def __str__(self) -> str:  # pragma: no cover - trivial formatting
         base = self.message
@@ -96,11 +96,11 @@ class StructuredOutputError(LlmGatewayError):
     """
 
     details: str
-    last_raw_output: Optional[str] = None
+    last_raw_output: str | None = None
     validation_errors: tuple[str, ...] = ()
 
     def __str__(self) -> str:  # pragma: no cover - trivial formatting
-        return f"StructuredOutputError: {self.details}"
+      return f"StructuredOutputError: {self.details}"
 
 
 @dataclass(slots=True)
@@ -154,7 +154,7 @@ class TransientLlmError(LlmGatewayError):
     """
 
     message: str
-    status_code: Optional[int] = None
+    status_code: int | None = None
 
     def __str__(self) -> str:  # pragma: no cover - trivial formatting
         if self.status_code is None:

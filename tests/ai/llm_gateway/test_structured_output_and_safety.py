@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Tests for structured output and safety hooks."""
+
+from __future__ import annotations
 
 import json
 from dataclasses import dataclass

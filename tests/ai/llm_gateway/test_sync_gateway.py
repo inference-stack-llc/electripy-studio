@@ -1,9 +1,8 @@
-from __future__ import annotations
-
 """Tests for the synchronous LLM gateway client."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 import pytest
 
@@ -130,10 +129,12 @@ def test_prompt_guard_rejects() -> None:
 
 class RecordingRedactor(RedactorPort):
     def __init__(self) -> None:
-        self.last_text: Optional[str] = None
+        self.last_text: str | None = None
 
     def redact(self, text: str) -> str:
-        self.last_text = text
+        # Record only the first text passed for assertions.
+        if self.last_text is None:
+            self.last_text = text
         return "[redacted]"
 
 

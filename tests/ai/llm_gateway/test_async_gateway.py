@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Tests for the asynchronous LLM gateway client."""
+
+from __future__ import annotations
 
 import pytest
 

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Provider factory helpers for the LLM Gateway.
 
 Purpose:
@@ -30,7 +28,8 @@ Usage:
     )
 """
 
-from dataclasses import dataclass
+from __future__ import annotations
+
 from typing import Any
 
 from .adapters import (

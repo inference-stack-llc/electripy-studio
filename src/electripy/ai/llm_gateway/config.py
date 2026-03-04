@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Configuration models for the LLM Gateway.
 
 Purpose:
@@ -19,6 +17,8 @@ Usage:
         default_model="gpt-4o-mini",
     )
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
@@ -60,8 +60,8 @@ class LlmGatewaySettings:
 
     # Safety & logging
     enable_safe_logging: bool = False
-    redactor: "RedactorPort | None" = None
-    prompt_guard: "PromptGuardPort | None" = None
+    redactor: RedactorPort | None = None
+    prompt_guard: PromptGuardPort | None = None
 
     # Structured output
     structured_output_max_repair_attempts: int = 1

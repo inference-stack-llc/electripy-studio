@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Adapters for the LLM Gateway.
 
 Purpose:
@@ -25,23 +23,23 @@ Usage:
         from electripy.ai.llm_gateway import HttpJsonChatSyncAdapter
 
         adapter = HttpJsonChatSyncAdapter(
-                base_url="https://api.openrouter.ai",
-                path="/v1/chat/completions",
-                api_key="sk-...",
+            base_url="https://api.openrouter.ai",
+            path="/v1/chat/completions",
+            api_key="sk-...",
         )
-"""
+    """
 
-import logging
+from __future__ import annotations
+
 import re
-from typing import Any, Mapping, Optional, Sequence
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 import httpx
 
-from .domain import LlmMessage, LlmRequest, LlmResponse, LlmRole
+from .domain import LlmMessage, LlmRequest, LlmResponse
 from .errors import RateLimitedError, TransientLlmError
 from .ports import AsyncLlmPort, GuardResult, PromptGuardPort, RedactorPort, SyncLlmPort
-
-logger = logging.getLogger(__name__)
 
 try:  # Optional dependency on the OpenAI SDK.
     from openai import AsyncOpenAI, OpenAI  # type: ignore[import]
@@ -57,14 +55,14 @@ def _map_openai_exception(exc: Exception) -> None:
     status_code and retry_after_seconds hints without leaking the original type.
     """
 
-    status_code: Optional[int] = getattr(exc, "status_code", None)
+    status_code: int | None = getattr(exc, "status_code", None)
     response = getattr(exc, "response", None)
     headers: Mapping[str, Any] | None = None
     if response is not None:
         status_code = getattr(response, "status_code", status_code)
         headers = getattr(response, "headers", None)
 
-    retry_after_seconds: Optional[float] = None
+    retry_after_seconds: float | None = None
     if headers:
         retry_after = headers.get("Retry-After") or headers.get("retry-after")
         if isinstance(retry_after, str):
@@ -121,11 +119,12 @@ class OpenAiSyncAdapter(SyncLlmPort):
             {"role": message.role.value, "content": message.content}
             for message in request.messages
         ]
+        messages_param: Any = messages
         response: Any
         try:
             response = self._client.chat.completions.create(  # type: ignore[call-arg]
                 model=request.model,
-                messages=messages,
+                messages=messages_param,
                 temperature=request.temperature,
                 max_tokens=request.max_output_tokens,
                 timeout=timeout,
@@ -138,9 +137,9 @@ class OpenAiSyncAdapter(SyncLlmPort):
         text: str = choice.message.content or ""
         finish_reason = getattr(choice, "finish_reason", None)
         usage = getattr(response, "usage", None)
-        total_tokens: Optional[int] = getattr(usage, "total_tokens", None)
-        request_id: Optional[str] = getattr(response, "id", None)
-        model_used: Optional[str] = getattr(response, "model", None)
+        total_tokens: int | None = getattr(usage, "total_tokens", None)
+        request_id: str | None = getattr(response, "id", None)
+        model_used: str | None = getattr(response, "model", None)
 
         return LlmResponse(
             text=text,
@@ -184,11 +183,12 @@ class OpenAiAsyncAdapter(AsyncLlmPort):
             {"role": message.role.value, "content": message.content}
             for message in request.messages
         ]
+        messages_param: Any = messages
         response: Any
         try:
             response = await self._client.chat.completions.create(  # type: ignore[call-arg]
                 model=request.model,
-                messages=messages,
+                messages=messages_param,
                 temperature=request.temperature,
                 max_tokens=request.max_output_tokens,
                 timeout=timeout,
@@ -201,9 +201,9 @@ class OpenAiAsyncAdapter(AsyncLlmPort):
         text: str = choice.message.content or ""
         finish_reason = getattr(choice, "finish_reason", None)
         usage = getattr(response, "usage", None)
-        total_tokens: Optional[int] = getattr(usage, "total_tokens", None)
-        request_id: Optional[str] = getattr(response, "id", None)
-        model_used: Optional[str] = getattr(response, "model", None)
+        total_tokens: int | None = getattr(usage, "total_tokens", None)
+        request_id: str | None = getattr(response, "id", None)
+        model_used: str | None = getattr(response, "model", None)
 
         return LlmResponse(
             text=text,
@@ -289,7 +289,7 @@ class HttpJsonChatSyncAdapter(SyncLlmPort):
         retry_after_header = response.headers.get("Retry-After") or response.headers.get(
             "retry-after",
         )
-        retry_after_seconds: Optional[float] = None
+        retry_after_seconds: float | None = None
         if isinstance(retry_after_header, str):
             try:
                 retry_after_seconds = float(retry_after_header)
@@ -387,7 +387,7 @@ class HttpJsonChatAsyncAdapter(AsyncLlmPort):
         retry_after_header = response.headers.get("Retry-After") or response.headers.get(
             "retry-after",
         )
-        retry_after_seconds: Optional[float] = None
+        retry_after_seconds: float | None = None
         if isinstance(retry_after_header, str):
             try:
                 retry_after_seconds = float(retry_after_header)

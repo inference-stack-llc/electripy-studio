@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """LLM Gateway public API.
 
 Purpose:
@@ -30,6 +28,16 @@ Usage:
     )
 """
 
+from __future__ import annotations
+
+from .adapters import (
+    HeuristicPromptGuard,
+    HttpJsonChatAsyncAdapter,
+    HttpJsonChatSyncAdapter,
+    OpenAiAsyncAdapter,
+    OpenAiSyncAdapter,
+    SimpleRedactor,
+)
 from .config import LlmGatewaySettings, RetryPolicy
 from .domain import (
     LlmMessage,
@@ -47,14 +55,6 @@ from .errors import (
     TokenBudgetExceededError,
 )
 from .ports import AsyncLlmPort, GuardResult, PromptGuardPort, RedactorPort, SyncLlmPort
-from .adapters import (
-    HeuristicPromptGuard,
-    HttpJsonChatAsyncAdapter,
-    HttpJsonChatSyncAdapter,
-    OpenAiAsyncAdapter,
-    OpenAiSyncAdapter,
-    SimpleRedactor,
-)
 from .providers import build_llm_async_client, build_llm_sync_client
 from .services import LlmGatewayAsyncClient, LlmGatewaySyncClient
 

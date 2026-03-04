@@ -1,14 +1,13 @@
-from __future__ import annotations
-
 """Tests for provider factory helpers and HTTP JSON adapters.
 
 These tests use simple fake HTTP clients and responses to avoid real
 network calls while exercising the adapter logic and provider factory.
 """
 
-import json
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 
@@ -17,7 +16,6 @@ from electripy.ai.llm_gateway import (
     LlmGatewaySyncClient,
     LlmMessage,
     LlmRequest,
-    build_llm_async_client,
     build_llm_sync_client,
 )
 from electripy.ai.llm_gateway.adapters import HttpJsonChatAsyncAdapter, HttpJsonChatSyncAdapter
@@ -27,10 +25,10 @@ from electripy.ai.llm_gateway.errors import RateLimitedError
 @dataclass
 class FakeResponse:
     status_code: int
-    body: Dict[str, Any]
-    headers: Dict[str, str] | None = None
+    body: dict[str, Any]
+    headers: dict[str, str] | None = None
 
-    def json(self) -> Dict[str, Any]:  # pragma: no cover - trivial
+    def json(self) -> dict[str, Any]:  # pragma: no cover - trivial
         return self.body
 
 
