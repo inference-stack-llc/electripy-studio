@@ -22,4 +22,3 @@ def test_deterministic_chunker_produces_overlapping_chunks() -> None:
     # Ensure overlap between consecutive chunks.
     for first, second in zip(chunks, chunks[1:], strict=False):
         assert first.text[-config.overlap_chars :] == second.text[: config.overlap_chars]
-

@@ -67,4 +67,3 @@ class EvaluationError(RagError):
 
     def __str__(self) -> str:  # pragma: no cover - trivial formatting
         return self.message
-

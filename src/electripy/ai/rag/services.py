@@ -370,4 +370,3 @@ def load_document_from_file(
     p = Path(path)
     text = p.read_text(encoding=encoding)
     return Document(id=str(p), source_uri=p.as_uri(), text=text, metadata=metadata)
-

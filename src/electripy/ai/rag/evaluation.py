@@ -128,4 +128,3 @@ def recall_at_k(
         total_recall += recall
 
     return total_recall / len(truth_index)
-

@@ -221,4 +221,3 @@ class GroundTruthExample:
 
 
 EMPTY_RESULTS: Final[list[RetrievalResult]] = []
-

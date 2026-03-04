@@ -39,4 +39,3 @@ def test_hit_rate_precision_recall_at_k() -> None:
     assert 0.0 <= recall <= 1.0
     # At least one query should have a hit.
     assert hit > 0.0
-

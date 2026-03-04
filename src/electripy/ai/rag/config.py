@@ -70,4 +70,3 @@ class EmbeddingGatewaySettings:
             raise ValueError("max_delay_s must be > 0")
         if not 0.0 <= self.jitter_ratio <= 1.0:
             raise ValueError("jitter_ratio must be between 0.0 and 1.0")
-

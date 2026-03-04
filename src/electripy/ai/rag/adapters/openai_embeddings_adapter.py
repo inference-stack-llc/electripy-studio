@@ -113,4 +113,3 @@ class OpenAiEmbeddingAdapter(EmbeddingPort):
                 raise EmbeddingError("OpenAI response missing embedding field")
             vectors.append([float(v) for v in embedding])
         return vectors
-

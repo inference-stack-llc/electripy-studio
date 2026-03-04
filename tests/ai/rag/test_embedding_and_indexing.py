@@ -39,7 +39,9 @@ class FakeVectorStore:
         for chunk, vector in zip(chunks, vectors, strict=True):
             self.vectors[chunk.id] = (chunk, list(vector))
 
-    def query(self, vector: Sequence[float], *, top_k: int, filters: dict | None = None) -> list[tuple[Chunk, float]]:
+    def query(
+        self, vector: Sequence[float], *, top_k: int, filters: dict | None = None
+    ) -> list[tuple[Chunk, float]]:
         # Simple similarity: negative absolute difference in vector length.
         items = list(self.vectors.values())
         items.sort(key=lambda item: -abs(len(item[0].text) - int(vector[0])))
@@ -57,7 +59,9 @@ class FakeVectorStore:
 def test_embedding_gateway_batches_and_retries() -> None:
     port = FakeEmbeddingPort()
     port.fail_first = True
-    settings = EmbeddingGatewaySettings(max_batch_size=2, max_retries=1, base_delay_s=0.0, max_delay_s=0.001)
+    settings = EmbeddingGatewaySettings(
+        max_batch_size=2, max_retries=1, base_delay_s=0.0, max_delay_s=0.001
+    )
     gateway = EmbeddingGateway(port=port, settings=settings, sleep_fn=lambda _s: None)
     vectors = gateway.embed_texts(["a", "bb", "ccc"])
     assert [v.vector for v in vectors] == [[1.0], [2.0], [3.0]]
@@ -82,4 +86,3 @@ def test_index_and_retrieve_round_trip() -> None:
     results = retrieval.retrieve(query)
     assert isinstance(results[0], RetrievalResult)
     assert results[0].chunk.document_id == "doc-1"
-
