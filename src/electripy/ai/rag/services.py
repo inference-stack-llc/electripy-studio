@@ -179,12 +179,12 @@ class EmbeddingGateway:
                 raise EmbeddingError("Unexpected embedding failure") from exc
 
     def _calculate_delay_s(self, attempt_index: int) -> float:
-        base = self.settings.base_delay_s * (2**attempt_index)
+        base: float = float(self.settings.base_delay_s * (2**attempt_index))
         base = min(base, self.settings.max_delay_s)
         if self.settings.jitter_ratio <= 0.0:
-            return base
-        low = max(0.0, base * (1.0 - self.settings.jitter_ratio))
-        high = base * (1.0 + self.settings.jitter_ratio)
+            return float(base)
+        low: float = max(0.0, base * (1.0 - self.settings.jitter_ratio))
+        high: float = base * (1.0 + self.settings.jitter_ratio)
         return float(random.uniform(low, high))
 
 
