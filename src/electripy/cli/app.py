@@ -7,9 +7,9 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from electripy.cli.rag import app as rag_app
 from electripy.core.config import Config
 from electripy.core.logging import setup_logging
-from electripy.cli.rag import app as rag_app
 
 app = typer.Typer(
     name="electripy",

@@ -77,7 +77,7 @@ class InMemoryVectorStoreAdapter(VectorStorePort):
     def upsert(self, chunks: Sequence[Chunk], vectors: Sequence[list[float]]) -> None:
         if len(chunks) != len(vectors):
             raise ValueError("chunks and vectors must have the same length")
-        for chunk, vector in zip(chunks, vectors):
+        for chunk, vector in zip(chunks, vectors, strict=True):
             self._store[chunk.id] = (chunk, list(vector))
 
     def query(
@@ -98,10 +98,10 @@ class InMemoryVectorStoreAdapter(VectorStorePort):
 
         norm_q = math.sqrt(sum(float(v) * float(v) for v in vector)) or 1.0
         scores: list[tuple[Chunk, float]] = []
-        for chunk_id, (chunk, stored_vec) in self._store.items():
+        for _chunk_id, (chunk, stored_vec) in self._store.items():
             dot = 0.0
             norm_v = 0.0
-            for a, b in zip(vector, stored_vec):
+            for a, b in zip(vector, stored_vec, strict=True):
                 fa = float(a)
                 fb = float(b)
                 dot += fa * fb
@@ -115,6 +115,8 @@ class InMemoryVectorStoreAdapter(VectorStorePort):
         return scores[:top_k]
 
     def delete_by_document(self, document_id: str) -> None:
-        to_delete = [cid for cid, (chunk, _) in self._store.items() if chunk.document_id == document_id]
+        to_delete = [
+            cid for cid, (chunk, _) in self._store.items() if chunk.document_id == document_id
+        ]
         for cid in to_delete:
             self._store.pop(cid, None)

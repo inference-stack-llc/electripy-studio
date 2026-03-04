@@ -24,8 +24,8 @@ from pathlib import Path
 
 from electripy.ai.rag.config import ChunkingConfig, EmbeddingGatewaySettings
 from electripy.ai.rag.domain import Chunk, Document, GroundTruthExample, RetrievalResult
-from electripy.ai.rag.evaluation import hit_rate_at_k, precision_at_k, recall_at_k
 from electripy.ai.rag.errors import EmbeddingError
+from electripy.ai.rag.evaluation import hit_rate_at_k, precision_at_k, recall_at_k
 from electripy.ai.rag.ports import ChunkerPort, EmbeddingPort, VectorStorePort
 from electripy.ai.rag.services import DeterministicChunker, EmbeddingGateway, IndexingService
 from electripy.core.logging import get_logger
@@ -33,6 +33,10 @@ from electripy.core.typing import JSONDict
 
 from .adapters import FakeEmbeddingAdapter, InMemoryVectorStoreAdapter
 from .domain import (
+    _METRIC_NAME_HIT_RATE,
+    _METRIC_NAME_MRR,
+    _METRIC_NAME_PRECISION,
+    _METRIC_NAME_RECALL,
     CorpusRecord,
     EmbedderVariant,
     ExperimentConfig,
@@ -42,10 +46,6 @@ from .domain import (
     RunMetadata,
     RunResult,
     metric_key,
-    _METRIC_NAME_HIT_RATE,
-    _METRIC_NAME_MRR,
-    _METRIC_NAME_PRECISION,
-    _METRIC_NAME_RECALL,
 )
 from .errors import DatasetFormatError, EvalRunnerError, ExperimentConfigError, RagEvalError
 
@@ -222,7 +222,9 @@ class Evaluator:
         for query in queries:
             [vector] = self.embedding_port.embed_texts([query.query])
             neighbours = self.vector_store.query(vector, top_k=top_k, filters=None)
-            retrieval_results = [RetrievalResult(chunk=chunk, score=score) for chunk, score in neighbours]
+            retrieval_results = [
+                RetrievalResult(chunk=chunk, score=score) for chunk, score in neighbours
+            ]
             # Use query id as the key to avoid ambiguity for duplicate texts.
             key = query.id
             results_by_query[key] = retrieval_results

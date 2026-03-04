@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from electripy.ai.rag.domain import Chunk
 from electripy.ai.rag.ports import EmbeddingPort
-
 from electripy.ai.rag_eval_runner.adapters import FakeEmbeddingAdapter, InMemoryVectorStoreAdapter
 from electripy.ai.rag_eval_runner.domain import QueryRecord, metric_key
 from electripy.ai.rag_eval_runner.services import Evaluator

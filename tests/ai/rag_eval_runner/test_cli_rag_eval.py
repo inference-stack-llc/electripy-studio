@@ -51,7 +51,7 @@ def test_rag_eval_cli_smoke(tmp_path: Path) -> None:
     )
 
     assert result.exit_code == 0
-    assert "Experiment ID" in result.stdout
+    assert "Experiment" in result.stdout
     assert json_out.exists()
     assert csv_out.exists()
 
