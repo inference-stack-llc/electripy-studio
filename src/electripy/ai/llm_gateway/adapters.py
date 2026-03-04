@@ -109,8 +109,11 @@ class OpenAiSyncAdapter(SyncLlmPort):
                 "Install with `pip install openai`.",
             ) from exc
 
-        openai_client_cls = getattr(openai_module, "OpenAI")
-        self._client = openai_client_cls(api_key=api_key, base_url=base_url, organization=organization)
+        self._client = openai_module.OpenAI(
+            api_key=api_key,
+            base_url=base_url,
+            organization=organization,
+        )
 
     def complete(self, request: LlmRequest, *, timeout: float | None = None) -> LlmResponse:
         messages = [
@@ -170,8 +173,11 @@ class OpenAiAsyncAdapter(AsyncLlmPort):
                 "Install with `pip install openai`.",
             ) from exc
 
-        async_openai_client_cls = getattr(openai_module, "AsyncOpenAI")
-        self._client = async_openai_client_cls(api_key=api_key, base_url=base_url, organization=organization)
+        self._client = openai_module.AsyncOpenAI(
+            api_key=api_key,
+            base_url=base_url,
+            organization=organization,
+        )
 
     async def complete(
         self,
