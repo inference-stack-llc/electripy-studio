@@ -36,8 +36,8 @@ from __future__ import annotations
 import random
 import time
 from collections.abc import Mapping, Sequence
-from pathlib import Path
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from electripy.core.logging import get_logger
 

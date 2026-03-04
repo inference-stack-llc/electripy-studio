@@ -2,20 +2,20 @@
 
 Purpose:
   - Implement :class:`VectorStorePort` using PostgreSQL with the
-    ``pgvector`` extension.
+	``pgvector`` extension.
 
 Design:
   - This adapter is intentionally minimal and focuses on a single
-    schema comprising ``documents``, ``chunks``, and ``embeddings``
-    tables.
+	schema comprising ``documents``, ``chunks``, and ``embeddings``
+	tables.
   - The adapter does not manage connections itself; callers provide a
-    connection factory returning psycopg connections.
+	connection factory returning psycopg connections.
 
 Notes:
   - The :mod:`psycopg` package is imported lazily inside methods to
-    avoid hard runtime dependencies for environments that do not use
-    this adapter (for example, during unit tests where a fake
-    ``VectorStorePort`` is used).
+	avoid hard runtime dependencies for environments that do not use
+	this adapter (for example, during unit tests where a fake
+	``VectorStorePort`` is used).
 """
 
 from __future__ import annotations
@@ -166,7 +166,6 @@ ON CONFLICT (chunk_id) DO UPDATE SET
 				with conn.cursor() as cur:  # type: ignore[call-arg]
 					conditions = ["e.chunk_id = c.id", "c.document_id = d.id"]
 					params: list[object] = [vector, top_k]
-					filters_sql = ""
 					if filters:
 						conditions.append("d.metadata @> %s")
 						params.insert(1, filters)

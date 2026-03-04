@@ -44,7 +44,7 @@ class FakeVectorStore:
         items = list(self.vectors.values())
         items.sort(key=lambda item: -abs(len(item[0].text) - int(vector[0])))
         results: list[tuple[Chunk, float]] = []
-        for chunk, stored_vector in items[:top_k]:
+        for chunk, _stored_vector in items[:top_k]:
             results.append((chunk, float(len(chunk.text))))
         return results
 

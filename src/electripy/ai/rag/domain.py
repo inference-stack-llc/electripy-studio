@@ -25,7 +25,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Final
 
@@ -117,7 +117,7 @@ class Document:
     metadata: Mapping[str, object] | None = None
     content_hash: str | None = None
 
-    def with_computed_hash(self) -> "Document":
+    def with_computed_hash(self) -> Document:
         """Return a shallow copy of the document with ``content_hash`` set.
 
         Returns:

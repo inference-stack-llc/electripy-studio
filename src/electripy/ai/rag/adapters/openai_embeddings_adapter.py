@@ -111,6 +111,6 @@ class OpenAiEmbeddingAdapter(EmbeddingPort):
             embedding = getattr(item, "embedding", None)
             if embedding is None:
                 raise EmbeddingError("OpenAI response missing embedding field")
-            vectors.append(list(float(v) for v in embedding))
+            vectors.append([float(v) for v in embedding])
         return vectors
 
