@@ -23,9 +23,9 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
-from ..domain import Chunk
-from ..errors import VectorStoreError
-from ..ports import VectorStorePort
+from electripy.ai.rag.domain import Chunk
+from electripy.ai.rag.errors import VectorStoreError
+from electripy.ai.rag.ports import VectorStorePort
 
 
 ConnectionFactory = Callable[[], Any]
