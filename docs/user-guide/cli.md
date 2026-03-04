@@ -6,6 +6,8 @@ Command-line interface built with Typer and Rich.
 
 ElectriPy provides a production-ready CLI with built-in health checks and diagnostics.
 
+![CLI packaging and npm wrapper](../images/packaging_cli_npmwrapper.png)
+
 ## Commands
 
 ### doctor

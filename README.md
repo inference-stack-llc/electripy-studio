@@ -19,13 +19,23 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 
 ## Quick Start
 
-### Installation
+### Using ElectriPy as a library
+
+For most users, ElectriPy is just a Python library you depend on in your own project.
+
+Once published to PyPI, you can install it directly:
+
+```bash
+pip install electripy
+```
+
+To work against a local clone in editable mode (e.g., to experiment with changes while using it in another project):
 
 ```bash
 pip install -e .
 ```
 
-For development:
+For development on this repo itself (full tooling and test extras):
 
 ```bash
 pip install -e ".[dev]"
@@ -83,6 +93,16 @@ pip install -e ".[docs]"
 mkdocs serve
 ```
 
+## Visual Overview
+
+### Repository Map
+
+![Repository map](docs/images/repo_map.png)
+
+### Development Workflow
+
+![Development workflow](docs/images/dev_workflow.png)
+
 ## Project Structure
 
 ```
@@ -129,6 +149,59 @@ black .
 # Type checking
 mypy src/
 ```
+
+### Python Tooling (recommended)
+
+These tools are **optional but recommended for contributors** working on ElectriPy Studio itself. They are installed globally (via `pipx`) and then used inside whatever project or virtualenv you prefer.
+
+#### 1. Install global CLI tools with pipx
+
+`pipx` lets you install Python CLIs in isolated environments, so they don't conflict with your project dependencies:
+
+```bash
+python -m pip install --upgrade pip
+
+brew install pipx      # or see https://pipx.pypa.io for other platforms
+pipx ensurepath
+
+pipx install uv        # fast Python package/dependency manager
+pipx install poetry    # project/virtualenv manager (optional; this repo uses pyproject + hatchling)
+pipx install ruff      # fast linter (also available via .[dev] extra)
+pipx install pre-commit  # git pre-commit hooks runner
+```
+
+#### 2. Using uv (optional)
+
+`uv` is a fast drop-in for many `pip`/`python -m venv` workflows. For example, to create a fresh environment for hacking on ElectriPy Studio:
+
+```bash
+uv venv .venv
+source .venv/bin/activate
+
+uv pip install -e ".[dev]"
+```
+
+You can also use `uv pip install electripy` in your own projects once the package is published.
+
+#### 3. Using poetry in your own projects (optional)
+
+This repo is built with `pyproject.toml` + Hatchling, but you can happily **consume** ElectriPy from a Poetry-managed project:
+
+```bash
+poetry add electripy
+```
+
+The library itself has no dependency on Poetry; it's just a convenient project manager if you already use it.
+
+#### 4. pre-commit (for contributors)
+
+Once `pre-commit` is installed, enable the hooks defined in [.pre-commit-config.yaml](.pre-commit-config.yaml):
+
+```bash
+pre-commit install
+```
+
+This will automatically run Black, Ruff, and basic whitespace checks on changed files before each commit.
 
 ### CI/CD
 

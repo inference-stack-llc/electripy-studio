@@ -13,6 +13,10 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **I/O**: JSONL read/write utilities for efficient data processing
 - **CLI**: Typer-based command-line interface with health checks
 
+## Documentation Map
+
+![Documentation and recipes layout](images/docs_and_recipes.png)
+
 ## Quick Links
 
 - [Installation](getting-started/installation.md)
