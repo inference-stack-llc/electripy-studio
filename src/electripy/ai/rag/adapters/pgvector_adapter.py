@@ -212,4 +212,3 @@ LIMIT %s
                     cur.execute("DELETE FROM rag_documents WHERE id = %s", (document_id,))
         finally:
             conn.close()
-
