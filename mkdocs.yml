@@ -37,6 +37,7 @@ nav:
       - Concurrency: user-guide/concurrency.md
       - IO: user-guide/io.md
       - CLI: user-guide/cli.md
+      - AI / LLM Gateway: user-guide/ai-llm-gateway.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md
   - API Reference: api.md
