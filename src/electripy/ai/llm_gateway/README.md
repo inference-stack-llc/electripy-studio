@@ -319,3 +319,40 @@ You can then wire this adapter into the gateway directly::
 
 or add another branch in `build_llm_sync_client` / `build_llm_async_client`
 for a dedicated provider name (for example `"claude"`).
+
+## Public API surface
+
+The primary symbols intended for external use are:
+
+- Domain models:
+  - `LlmRole`
+  - `LlmMessage`
+  - `LlmRequest`
+  - `LlmResponse`
+  - `StructuredOutputSpec`
+- Ports / safety hooks:
+  - `SyncLlmPort`, `AsyncLlmPort`
+  - `RedactorPort`, `PromptGuardPort`, `GuardResult`
+- Configuration:
+  - `RetryPolicy`
+  - `LlmGatewaySettings`
+- Services:
+  - `LlmGatewaySyncClient`
+  - `LlmGatewayAsyncClient`
+- Provider factories:
+  - `build_llm_sync_client`
+  - `build_llm_async_client`
+- Adapters:
+  - `OpenAiSyncAdapter`, `OpenAiAsyncAdapter`
+  - `HttpJsonChatSyncAdapter`, `HttpJsonChatAsyncAdapter`
+  - `SimpleRedactor`, `HeuristicPromptGuard`
+- Errors:
+  - `LlmGatewayError` (base)
+  - `RateLimitedError`
+  - `RetryExhaustedError`
+  - `StructuredOutputError`
+  - `TokenBudgetExceededError`
+  - `PromptRejectedError`
+
+All of these are exported from `electripy.ai.llm_gateway` and considered
+part of the stable public surface for this component.
