@@ -29,88 +29,88 @@ from ..ports import EmbeddingPort
 
 
 def _map_openai_exception(exc: Exception) -> None:
-	"""Map an OpenAI exception to a domain error and raise it.
+    """Map an OpenAI exception to a domain error and raise it.
 
-	This helper inspects common attributes of OpenAI errors to derive a
-	retryable/non-retryable categorisation without leaking the original
-	exception type.
-	"""
+    This helper inspects common attributes of OpenAI errors to derive a
+    retryable/non-retryable categorisation without leaking the original
+    exception type.
+    """
 
-	status_code: int | None = getattr(exc, "status_code", None)
-	response = getattr(exc, "response", None)
-	if response is not None:
-		status_code = getattr(response, "status_code", status_code)
+    status_code: int | None = getattr(exc, "status_code", None)
+    response = getattr(exc, "response", None)
+    if response is not None:
+        status_code = getattr(response, "status_code", status_code)
 
-	if status_code is not None and status_code >= 500:
-		raise EmbeddingTransientError("Transient OpenAI error") from None
+    if status_code is not None and status_code >= 500:
+        raise EmbeddingTransientError("Transient OpenAI error") from None
 
-	raise EmbeddingError(str(exc)) from None
+    raise EmbeddingError(str(exc)) from None
 
 
 class OpenAiEmbeddingAdapter(EmbeddingPort):
-	"""OpenAI embeddings adapter implementing :class:`EmbeddingPort`.
+    """OpenAI embeddings adapter implementing :class:`EmbeddingPort`.
 
-	Notes:
-		- Requires the ``openai`` package to be installed.
-		- The client is created lazily at initialisation time. To avoid an
-			import-time dependency, the module imports :mod:`openai` using
-			:func:`importlib.import_module`.
-	"""
+    Notes:
+        - Requires the ``openai`` package to be installed.
+        - The client is created lazily at initialisation time. To avoid an
+          import-time dependency, the module imports :mod:`openai` using
+          :func:`importlib.import_module`.
+    """
 
-	def __init__(
-		self,
-		*,
-		model: str,
-		api_key: str | None = None,
-		base_url: str | None = None,
-		organization: str | None = None,
-		client: Any | None = None,
-	) -> None:
-		if client is not None:
-			self._client = client
-			self._model = model
-			return
+    def __init__(
+        self,
+        *,
+        model: str,
+        api_key: str | None = None,
+        base_url: str | None = None,
+        organization: str | None = None,
+        client: Any | None = None,
+    ) -> None:
+        if client is not None:
+            self._client = client
+            self._model = model
+            return
 
-		try:
-			openai_module = importlib.import_module("openai")
-		except ImportError as exc:  # pragma: no cover - import-time dependency
-			raise ImportError(
-				"OpenAiEmbeddingAdapter requires the `openai` package. "
-				"Install with `pip install openai`.",
-			) from exc
+        try:
+            openai_module = importlib.import_module("openai")
+        except ImportError as exc:  # pragma: no cover - import-time dependency
+            raise ImportError(
+                "OpenAiEmbeddingAdapter requires the `openai` package. "
+                "Install with `pip install openai`.",
+            ) from exc
 
-		self._client = openai_module.OpenAI(
-			api_key=api_key,
-			base_url=base_url,
-			organization=organization,
-		)
-		self._model = model
+        self._client = openai_module.OpenAI(
+            api_key=api_key,
+            base_url=base_url,
+            organization=organization,
+        )
+        self._model = model
 
-	def embed_texts(self, texts: Sequence[str]) -> list[list[float]]:
-		"""Embed a batch of texts using OpenAI embeddings.
+    def embed_texts(self, texts: Sequence[str]) -> list[list[float]]:
+        """Embed a batch of texts using OpenAI embeddings.
 
-		Args:
-			texts: Input texts.
+        Args:
+            texts: Input texts.
 
-		Returns:
-			List of embedding vectors.
-		"""
+        Returns:
+            List of embedding vectors.
+        """
 
-		if not texts:
-			return []
+        if not texts:
+            return []
 
-		try:
-			response: Any = self._client.embeddings.create(model=self._model, input=list(texts))
-		except Exception as exc:  # noqa: BLE001
-			_map_openai_exception(exc)
-			raise AssertionError("_map_openai_exception must raise") from exc
+        try:
+            response: Any = self._client.embeddings.create(model=self._model, input=list(texts))
+        except Exception as exc:  # noqa: BLE001
+            _map_openai_exception(exc)
+            raise AssertionError("_map_openai_exception must raise") from exc
 
-		data = getattr(response, "data", [])
-		vectors: list[list[float]] = []
-		for item in data:
-			embedding = getattr(item, "embedding", None)
-			if embedding is None:
-				raise EmbeddingError("OpenAI response missing embedding field")
-			vectors.append(list(float(v) for v in embedding))
-		return vectors
+        data = getattr(response, "data", [])
+        vectors: list[list[float]] = []
+        for item in data:
+            embedding = getattr(item, "embedding", None)
+            if embedding is None:
+                raise EmbeddingError("OpenAI response missing embedding field")
+            vectors.append(list(float(v) for v in embedding))
+        return vectors
 

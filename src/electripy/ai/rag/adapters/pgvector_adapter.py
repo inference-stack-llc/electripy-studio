@@ -33,30 +33,30 @@ ConnectionFactory = Callable[[], Any]
 
 DOCUMENTS_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS rag_documents (
-    id TEXT PRIMARY KEY,
-    source_uri TEXT NOT NULL,
-    content_hash TEXT NOT NULL,
-    metadata JSONB
+	id TEXT PRIMARY KEY,
+	source_uri TEXT NOT NULL,
+	content_hash TEXT NOT NULL,
+	metadata JSONB
 );
 """
 
 
 CHUNKS_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS rag_chunks (
-    id TEXT PRIMARY KEY,
-    document_id TEXT NOT NULL REFERENCES rag_documents (id) ON DELETE CASCADE,
-    chunk_index INTEGER NOT NULL,
-    text TEXT NOT NULL,
-    metadata JSONB,
-    chunk_hash TEXT NOT NULL
+	id TEXT PRIMARY KEY,
+	document_id TEXT NOT NULL REFERENCES rag_documents (id) ON DELETE CASCADE,
+	chunk_index INTEGER NOT NULL,
+	text TEXT NOT NULL,
+	metadata JSONB,
+	chunk_hash TEXT NOT NULL
 );
 """
 
 
 EMBEDDINGS_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS rag_embeddings (
-    chunk_id TEXT PRIMARY KEY REFERENCES rag_chunks (id) ON DELETE CASCADE,
-    embedding vector NOT NULL
+	chunk_id TEXT PRIMARY KEY REFERENCES rag_chunks (id) ON DELETE CASCADE,
+	embedding vector NOT NULL
 );
 """
 
@@ -105,9 +105,9 @@ class PgVectorAdapter(VectorStorePort):
 INSERT INTO rag_documents (id, source_uri, content_hash, metadata)
 VALUES (%s, %s, %s, %s)
 ON CONFLICT (id) DO UPDATE SET
-    source_uri = EXCLUDED.source_uri,
-    content_hash = EXCLUDED.content_hash,
-    metadata = EXCLUDED.metadata
+	source_uri = EXCLUDED.source_uri,
+	content_hash = EXCLUDED.content_hash,
+	metadata = EXCLUDED.metadata
 """,
 							(
 								chunk.document_id,
@@ -121,11 +121,11 @@ ON CONFLICT (id) DO UPDATE SET
 INSERT INTO rag_chunks (id, document_id, chunk_index, text, metadata, chunk_hash)
 VALUES (%s, %s, %s, %s, %s, %s)
 ON CONFLICT (id) DO UPDATE SET
-    document_id = EXCLUDED.document_id,
-    chunk_index = EXCLUDED.chunk_index,
-    text = EXCLUDED.text,
-    metadata = EXCLUDED.metadata,
-    chunk_hash = EXCLUDED.chunk_hash
+	document_id = EXCLUDED.document_id,
+	chunk_index = EXCLUDED.chunk_index,
+	text = EXCLUDED.text,
+	metadata = EXCLUDED.metadata,
+	chunk_hash = EXCLUDED.chunk_hash
 """,
 							(
 								chunk.id,
@@ -141,7 +141,7 @@ ON CONFLICT (id) DO UPDATE SET
 INSERT INTO rag_embeddings (chunk_id, embedding)
 VALUES (%s, %s)
 ON CONFLICT (chunk_id) DO UPDATE SET
-    embedding = EXCLUDED.embedding
+	embedding = EXCLUDED.embedding
 """,
 							(chunk.id, vector),
 						)
@@ -174,12 +174,12 @@ ON CONFLICT (chunk_id) DO UPDATE SET
 					where_clause = " AND ".join(conditions)
 					query_sql = f"""
 SELECT c.id,
-       c.document_id,
-       c.chunk_index,
-       c.text,
-       c.metadata,
-       c.chunk_hash,
-       1 - (e.embedding <-> %s) AS score
+	   c.document_id,
+	   c.chunk_index,
+	   c.text,
+	   c.metadata,
+	   c.chunk_hash,
+	   1 - (e.embedding <-> %s) AS score
 FROM rag_embeddings e
 JOIN rag_chunks c ON e.chunk_id = c.id
 JOIN rag_documents d ON c.document_id = d.id

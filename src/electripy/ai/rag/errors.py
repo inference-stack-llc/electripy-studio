@@ -28,43 +28,43 @@ from electripy.core.errors import ElectriPyError
 
 
 class RagError(ElectriPyError):
-	"""Base exception for all RAG-related failures."""
+    """Base exception for all RAG-related failures."""
 
 
 class EmbeddingError(RagError):
-	"""Raised when embedding operations fail.
+    """Raised when embedding operations fail.
 
-	Typical causes include provider errors, invalid inputs, or retries
-	exhausted at the embedding gateway layer.
-	"""
+    Typical causes include provider errors, invalid inputs, or retries
+    exhausted at the embedding gateway layer.
+    """
 
 
 class EmbeddingTransientError(EmbeddingError):
-	"""Raised for transient embedding failures that may succeed on retry."""
+    """Raised for transient embedding failures that may succeed on retry."""
 
 
 class VectorStoreError(RagError):
-	"""Raised when vector store operations fail."""
+    """Raised when vector store operations fail."""
 
 
 class IndexingError(RagError):
-	"""Raised when indexing orchestration fails."""
+    """Raised when indexing orchestration fails."""
 
 
 class RetrievalError(RagError):
-	"""Raised when retrieval orchestration fails."""
+    """Raised when retrieval orchestration fails."""
 
 
 @dataclass(slots=True)
 class EvaluationError(RagError):
-	"""Raised when evaluation metrics cannot be computed.
+    """Raised when evaluation metrics cannot be computed.
 
-	Attributes:
-		message: Human-readable description of the failure.
-	"""
+    Attributes:
+        message: Human-readable description of the failure.
+    """
 
-	message: str
+    message: str
 
-	def __str__(self) -> str:  # pragma: no cover - trivial formatting
-		return self.message
+    def __str__(self) -> str:  # pragma: no cover - trivial formatting
+        return self.message
 
