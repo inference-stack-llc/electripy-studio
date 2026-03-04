@@ -35,7 +35,7 @@ from __future__ import annotations
 
 import random
 import time
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -70,7 +70,7 @@ class DeterministicChunker(ChunkerPort):
 
     config: ChunkingConfig = field(default_factory=ChunkingConfig)
 
-    def chunk(self, document: Document) -> list[Chunk]:  # type: ignore[override]
+    def chunk(self, document: Document) -> list[Chunk]:
         """Chunk a document deterministically.
 
         Args:
@@ -131,7 +131,7 @@ class EmbeddingGateway:
 
     port: EmbeddingPort
     settings: EmbeddingGatewaySettings = field(default_factory=EmbeddingGatewaySettings)
-    sleep_fn: callable = time.sleep
+    sleep_fn: Callable[[float], None] = time.sleep
 
     def embed_texts(self, texts: Sequence[str]) -> list[EmbeddingVector]:
         """Embed a sequence of texts into dense vectors.

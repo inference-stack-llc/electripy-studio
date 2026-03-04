@@ -79,7 +79,7 @@ class PgVectorAdapter(VectorStorePort):
         conn = self._connection_factory()
         try:
             with conn:
-                with conn.cursor() as cur:  # type: ignore[call-arg]
+                with conn.cursor() as cur:
                     cur.execute(DOCUMENTS_TABLE_SQL)
                     cur.execute(CHUNKS_TABLE_SQL)
                     cur.execute(EMBEDDINGS_TABLE_SQL)
@@ -95,7 +95,7 @@ class PgVectorAdapter(VectorStorePort):
         conn = self._connection_factory()
         try:
             with conn:
-                with conn.cursor() as cur:  # type: ignore[call-arg]
+                with conn.cursor() as cur:
                     for chunk, vector in zip(chunks, vectors, strict=True):
                         if len(vector) != self._dimension:
                             raise VectorStoreError("embedding dimension mismatch")
@@ -162,7 +162,7 @@ ON CONFLICT (chunk_id) DO UPDATE SET
         conn = self._connection_factory()
         try:
             with conn:
-                with conn.cursor() as cur:  # type: ignore[call-arg]
+                with conn.cursor() as cur:
                     conditions = ["e.chunk_id = c.id", "c.document_id = d.id"]
                     params: list[object] = [vector, top_k]
                     if filters:
@@ -207,7 +207,7 @@ LIMIT %s
         conn = self._connection_factory()
         try:
             with conn:
-                with conn.cursor() as cur:  # type: ignore[call-arg]
+                with conn.cursor() as cur:
                     cur.execute("DELETE FROM rag_documents WHERE id = %s", (document_id,))
         finally:
             conn.close()
