@@ -28,8 +28,8 @@ from __future__ import annotations
 import asyncio
 import random
 import time
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Awaitable, Callable
 
 from electripy.core.logging import get_logger
 
@@ -44,7 +44,6 @@ from .domain import (
     RetryPolicy,
 )
 from .ports import AsyncHttpPort, SyncHttpPort
-
 
 logger = get_logger(__name__)
 
@@ -210,7 +209,9 @@ class ResilientSyncHttpClient:
                 is_last_attempt = attempt >= max_attempts - 1
 
                 if not is_retryable_exc or is_last_attempt:
-                    raise RetryExhaustedError("All retry attempts failed", last_response=None) from exc
+                    raise RetryExhaustedError(
+                        "All retry attempts failed", last_response=None
+                    ) from exc
 
                 delay_s = _calculate_delay_s(
                     policy=self.retry_policy,
@@ -229,9 +230,11 @@ class ResilientSyncHttpClient:
             is_retryable_status = response.status_code in self.retry_policy.retryable_status_codes
             is_last_attempt = attempt >= max_attempts - 1
 
-            if not is_retryable_status or (
-                not is_idempotent and not allow_retry_non_idempotent
-            ) or is_last_attempt:
+            if (
+                not is_retryable_status
+                or (not is_idempotent and not allow_retry_non_idempotent)
+                or is_last_attempt
+            ):
                 self.circuit_breaker.after_call(False)
                 raise RetryExhaustedError(
                     f"All retry attempts failed with status {response.status_code}",
@@ -341,7 +344,9 @@ class ResilientAsyncHttpClient:
                 is_last_attempt = attempt >= max_attempts - 1
 
                 if not is_retryable_exc or is_last_attempt:
-                    raise RetryExhaustedError("All retry attempts failed", last_response=None) from exc
+                    raise RetryExhaustedError(
+                        "All retry attempts failed", last_response=None
+                    ) from exc
 
                 delay_s = _calculate_delay_s(
                     policy=self.retry_policy,
@@ -360,9 +365,11 @@ class ResilientAsyncHttpClient:
             is_retryable_status = response.status_code in self.retry_policy.retryable_status_codes
             is_last_attempt = attempt >= max_attempts - 1
 
-            if not is_retryable_status or (
-                not is_idempotent and not allow_retry_non_idempotent
-            ) or is_last_attempt:
+            if (
+                not is_retryable_status
+                or (not is_idempotent and not allow_retry_non_idempotent)
+                or is_last_attempt
+            ):
                 self.circuit_breaker.after_call(False)
                 raise RetryExhaustedError(
                     f"All retry attempts failed with status {response.status_code}",

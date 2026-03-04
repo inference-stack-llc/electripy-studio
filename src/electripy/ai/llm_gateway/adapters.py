@@ -27,10 +27,11 @@ Usage:
             path="/v1/chat/completions",
             api_key="sk-...",
         )
-    """
+"""
 
 from __future__ import annotations
 
+import importlib
 import re
 from collections.abc import Mapping, Sequence
 from typing import Any
@@ -40,12 +41,6 @@ import httpx
 from .domain import LlmMessage, LlmRequest, LlmResponse
 from .errors import RateLimitedError, TransientLlmError
 from .ports import AsyncLlmPort, GuardResult, PromptGuardPort, RedactorPort, SyncLlmPort
-
-try:  # Optional dependency on the OpenAI SDK.
-    from openai import AsyncOpenAI, OpenAI  # type: ignore[import]
-except Exception:  # pragma: no cover - optional dependency
-    OpenAI = None  # type: ignore[assignment]
-    AsyncOpenAI = None  # type: ignore[assignment]
 
 
 def _map_openai_exception(exc: Exception) -> None:
@@ -106,23 +101,25 @@ class OpenAiSyncAdapter(SyncLlmPort):
         if client is not None:
             self._client = client
             return
-
-        if OpenAI is None:  # pragma: no cover - import-time dependency
+        try:
+            openai_module = importlib.import_module("openai")
+        except ImportError as exc:  # pragma: no cover - import-time dependency
             raise ImportError(
                 "OpenAiSyncAdapter requires the `openai` package. "
                 "Install with `pip install openai`.",
-            )
-        self._client = OpenAI(api_key=api_key, base_url=base_url, organization=organization)
+            ) from exc
+
+        openai_client_cls = getattr(openai_module, "OpenAI")
+        self._client = openai_client_cls(api_key=api_key, base_url=base_url, organization=organization)
 
     def complete(self, request: LlmRequest, *, timeout: float | None = None) -> LlmResponse:
         messages = [
-            {"role": message.role.value, "content": message.content}
-            for message in request.messages
+            {"role": message.role.value, "content": message.content} for message in request.messages
         ]
         messages_param: Any = messages
         response: Any
         try:
-            response = self._client.chat.completions.create(  # type: ignore[call-arg]
+            response = self._client.chat.completions.create(
                 model=request.model,
                 messages=messages_param,
                 temperature=request.temperature,
@@ -165,13 +162,16 @@ class OpenAiAsyncAdapter(AsyncLlmPort):
         if client is not None:
             self._client = client
             return
-
-        if AsyncOpenAI is None:  # pragma: no cover - import-time dependency
+        try:
+            openai_module = importlib.import_module("openai")
+        except ImportError as exc:  # pragma: no cover - import-time dependency
             raise ImportError(
                 "OpenAiAsyncAdapter requires the `openai` package. "
                 "Install with `pip install openai`.",
-            )
-        self._client = AsyncOpenAI(api_key=api_key, base_url=base_url, organization=organization)
+            ) from exc
+
+        async_openai_client_cls = getattr(openai_module, "AsyncOpenAI")
+        self._client = async_openai_client_cls(api_key=api_key, base_url=base_url, organization=organization)
 
     async def complete(
         self,
@@ -180,13 +180,12 @@ class OpenAiAsyncAdapter(AsyncLlmPort):
         timeout: float | None = None,
     ) -> LlmResponse:
         messages = [
-            {"role": message.role.value, "content": message.content}
-            for message in request.messages
+            {"role": message.role.value, "content": message.content} for message in request.messages
         ]
         messages_param: Any = messages
         response: Any
         try:
-            response = await self._client.chat.completions.create(  # type: ignore[call-arg]
+            response = await self._client.chat.completions.create(
                 model=request.model,
                 messages=messages_param,
                 temperature=request.temperature,
@@ -308,7 +307,8 @@ class HttpJsonChatSyncAdapter(SyncLlmPort):
 
         if status >= 400:
             raise TransientLlmError(
-                f"HTTP error from provider: {status}", status_code=status,
+                f"HTTP error from provider: {status}",
+                status_code=status,
             ) from None
 
         data = response.json()
@@ -406,7 +406,8 @@ class HttpJsonChatAsyncAdapter(AsyncLlmPort):
 
         if status >= 400:
             raise TransientLlmError(
-                f"HTTP error from provider: {status}", status_code=status,
+                f"HTTP error from provider: {status}",
+                status_code=status,
             ) from None
 
         data = response.json()

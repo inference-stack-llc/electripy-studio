@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections.abc import Sequence
 
 import pytest
 
@@ -113,7 +114,7 @@ def test_token_budget_exceeded_raises() -> None:
 
 
 class DenyAllGuard(PromptGuardPort):
-    def assess(self, messages):  # type: ignore[override]
+    def assess(self, messages: Sequence[LlmMessage]) -> GuardResult:
         return GuardResult(allowed=False, score=0.0, reasons=("blocked",))
 
 

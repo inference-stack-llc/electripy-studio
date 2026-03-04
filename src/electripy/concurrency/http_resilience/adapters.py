@@ -15,8 +15,8 @@ Example:
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Mapping, MutableMapping
 from urllib.parse import urljoin
 
 import httpx
@@ -25,7 +25,6 @@ from electripy.core.logging import get_logger
 
 from .domain import BodyType, Headers, MutableHeaders, QueryParams, ResponseData, TransientHttpError
 from .ports import AsyncHttpPort, SyncHttpPort
-
 
 logger = get_logger(__name__)
 

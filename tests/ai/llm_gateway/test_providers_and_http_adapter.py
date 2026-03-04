@@ -37,7 +37,9 @@ class FakeHttpClient:
         self._response = response
         self.calls: list[dict[str, Any]] = []
 
-    def post(self, url: str, *, headers: dict[str, str], json: dict[str, Any], timeout: float | None):
+    def post(
+        self, url: str, *, headers: dict[str, str], json: dict[str, Any], timeout: float | None
+    ) -> FakeResponse:
         self.calls.append({"url": url, "headers": headers, "json": json, "timeout": timeout})
         return self._response
 
@@ -73,7 +75,9 @@ def test_http_json_sync_adapter_success(status: int) -> None:
 
 
 def test_http_json_sync_adapter_rate_limited() -> None:
-    fake_response = FakeResponse(status_code=429, body={"error": "rate limited"}, headers={"Retry-After": "1"})
+    fake_response = FakeResponse(
+        status_code=429, body={"error": "rate limited"}, headers={"Retry-After": "1"}
+    )
     client = FakeHttpClient(fake_response)
 
     adapter = HttpJsonChatSyncAdapter(
@@ -115,7 +119,9 @@ async def test_http_json_async_adapter_success() -> None:
             self._response = response
             self.calls: list[dict[str, Any]] = []
 
-        async def post(self, url: str, *, headers: dict[str, str], json: dict[str, Any], timeout: float | None):
+        async def post(
+            self, url: str, *, headers: dict[str, str], json: dict[str, Any], timeout: float | None
+        ) -> FakeAsyncResponse:
             self.calls.append({"url": url, "headers": headers, "json": json, "timeout": timeout})
             return self._response
 
@@ -158,7 +164,7 @@ def test_build_llm_sync_client_http_json() -> None:
         base_url="https://example.com",
         path="/v1/chat/completions",
         api_key="test",
-        client=client,  # type: ignore[arg-type]
+        client=client,
     )
 
     request = LlmRequest(

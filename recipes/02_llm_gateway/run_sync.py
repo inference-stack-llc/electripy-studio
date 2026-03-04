@@ -1,8 +1,13 @@
-from __future__ import annotations
-
 """Synchronous LLM Gateway recipe using a fake provider."""
 
-from electripy.ai.llm_gateway import LlmGatewaySettings, LlmGatewaySyncClient, LlmMessage, LlmRequest
+from __future__ import annotations
+
+from electripy.ai.llm_gateway import (
+    LlmGatewaySettings,
+    LlmGatewaySyncClient,
+    LlmMessage,
+    LlmRequest,
+)
 
 from .fake_provider import FakeSyncProvider
 

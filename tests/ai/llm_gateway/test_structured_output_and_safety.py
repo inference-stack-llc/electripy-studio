@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 import pytest
@@ -81,7 +82,7 @@ def test_structured_output_error_after_repair_attempt() -> None:
 
 
 class AllowAllGuard(PromptGuardPort):
-    def assess(self, messages):  # type: ignore[override]
+    def assess(self, messages: Sequence[LlmMessage]) -> GuardResult:
         return GuardResult(allowed=True, score=1.0, reasons=())
 
 

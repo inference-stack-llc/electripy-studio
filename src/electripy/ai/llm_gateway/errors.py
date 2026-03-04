@@ -100,7 +100,7 @@ class StructuredOutputError(LlmGatewayError):
     validation_errors: tuple[str, ...] = ()
 
     def __str__(self) -> str:  # pragma: no cover - trivial formatting
-      return f"StructuredOutputError: {self.details}"
+        return f"StructuredOutputError: {self.details}"
 
 
 @dataclass(slots=True)

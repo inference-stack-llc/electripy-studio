@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Fake LLM provider for the LLM Gateway recipe.
 
 This module implements small in-memory providers that satisfy the
@@ -7,10 +5,11 @@ This module implements small in-memory providers that satisfy the
 and tests where you do not want to hit real LLM APIs.
 """
 
-from dataclasses import dataclass
-from typing import Optional
+from __future__ import annotations
 
-from electripy.ai.llm_gateway import AsyncLlmPort, LlmMessage, LlmRequest, LlmResponse, SyncLlmPort
+from dataclasses import dataclass
+
+from electripy.ai.llm_gateway import AsyncLlmPort, LlmRequest, LlmResponse, SyncLlmPort
 
 
 @dataclass

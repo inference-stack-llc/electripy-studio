@@ -6,9 +6,7 @@ access while exercising retry and circuit breaker behavior.
 
 from __future__ import annotations
 
-import asyncio
 from dataclasses import dataclass
-from typing import List, Optional
 
 import pytest
 
@@ -39,7 +37,7 @@ class FakeSyncPort(SyncHttpPort):
     downstream behavior.
     """
 
-    def __init__(self, plans: List[FakeResponsePlan]) -> None:
+    def __init__(self, plans: list[FakeResponsePlan]) -> None:
         self._plans = plans
         self.calls: int = 0
 
@@ -72,7 +70,7 @@ class FakeSyncPort(SyncHttpPort):
 class FakeAsyncPort(AsyncHttpPort):
     """Fake asynchronous port for testing."""
 
-    def __init__(self, plans: List[FakeResponsePlan]) -> None:
+    def __init__(self, plans: list[FakeResponsePlan]) -> None:
         self._plans = plans
         self.calls: int = 0
 

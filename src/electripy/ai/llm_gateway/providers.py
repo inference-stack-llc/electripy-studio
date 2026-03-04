@@ -77,22 +77,22 @@ def build_llm_sync_client(
     resolved_settings = settings or LlmGatewaySettings()
 
     if name == "openai":
-        port = OpenAiSyncAdapter(
+        openai_port = OpenAiSyncAdapter(
             api_key=kwargs.get("api_key"),
             base_url=kwargs.get("base_url"),
             organization=kwargs.get("organization"),
         )
-        return LlmGatewaySyncClient(port=port, settings=resolved_settings)
+        return LlmGatewaySyncClient(port=openai_port, settings=resolved_settings)
 
     if name in {"http-json", "openrouter", "copilot", "grok", "claude-http"}:
-        port = HttpJsonChatSyncAdapter(
+        http_port = HttpJsonChatSyncAdapter(
             base_url=kwargs["base_url"],
             path=kwargs.get("path", "/v1/chat/completions"),
             api_key=kwargs.get("api_key"),
             auth_header_name=kwargs.get("auth_header_name", "Authorization"),
             client=kwargs.get("client"),
         )
-        return LlmGatewaySyncClient(port=port, settings=resolved_settings)
+        return LlmGatewaySyncClient(port=http_port, settings=resolved_settings)
 
     raise ValueError(f"Unknown provider: {provider!r}")
 
@@ -113,21 +113,21 @@ def build_llm_async_client(
     resolved_settings = settings or LlmGatewaySettings()
 
     if name == "openai":
-        port = OpenAiAsyncAdapter(
+        openai_port = OpenAiAsyncAdapter(
             api_key=kwargs.get("api_key"),
             base_url=kwargs.get("base_url"),
             organization=kwargs.get("organization"),
         )
-        return LlmGatewayAsyncClient(port=port, settings=resolved_settings)
+        return LlmGatewayAsyncClient(port=openai_port, settings=resolved_settings)
 
     if name in {"http-json", "openrouter", "copilot", "grok", "claude-http"}:
-        port = HttpJsonChatAsyncAdapter(
+        http_port = HttpJsonChatAsyncAdapter(
             base_url=kwargs["base_url"],
             path=kwargs.get("path", "/v1/chat/completions"),
             api_key=kwargs.get("api_key"),
             auth_header_name=kwargs.get("auth_header_name", "Authorization"),
             client=kwargs.get("client"),
         )
-        return LlmGatewayAsyncClient(port=port, settings=resolved_settings)
+        return LlmGatewayAsyncClient(port=http_port, settings=resolved_settings)
 
     raise ValueError(f"Unknown provider: {provider!r}")

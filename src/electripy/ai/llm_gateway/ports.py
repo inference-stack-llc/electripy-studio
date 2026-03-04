@@ -51,13 +51,13 @@ class AsyncLlmPort(Protocol):
         *,
         timeout: float | None = None,
     ) -> LlmResponse:
-      """Perform a single LLM completion asynchronously.
+        """Perform a single LLM completion asynchronously.
 
-      This is a protocol method; concrete implementations must provide the
-      behavior. The ellipsis here intentionally has no body.
-      """
+        This is a protocol method; concrete implementations must provide the
+        behavior. The ellipsis here intentionally has no body.
+        """
 
-      ...
+        ...
 
 
 @runtime_checkable
@@ -65,12 +65,12 @@ class RedactorPort(Protocol):
     """Redactor port for scrubbing PII/PHI before logging or persistence."""
 
     def redact(self, text: str) -> str:
-      """Redact sensitive information in the given text.
+        """Redact sensitive information in the given text.
 
-      Implementations should return a redacted version of ``text``.
-      """
+        Implementations should return a redacted version of ``text``.
+        """
 
-      ...
+        ...
 
 
 @dataclass(slots=True)

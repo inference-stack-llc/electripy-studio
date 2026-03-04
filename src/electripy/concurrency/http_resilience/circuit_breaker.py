@@ -19,20 +19,19 @@ Example:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from time import monotonic
-from typing import Callable
 
 from electripy.core.logging import get_logger
 
 from .domain import CircuitBreakerConfig, CircuitOpenError
 
-
 logger = get_logger(__name__)
 
 
-class CircuitState(str, Enum):
+class CircuitState(StrEnum):
     """Circuit breaker states.
 
     Example:

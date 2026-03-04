@@ -22,12 +22,12 @@ Example:
 
 from __future__ import annotations
 
+from collections.abc import Mapping, MutableMapping
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Mapping, MutableMapping, Tuple, TypeAlias
+from enum import StrEnum
+from typing import TypeAlias
 
 from electripy.core.errors import ElectriPyError
-
 
 Headers: TypeAlias = Mapping[str, str]
 MutableHeaders: TypeAlias = MutableMapping[str, str]
@@ -35,7 +35,7 @@ QueryParams: TypeAlias = Mapping[str, str]
 BodyType: TypeAlias = bytes | str | Mapping[str, object] | None
 
 
-class HttpMethod(str, Enum):
+class HttpMethod(StrEnum):
     """HTTP methods supported by the resilience client.
 
     This enum is used for idempotency decisions and logging. It is
@@ -196,7 +196,7 @@ class RetryPolicy:
     retryable_status_codes: frozenset[int] = field(
         default_factory=lambda: frozenset({408, 425, 429, 500, 502, 503, 504})
     )
-    retryable_exceptions: Tuple[type[Exception], ...] = field(
+    retryable_exceptions: tuple[type[Exception], ...] = field(
         default_factory=lambda: (TransientHttpError,)
     )
     honor_retry_after_header: bool = True
