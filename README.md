@@ -10,10 +10,19 @@ Production-minded Python components and recipes (cookbook) by Inference Stack.
 
 ElectriPy Studio is a curated collection of production-ready Python components and recipes designed to accelerate development while maintaining high code quality standards.
 
+## Design principles
+
+- Ports & Adapters: swap providers (LLMs, embedders, vector stores) without rewriting business logic.
+- Deterministic by default: stable IDs and reproducible evaluation runs.
+- Safe logging posture: avoid leaking prompts/responses; prefer hashes + redaction seams.
+- Typed, production APIs: small public surfaces, strict typing, structured outputs where it matters.
+- Testability: unit tests are offline and deterministic by default (no network required).
+
 ## Status & recent updates
 
 - **Last updated**: 2026-03-04
 - **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and first AI building blocks are in place.
+- **Versioning**: SemVer begins at `v0.x` — expect breaking changes until `v1.0`.
 - **Recent highlights**:
     - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
     - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
@@ -87,6 +96,17 @@ for record in read_jsonl("output.jsonl"):
     print(record)
 ```
 
+### AI quick start (LLM + RAG eval)
+
+- Run a basic RAG evaluation over JSONL datasets:
+
+```bash
+electripy rag eval --corpus data/corpus.jsonl --queries data/queries.jsonl \
+    --top-k 3,5,10 --report-json out/report.json
+```
+
+- LLM Gateway usage (offline-friendly fake provider example): see recipes/02_llm_gateway/.
+
 ## Documentation
 
 Full documentation is available in the [docs/](docs/) directory:
@@ -98,7 +118,7 @@ Full documentation is available in the [docs/](docs/) directory:
 - [I/O Utilities](docs/user-guide/io.md)
 - [CLI Guide](docs/user-guide/cli.md)
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
-- [RAG Evaluation Runner](src/electripy/ai/rag_eval_runner/README.md)
+- [RAG Evaluation Runner](src/electripy/ai/rag_eval_runner/README.md) (TODO: mirror this page into docs/user-guide/ai-rag-eval-runner.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
@@ -128,6 +148,9 @@ electripy-studio/
 │   ├── concurrency/        # Retry & rate limiting
 │   ├── io/                 # JSONL utilities
 │   └── cli/                # CLI commands
+│   └── ai/                 # AI building blocks (LLM + RAG)
+│       ├── llm_gateway/    # Provider-agnostic LLM client + structured output helpers
+│       └── rag_eval_runner/# Dataset + eval runner + CLI benchmarking
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
 ├── recipes/                # Example recipes
