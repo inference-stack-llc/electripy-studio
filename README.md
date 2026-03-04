@@ -10,12 +10,22 @@ Production-minded Python components and recipes (cookbook) by Inference Stack.
 
 ElectriPy Studio is a curated collection of production-ready Python components and recipes designed to accelerate development while maintaining high code quality standards.
 
+## Status & recent updates
+
+- **Last updated**: 2026-03-04
+- **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and first AI building blocks are in place.
+- **Recent highlights**:
+    - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
+    - Expanded documentation and user guides for core, concurrency, I/O, CLI, and AI components.
+    - Added a second recipe showcasing LLM Gateway usage with an offline-friendly fake provider.
+
 ## Features
 
 - 🔧 **Core Components**: Configuration, logging, error handling, and type utilities
 - ⚡ **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
 - 💻 **CLI**: Typer-based command-line interface with health checks
+- 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers
 
 ## Quick Start
 
@@ -82,7 +92,11 @@ Full documentation is available in the [docs/](docs/) directory:
 
 - [Installation Guide](docs/getting-started/installation.md)
 - [Quickstart](docs/getting-started/quickstart.md)
-- [User Guide](docs/user-guide/core.md)
+- [Core Concepts](docs/user-guide/core.md)
+- [Concurrency & Resilience](docs/user-guide/concurrency.md)
+- [I/O Utilities](docs/user-guide/io.md)
+- [CLI Guide](docs/user-guide/cli.md)
+- [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
@@ -212,6 +226,7 @@ GitHub Actions automatically runs tests, linting, and type checking on all pull 
 Check out the [recipes/](recipes/) directory for complete examples:
 
 - [01_cli_tool](recipes/01_cli_tool/) - Building a production-ready CLI tool
+- [02_llm_gateway](recipes/02_llm_gateway/) - LLM Gateway basics using a fake provider (offline-friendly)
 
 ## Requirements
 
