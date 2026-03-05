@@ -18,6 +18,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **I/O**: JSONL read/write utilities for efficient data processing
 - **CLI**: Typer-based command-line interface with health checks and evaluation commands
 - **AI & LLM Gateway**: Provider-agnostic LLM clients with structured output and safety seams, plus a RAG Evaluation Runner for benchmarking retrieval quality.
+- **AI Telemetry**: Provider-agnostic telemetry primitives and adapters for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation, with a safe-by-default posture.
 
 ## Documentation Map
 

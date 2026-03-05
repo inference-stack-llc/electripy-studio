@@ -28,7 +28,9 @@ class FakeAsyncPort(AsyncLlmPort):
         timeout: float | None = None,
     ) -> LlmResponse:
         self.calls += 1
-        return LlmResponse(text=self.text, model=request.model)
+        # Use positional construction to avoid issues with keyword
+        # arguments in type checking; the tests only rely on ``text``.
+        return LlmResponse(self.text)
 
 
 @pytest.mark.asyncio
@@ -58,7 +60,7 @@ class FlakyAsyncRateLimitedPort(AsyncLlmPort):
         self.calls += 1
         if self.calls <= self._fail_times:
             raise RateLimitedError("rate limited", status_code=429, retry_after_seconds=0.0)
-        return LlmResponse(text=self._final_text, model=request.model)
+        return LlmResponse(self._final_text)
 
 
 @pytest.mark.asyncio

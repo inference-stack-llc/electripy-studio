@@ -26,8 +26,8 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **Recent highlights**:
     - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
     - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
-    - Expanded documentation and user guides for core, concurrency, I/O, CLI, and AI components.
-    - Added a second recipe showcasing LLM Gateway usage with an offline-friendly fake provider.
+    - Added an AI Telemetry component for safe, provider-agnostic observability across HTTP resilience, LLM gateway, policy decisions, and RAG evaluation.
+    - Expanded documentation and user guides for core, concurrency, I/O, CLI, AI, and observability components.
 
 ## Features
 
@@ -36,6 +36,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
 - 💻 **CLI**: Typer-based command-line interface with health checks
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
+- 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
 
 ## Quick Start
 
@@ -118,6 +119,7 @@ Full documentation is available in the [docs/](docs/) directory:
 - [I/O Utilities](docs/user-guide/io.md)
 - [CLI Guide](docs/user-guide/cli.md)
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
+- [AI Telemetry](src/electripy/observability/ai_telemetry/README.md)
 - [RAG Evaluation Runner](src/electripy/ai/rag_eval_runner/README.md) (TODO: mirror this page into docs/user-guide/ai-rag-eval-runner.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
