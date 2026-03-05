@@ -119,8 +119,8 @@ Full documentation is available in the [docs/](docs/) directory:
 - [I/O Utilities](docs/user-guide/io.md)
 - [CLI Guide](docs/user-guide/cli.md)
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
-- [AI Telemetry](src/electripy/observability/ai_telemetry/README.md)
-- [RAG Evaluation Runner](src/electripy/ai/rag_eval_runner/README.md) (TODO: mirror this page into docs/user-guide/ai-rag-eval-runner.md)
+- [AI Telemetry](docs/user-guide/ai-telemetry.md)
+- [RAG Evaluation Runner](docs/user-guide/ai-rag-eval-runner.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
@@ -254,6 +254,8 @@ Check out the [recipes/](recipes/) directory for complete examples:
 
 - [01_cli_tool](recipes/01_cli_tool/) - Building a production-ready CLI tool
 - [02_llm_gateway](recipes/02_llm_gateway/) - LLM Gateway basics using a fake provider (offline-friendly)
+- (Planned) 03_xx_rag_eval_runner - RAG evaluation and CI gating
+- (Planned) 04_xx_ai_telemetry - AI telemetry wiring for HTTP resilience, LLM gateway, and RAG
 
 ## Requirements
 

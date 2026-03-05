@@ -41,6 +41,8 @@ nav:
       - AI Telemetry: user-guide/ai-telemetry.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md
+      - RAG Evaluation Runner: recipes/rag-eval-runner.md
+      - AI Telemetry: recipes/ai-telemetry.md
   - API Reference: api.md
 
 markdown_extensions:
