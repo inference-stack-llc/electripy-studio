@@ -23,6 +23,7 @@ from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from hashlib import sha256
 from pathlib import Path
+from types import TracebackType
 from typing import Any
 
 from electripy.core.logging import get_logger
@@ -147,7 +148,12 @@ class _Span(SpanContextManager):
         self._sink.emit_event(event)
         return ctx
 
-    def __exit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> bool | None:
         end = datetime.now(tz=UTC)
         ctx = self._get_current()
         if self._start_time is not None and ctx is not None:
@@ -166,11 +172,17 @@ class _Span(SpanContextManager):
         self._set_current(self._previous_ctx)
         return None
 
-    async def __aenter__(self) -> TelemetryContext:  # type: ignore[override]
+    async def __aenter__(self) -> TelemetryContext:
         return self.__enter__()
 
-    async def __aexit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> bool | None:
         self.__exit__(exc_type, exc, tb)
+        return None
 
 
 @dataclass(slots=True)
@@ -351,11 +363,11 @@ class InMemoryTelemetryAdapter(TelemetryPort):
 
 
 try:  # Optional OpenTelemetry integration
-    from opentelemetry import trace as _otel_trace  # type: ignore[import]
+    from opentelemetry import trace as _otel_trace  # type: ignore[import-not-found]
 
     _HAS_OTEL = True
 except Exception:  # pragma: no cover - depends on optional extra
-    _otel_trace: Any
+    _otel_trace = None
     _HAS_OTEL = False
 
 
@@ -381,7 +393,7 @@ class OpenTelemetryAdapter(TelemetryPort):
     def emit_event(self, event: TelemetryEvent) -> None:
         span = _otel_trace.get_current_span()
         attrs = _sanitize_attributes(dict(event.attributes))
-        span.add_event(  # type: ignore[union-attr]
+        span.add_event(
             name=event.name,
             attributes={**attrs, "severity": event.severity.value},
             timestamp=int(event.timestamp.timestamp() * 1_000_000_000),
@@ -459,7 +471,7 @@ class OpenTelemetryAdapter(TelemetryPort):
         class _OtelSpan(SpanContextManager):
             def __init__(self, adapter: OpenTelemetryAdapter) -> None:
                 self._adapter = adapter
-                self._cm = adapter._tracer.start_as_current_span(name)  # type: ignore[union-attr]
+                self._cm = adapter._tracer.start_as_current_span(name)
 
             def __enter__(self) -> TelemetryContext:
                 self._cm.__enter__()
@@ -474,11 +486,16 @@ class OpenTelemetryAdapter(TelemetryPort):
                     tags={},
                 )
 
-            def __exit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
+            def __exit__(
+                self,
+                exc_type: type[BaseException] | None,
+                exc: BaseException | None,
+                tb: TracebackType | None,
+            ) -> bool | None:
                 self._cm.__exit__(exc_type, exc, tb)
                 return None
 
-            async def __aenter__(self) -> TelemetryContext:  # type: ignore[override]
+            async def __aenter__(self) -> TelemetryContext:
                 self.__enter__()
                 return ctx or TelemetryContext(
                     trace_id="",
@@ -491,8 +508,14 @@ class OpenTelemetryAdapter(TelemetryPort):
                     tags={},
                 )
 
-            async def __aexit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
+            async def __aexit__(
+                self,
+                exc_type: type[BaseException] | None,
+                exc: BaseException | None,
+                tb: TracebackType | None,
+            ) -> bool | None:
                 self.__exit__(exc_type, exc, tb)
+                return None
 
         return _OtelSpan(self)
 
