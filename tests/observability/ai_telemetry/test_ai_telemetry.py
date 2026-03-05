@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from pathlib import Path
-
 import json
+from datetime import UTC, datetime
+from pathlib import Path
 
 from electripy.observability.ai_telemetry import (
     InMemoryTelemetryAdapter,
@@ -61,7 +60,7 @@ def test_jsonl_adapter_writes_events(tmp_path: Path) -> None:
 
     event = TelemetryEvent(
         name="example",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx,
         attributes={"provider": "fake"},
         severity=Severity.INFO,

@@ -31,10 +31,11 @@ Example:
 
 from __future__ import annotations
 
+from collections.abc import MutableMapping
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import StrEnum
-from typing import Mapping, MutableMapping, TypeAlias
+from typing import TypeAlias
 
 AttributeValue: TypeAlias = str | int | float | bool | None
 Attributes: TypeAlias = MutableMapping[str, AttributeValue]
@@ -95,7 +96,7 @@ class TelemetryContext:
     environment: str | None
     tags: dict[str, str] = field(default_factory=dict)
 
-    def child(self, *, span_id: str) -> "TelemetryContext":
+    def child(self, *, span_id: str) -> TelemetryContext:
         """Return a child context for a nested span.
 
         Args:

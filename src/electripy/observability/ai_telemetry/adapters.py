@@ -18,11 +18,12 @@ from __future__ import annotations
 
 import json
 import threading
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from hashlib import sha256
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from electripy.core.logging import get_logger
 
@@ -113,7 +114,7 @@ class _Span(SpanContextManager):
         self._previous_ctx: TelemetryContext | None = None
 
     def __enter__(self) -> TelemetryContext:
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         base_ctx = self._ctx or self._get_current()
         if base_ctx is None:
             # Minimal context; caller can create richer contexts via
@@ -147,7 +148,7 @@ class _Span(SpanContextManager):
         return ctx
 
     def __exit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
-        end = datetime.now(tz=timezone.utc)
+        end = datetime.now(tz=UTC)
         ctx = self._get_current()
         if self._start_time is not None and ctx is not None:
             duration_ms = (end - self._start_time).total_seconds() * 1000.0
@@ -200,7 +201,7 @@ class JsonlTelemetrySinkAdapter(TelemetryPort):
         record = {
             "type": "event",
             "name": event.name,
-            "timestamp": event.timestamp.astimezone(timezone.utc).isoformat(),
+            "timestamp": event.timestamp.astimezone(UTC).isoformat(),
             "severity": event.severity.value,
             "context": asdict(event.context),
             "attributes": _sanitize_attributes(dict(event.attributes)),
@@ -215,7 +216,7 @@ class JsonlTelemetrySinkAdapter(TelemetryPort):
         attrs: dict[str, object] | None = None,
         ctx: TelemetryContext | None = None,
     ) -> None:
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         record = CounterIncrement(
             name=name,
             value=value,
@@ -236,7 +237,7 @@ class JsonlTelemetrySinkAdapter(TelemetryPort):
         attrs: dict[str, object] | None = None,
         ctx: TelemetryContext | None = None,
     ) -> None:
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         record = HistogramObservation(
             name=name,
             value=value,
@@ -309,7 +310,7 @@ class InMemoryTelemetryAdapter(TelemetryPort):
             value=value,
             attributes=_sanitize_attributes(attrs or {}),
             context=ctx,
-            timestamp=datetime.now(tz=timezone.utc),
+            timestamp=datetime.now(tz=UTC),
         )
         self.counters.append(record)
 
@@ -326,7 +327,7 @@ class InMemoryTelemetryAdapter(TelemetryPort):
             value=value,
             attributes=_sanitize_attributes(attrs or {}),
             context=ctx,
-            timestamp=datetime.now(tz=timezone.utc),
+            timestamp=datetime.now(tz=UTC),
         )
         self.histograms.append(record)
 
@@ -396,7 +397,7 @@ class OpenTelemetryAdapter(TelemetryPort):
     ) -> None:  # pragma: no cover - simple mapping
         # For now, model counters as events; a production deployment can
         # attach these to a metrics exporter.
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         event = TelemetryEvent(
             name=f"metric.counter.{name}",
             timestamp=now,
@@ -424,7 +425,7 @@ class OpenTelemetryAdapter(TelemetryPort):
         attrs: dict[str, object] | None = None,
         ctx: TelemetryContext | None = None,
     ) -> None:  # pragma: no cover - simple mapping
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         event = TelemetryEvent(
             name=f"metric.histogram.{name}",
             timestamp=now,
@@ -456,7 +457,7 @@ class OpenTelemetryAdapter(TelemetryPort):
         # not automatically mapped; callers can still emit explicit
         # events if they need a bridge.
         class _OtelSpan(SpanContextManager):
-            def __init__(self, adapter: "OpenTelemetryAdapter") -> None:
+            def __init__(self, adapter: OpenTelemetryAdapter) -> None:
                 self._adapter = adapter
                 self._cm = adapter._tracer.start_as_current_span(name)  # type: ignore[union-attr]
 

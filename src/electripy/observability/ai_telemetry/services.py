@@ -13,10 +13,10 @@ from __future__ import annotations
 
 import contextlib
 import os
+from collections.abc import Iterator, Mapping, MutableMapping
 from contextvars import ContextVar
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Iterator, Mapping, MutableMapping
+from datetime import UTC, datetime
 
 from electripy.core.logging import get_logger
 
@@ -209,7 +209,7 @@ def record_http_retry_attempt(
 
     event = TelemetryEvent(
         name="http.retry_attempt",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx or current_telemetry_context() or create_telemetry_context(),
         attributes={
             "attempt": attempt,
@@ -232,7 +232,7 @@ def record_http_circuit_opened(
 
     event = TelemetryEvent(
         name="http.breaker_opened",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx or current_telemetry_context() or create_telemetry_context(),
         attributes={"url": url},
         severity=Severity.WARNING,
@@ -268,7 +268,7 @@ def record_llm_call(
     )
     event = TelemetryEvent(
         name="llm.call",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=context,
         attributes={
             "provider": provider,
@@ -295,7 +295,7 @@ def record_policy_decision(
 
     event = TelemetryEvent(
         name="policy.decision",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx or current_telemetry_context() or create_telemetry_context(),
         attributes={
             "decision": decision,
@@ -317,7 +317,7 @@ def record_rag_experiment_started(
 
     event = TelemetryEvent(
         name="rag_eval.experiment_started",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx or current_telemetry_context() or create_telemetry_context(),
         attributes={"experiment_id": experiment_id},
         severity=Severity.INFO,
@@ -336,7 +336,7 @@ def record_rag_experiment_finished(
 
     event = TelemetryEvent(
         name="rag_eval.experiment_finished",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         context=ctx or current_telemetry_context() or create_telemetry_context(),
         attributes={"experiment_id": experiment_id, **dict(metrics_summary)},
         severity=Severity.INFO,

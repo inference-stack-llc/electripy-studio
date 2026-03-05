@@ -21,7 +21,7 @@ Example:
 
 from __future__ import annotations
 
-from .adapters import JsonlTelemetrySinkAdapter, InMemoryTelemetryAdapter, OpenTelemetryAdapter
+from .adapters import InMemoryTelemetryAdapter, JsonlTelemetrySinkAdapter, OpenTelemetryAdapter
 from .domain import (
     CostRecord,
     HistogramObservation,
