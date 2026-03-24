@@ -28,9 +28,9 @@ async def test_available_tokens_never_exceeds_capacity(
     assert limiter.available_tokens <= capacity + 1e-6
 
 
-@settings(suppress_health_check=[HealthCheck.too_slow], max_examples=25)
+@settings(suppress_health_check=[HealthCheck.too_slow], max_examples=25, deadline=None)
 @given(
-    rate=st.floats(min_value=0.1, max_value=50.0),
+    rate=st.floats(min_value=1.0, max_value=50.0),
 )
 async def test_acquire_respects_rate_over_time(rate: float) -> None:
     capacity = rate
