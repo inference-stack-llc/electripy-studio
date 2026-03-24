@@ -191,6 +191,7 @@ class LlmGatewaySyncClient:
           LlmResponse with normalized content and metadata.
         """
 
+        started_at = time.monotonic()
         _enforce_token_budget(request, self._settings)
         guarded_request, guard_result = _maybe_guard(request, self._settings.prompt_guard)
 
@@ -209,6 +210,13 @@ class LlmGatewaySyncClient:
                 "score": guard_result.score,
                 "reasons": list(guard_result.reasons),
             }
+        latency_ms = (time.monotonic() - started_at) * 1000.0
+        hook = self._settings.on_llm_call
+        if hook is not None:
+            try:
+                hook(request, response, latency_ms)
+            except Exception:  # pragma: no cover - defensive
+                logger.exception("on_llm_call hook raised")
         _maybe_log_safe(settings=self._settings, request=request, response=response)
         return response
 
@@ -333,6 +341,7 @@ class LlmGatewayAsyncClient:
     ) -> LlmResponse:
         """Perform an asynchronous completion with optional structured mode."""
 
+        started_at = time.monotonic()
         _enforce_token_budget(request, self._settings)
         guarded_request, guard_result = _maybe_guard(request, self._settings.prompt_guard)
 
@@ -351,6 +360,13 @@ class LlmGatewayAsyncClient:
                 "score": guard_result.score,
                 "reasons": list(guard_result.reasons),
             }
+        latency_ms = (time.monotonic() - started_at) * 1000.0
+        hook = self._settings.on_llm_call
+        if hook is not None:
+            try:
+                hook(request, response, latency_ms)
+            except Exception:  # pragma: no cover - defensive
+                logger.exception("on_llm_call hook raised")
         _maybe_log_safe(settings=self._settings, request=request, response=response)
         return response
 

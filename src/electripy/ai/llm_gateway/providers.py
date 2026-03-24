@@ -30,6 +30,8 @@ Usage:
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from .adapters import (
@@ -42,8 +44,54 @@ from .config import LlmGatewaySettings
 from .services import LlmGatewayAsyncClient, LlmGatewaySyncClient
 
 
+@dataclass(slots=True)
+class _ProviderFactories:
+    """Registered factories for building gateway clients.
+
+    This allows external code to register custom providers without
+    modifying the core factory logic. Factories receive the resolved
+    :class:`LlmGatewaySettings` plus any provider-specific keyword
+    arguments.
+    """
+
+    sync_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewaySyncClient] | None
+    async_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewayAsyncClient] | None
+
+
+_PROVIDER_REGISTRY: dict[str, _ProviderFactories] = {}
+
+
 def _normalise_provider_name(provider: str) -> str:
     return provider.strip().lower()
+
+
+def register_llm_provider(
+    name: str,
+    *,
+    sync_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewaySyncClient] | None = None,
+    async_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewayAsyncClient] | None = None,
+) -> None:
+    """Register custom LLM provider factories.
+
+    Args:
+        name: Provider identifier (case-insensitive).
+        sync_factory: Optional factory returning a configured
+            :class:`LlmGatewaySyncClient`.
+        async_factory: Optional factory returning a configured
+            :class:`LlmGatewayAsyncClient`.
+    """
+
+    key = _normalise_provider_name(name)
+    _PROVIDER_REGISTRY[key] = _ProviderFactories(
+        sync_factory=sync_factory,
+        async_factory=async_factory,
+    )
+
+
+def list_registered_llm_providers() -> list[str]:
+    """Return a sorted list of registered provider names."""
+
+    return sorted(_PROVIDER_REGISTRY.keys())
 
 
 def build_llm_sync_client(
@@ -75,6 +123,11 @@ def build_llm_sync_client(
 
     name = _normalise_provider_name(provider)
     resolved_settings = settings or LlmGatewaySettings()
+
+    # Prefer registered custom providers when present.
+    registered = _PROVIDER_REGISTRY.get(name)
+    if registered is not None and registered.sync_factory is not None:
+        return registered.sync_factory(resolved_settings, dict(kwargs))
 
     if name == "openai":
         openai_port = OpenAiSyncAdapter(
@@ -111,6 +164,11 @@ def build_llm_async_client(
 
     name = _normalise_provider_name(provider)
     resolved_settings = settings or LlmGatewaySettings()
+
+    # Prefer registered custom providers when present.
+    registered = _PROVIDER_REGISTRY.get(name)
+    if registered is not None and registered.async_factory is not None:
+        return registered.async_factory(resolved_settings, dict(kwargs))
 
     if name == "openai":
         openai_port = OpenAiAsyncAdapter(

@@ -44,6 +44,11 @@ Use the LLM Gateway when you want:
   - Generic HTTP+JSON adapters: `HttpJsonChatSyncAdapter`,
     `HttpJsonChatAsyncAdapter` for OpenAI-compatible HTTP APIs.
   - Factory helpers: `build_llm_sync_client`, `build_llm_async_client`.
+  - Provider registry: `register_llm_provider`,
+    `list_registered_llm_providers`.
+  - Observability hook: `LlmGatewaySettings.on_llm_call` – optional
+    callback invoked after each successful LLM call with
+    `(request, response, latency_ms)`.
 
 ## Basic example: OpenAI text completion
 
@@ -152,3 +157,64 @@ If a provider has a different JSON schema, subclass
 `HttpJsonChatSyncAdapter` / `HttpJsonChatAsyncAdapter` and override the
 payload and parsing methods, or wire a custom adapter into the gateway
 using `LlmGatewaySyncClient` / `LlmGatewayAsyncClient` directly.
+
+## Custom providers via the registry
+
+You can add your own providers without modifying ElectriPy's source by
+registering factories with the provider registry.
+
+```python
+from electripy.ai.llm_gateway import (
+  LlmGatewaySettings,
+  LlmGatewaySyncClient,
+  LlmMessage,
+  LlmRequest,
+  build_llm_sync_client,
+  register_llm_provider,
+)
+
+
+def my_sync_factory(settings: LlmGatewaySettings, kwargs: dict) -> LlmGatewaySyncClient:
+  # Create your own SyncLlmPort implementation here.
+  port = MyCustomSyncPort(**kwargs)
+  return LlmGatewaySyncClient(port=port, settings=settings)
+
+
+register_llm_provider("my-provider", sync_factory=my_sync_factory)
+
+client = build_llm_sync_client("my-provider", api_key="secret-key")
+
+response = client.complete(
+  LlmRequest(
+    model="my-model",
+    messages=[LlmMessage.user("Hello from a custom provider")],
+  )
+)
+```
+
+The factory helpers first consult the registry; if a custom provider is
+registered, it is used, otherwise the built-in providers (such as
+`"openai"` or `"http-json"`) are used as a fallback.
+
+## Observability hook for metrics and tracing
+
+`LlmGatewaySettings` exposes an `on_llm_call` hook that is invoked after
+every successful call. This is a convenient place to emit metrics or
+traces without coupling the gateway to any specific observability
+library.
+
+```python
+from electripy.ai.llm_gateway import LlmGatewaySettings, build_llm_sync_client
+
+
+def my_llm_hook(request, response, latency_ms: float) -> None:
+  # Send metrics to your preferred backend here.
+  metrics_client.observe("llm.latency_ms", latency_ms, {"model": response.model or request.model})
+
+
+settings = LlmGatewaySettings(on_llm_call=my_llm_hook)
+client = build_llm_sync_client("openai", settings=settings)
+```
+
+If the hook raises an exception, it is logged and ignored so that
+observability issues never break core LLM functionality.

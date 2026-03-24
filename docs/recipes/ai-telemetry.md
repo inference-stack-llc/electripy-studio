@@ -73,6 +73,60 @@ with scoped_telemetry_context(ctx):
 All sensitive fields (for example `prompt`, `response`) are hashed by
 adapter-level sanitisation, so raw content is never written to disk.
 
+## Using AI Telemetry with the LLM Gateway hook
+
+Instead of calling `record_llm_call` manually after every gateway usage,
+you can attach a hook to the LLM Gateway so that every successful call
+is automatically exported to your telemetry sink.
+
+```python
+from pathlib import Path
+
+from electripy.ai.llm_gateway import (
+    LlmGatewaySettings,
+    LlmMessage,
+    LlmRequest,
+    build_llm_sync_client,
+)
+from electripy.observability.ai_telemetry import JsonlTelemetrySinkAdapter
+from electripy.observability.ai_telemetry.services import record_llm_call
+
+telemetry = JsonlTelemetrySinkAdapter(path=Path("telemetry.jsonl"))
+
+
+def llm_telemetry_hook(request: LlmRequest, response: "LlmResponse", latency_ms: float) -> None:
+    # Approximate tokens if the provider does not report usage.
+    input_tokens = len(" ".join(m.content for m in request.messages)) // 4
+    total = response.usage_total_tokens or 0
+    output_tokens = max(total - input_tokens, 0)
+
+    record_llm_call(
+        telemetry,
+        provider="openai",
+        model=response.model or request.model,
+        latency_ms=latency_ms,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        finish_reason=response.finish_reason or "unknown",
+        structured_output_valid=bool(response.raw_json),
+    )
+
+
+settings = LlmGatewaySettings(on_llm_call=llm_telemetry_hook)
+client = build_llm_sync_client("openai", settings=settings)
+
+response = client.complete(
+    LlmRequest(
+        model="gpt-4o-mini",
+        messages=[LlmMessage.user("Hello with telemetry!")],
+    )
+)
+```
+
+This pattern keeps the gateway decoupled from any specific telemetry
+backend while still giving you end-to-end latency and token telemetry
+for every call.
+
 ## OpenTelemetry example
 
 ```python

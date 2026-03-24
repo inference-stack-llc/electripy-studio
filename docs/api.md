@@ -19,7 +19,6 @@ Complete API reference for ElectriPy modules.
 - `ConfigError`: Configuration errors
 - `ValidationError`: Validation failures
 - `RetryError`: Retry exhaustion
-- `RateLimitError`: Rate limit exceeded
 
 ### Types
 
@@ -36,6 +35,11 @@ Complete API reference for ElectriPy modules.
 ### Rate Limiter
 
 ::: electripy.concurrency.rate_limiter.AsyncTokenBucketRateLimiter
+
+### Task Groups
+
+- `gather_limited(coros, concurrency: int) -> list[T]`
+- `map_limited(fn, items, concurrency: int) -> list[U]`
 
 ## I/O Module
 

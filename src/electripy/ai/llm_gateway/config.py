@@ -21,10 +21,14 @@ Usage:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:  # pragma: no cover - import-time only
-    from .ports import PromptGuardPort, RedactorPort
+  from .domain import LlmRequest, LlmResponse
+  from .ports import PromptGuardPort, RedactorPort
+
+
+LlmCallHook = Callable[["LlmRequest", "LlmResponse", float], None]
 
 
 @dataclass(slots=True)
@@ -62,6 +66,13 @@ class LlmGatewaySettings:
     enable_safe_logging: bool = False
     redactor: RedactorPort | None = None
     prompt_guard: PromptGuardPort | None = None
+
+    # Observability hooks
+    # Optional callback invoked after each successful LLM call with
+    # (request, response, latency_ms). This is intentionally
+    # decoupled from any particular telemetry backend so that
+    # callers can integrate metrics/tracing however they like.
+    on_llm_call: LlmCallHook | None = None
 
     # Structured output
     structured_output_max_repair_attempts: int = 1

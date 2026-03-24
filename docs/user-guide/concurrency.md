@@ -95,3 +95,33 @@ available = limiter.available_tokens
 - Database connection throttling
 - Resource-intensive operations
 - Burst handling with sustained rate control
+
+## Task groups and bounded worker pools
+
+For async fan-out workloads such as RAG pipelines or batch LLM calls,
+use the task-group utilities to apply backpressure-aware concurrency
+limits.
+
+```python
+from electripy.concurrency.task_groups import gather_limited, map_limited
+
+
+async def call_api(i: int) -> int:
+    # Your async work here
+    await asyncio.sleep(0.01)
+    return i * 2
+
+
+async def run_batch() -> None:
+    items = list(range(10))
+
+    # Map with bounded concurrency
+    results = await map_limited(call_api, items, concurrency=5)
+
+    # Or run an existing collection of coroutines
+    coros = [call_api(i) for i in items]
+    results_again = await gather_limited(coros, concurrency=5)
+```
+
+Both helpers preserve the original order of items while ensuring that
+no more than `concurrency` tasks are in flight at any time.
