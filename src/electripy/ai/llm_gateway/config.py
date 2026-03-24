@@ -25,8 +25,8 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: no cover - import-time only
-  from .domain import LlmRequest, LlmResponse
-  from .ports import PromptGuardPort, RedactorPort
+    from .domain import LlmRequest, LlmResponse
+    from .ports import PromptGuardPort, RedactorPort
 
 
 LlmCallHook = Callable[["LlmRequest", "LlmResponse", float], None]

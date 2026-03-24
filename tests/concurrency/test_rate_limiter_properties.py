@@ -14,7 +14,9 @@ from electripy.concurrency.rate_limiter import AsyncTokenBucketRateLimiter
     rate=st.floats(min_value=0.1, max_value=100.0),
     capacity_multiplier=st.floats(min_value=0.5, max_value=5.0),
 )
-async def test_available_tokens_never_exceeds_capacity(rate: float, capacity_multiplier: float) -> None:
+async def test_available_tokens_never_exceeds_capacity(
+    rate: float, capacity_multiplier: float
+) -> None:
     capacity = max(rate * capacity_multiplier, rate)
     limiter = AsyncTokenBucketRateLimiter(rate=rate, capacity=capacity)
 

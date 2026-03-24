@@ -68,8 +68,12 @@ def _normalise_provider_name(provider: str) -> str:
 def register_llm_provider(
     name: str,
     *,
-    sync_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewaySyncClient] | None = None,
-    async_factory: Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewayAsyncClient] | None = None,
+    sync_factory: (
+        Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewaySyncClient] | None
+    ) = None,
+    async_factory: (
+        Callable[[LlmGatewaySettings, dict[str, Any]], LlmGatewayAsyncClient] | None
+    ) = None,
 ) -> None:
     """Register custom LLM provider factories.
 
