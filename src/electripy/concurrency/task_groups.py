@@ -42,7 +42,7 @@ async def gather_limited(
         async with semaphore:
             results[idx] = await aw
 
-    async with asyncio.TaskGroup() as tg:  # type: ignore[attr-defined]
+    async with asyncio.TaskGroup() as tg:
         for idx, aw in enumerate(coros_list):
             tg.create_task(_runner(idx, aw))
 
