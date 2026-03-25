@@ -20,10 +20,14 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 
 ## Status & recent updates
 
-- **Last updated**: 2026-03-24
+- **Last updated**: 2026-03-25
 - **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and a growing suite of AI product engineering utilities are in place.
 - **Versioning**: SemVer begins at `v0.x` — expect breaking changes until `v1.0`.
 - **Recent highlights**:
+    - Added `electripy demo policy-collab` CLI command — run the full policy + agent collaboration pipeline offline with a Rich table report.
+    - Added a **Policy Gateway** with regex-based detection, sanitization, deny/allow/require-approval actions across preflight, postflight, stream, and tool-call stages.
+    - Added a **Agent Collaboration Runtime** for bounded multi-agent orchestration with hop limits, deque-based message routing, and optional policy gateway integration.
+    - Added **LLM Gateway request/response hooks** and `build_llm_policy_hooks()` bridge so policy decisions plug directly into the LLM call path.
     - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
     - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
     - Added an AI Telemetry component for safe, provider-agnostic observability across HTTP resilience, LLM gateway, policy decisions, and RAG evaluation.
@@ -36,8 +40,8 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - 🔧 **Core Components**: Configuration, logging, error handling, and type utilities
 - ⚡ **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
-- 💻 **CLI**: Typer-based command-line interface with health checks
-- 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
+- 💻 **CLI**: Typer-based command-line interface with health checks, RAG eval runner, and an offline demo showcase (`electripy demo policy-collab`)
+- 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients, request/response policy hooks, structured-output helpers, and a RAG Evaluation Runner for retrieval benchmarking.
 - 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
 - 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, response robustness helpers for structured outputs, prompt templating and composition, token budget tracking and truncation, priority-based context window assembly, rule-based model routing, sliding-window conversation memory, and a declarative tool registry with JSON schema generation.
 - 🛡️ **AI policy and collaboration runtime**: Deterministic policy gateway checks for preflight/postflight/stream/tool flows, plus bounded agent-to-agent collaboration runtime for specialist orchestration patterns.
@@ -110,7 +114,23 @@ electripy rag eval --corpus data/corpus.jsonl --queries data/queries.jsonl \
     --top-k 3,5,10 --report-json out/report.json
 ```
 
-- LLM Gateway usage (offline-friendly fake provider example): see recipes/02_llm_gateway/.
+- LLM Gateway usage (offline-friendly fake provider example): see [recipes/02_llm_gateway/](recipes/02_llm_gateway/).
+
+### Demo: Policy Gateway + Agent Collaboration
+
+Run the full pipeline offline — no API keys needed:
+
+```bash
+electripy demo policy-collab
+```
+
+Customise with `--prompt` and `--max-hops`:
+
+```bash
+electripy demo policy-collab --prompt "Alert user@corp.io about outage" --max-hops 6
+```
+
+See [recipes/03_policy_collaboration/](recipes/03_policy_collaboration/) for the standalone script.
 
 ## Documentation
 
@@ -275,10 +295,17 @@ GitHub Actions automatically runs tests, linting, and type checking on all pull 
 
 Check out the [recipes/](recipes/) directory for complete examples:
 
-- [01_cli_tool](recipes/01_cli_tool/) - Building a production-ready CLI tool
-- [02_llm_gateway](recipes/02_llm_gateway/) - LLM Gateway basics using a fake provider (offline-friendly)
-- (Planned) 03_xx_rag_eval_runner - RAG evaluation and CI gating
-- (Planned) 04_xx_ai_telemetry - AI telemetry wiring for HTTP resilience, LLM gateway, and RAG
+- [01_cli_tool](recipes/01_cli_tool/) — Building a production-ready CLI tool
+- [02_llm_gateway](recipes/02_llm_gateway/) — LLM Gateway basics using a fake provider (offline-friendly)
+- [03_policy_collaboration](recipes/03_policy_collaboration/) — End-to-end policy gateway + LLM hooks + multi-agent collaboration demo
+
+Additional recipe guides are available in the docs:
+
+- [Policy Gateway recipe](docs/recipes/policy-gateway.md) — standalone policy evaluation walkthrough
+- [Agent Collaboration Runtime recipe](docs/recipes/agent-collaboration-runtime.md) — bounded agent handoff patterns
+- [Policy + Collaboration E2E recipe](docs/recipes/policy-collaboration-e2e.md) — full pipeline with telemetry
+- [RAG Evaluation Runner recipe](docs/recipes/rag-eval-runner.md) — benchmarking retrieval quality
+- [AI Telemetry recipe](docs/recipes/ai-telemetry.md) — wiring observability across components
 
 ## Requirements
 
