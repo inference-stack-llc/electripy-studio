@@ -55,6 +55,7 @@ Complete API reference for ElectriPy modules.
 
 - `electripy doctor`: Health check
 - `electripy version`: Show version
+- `electripy demo policy-collab`: Offline policy + agent collaboration demo
 - `electripy --help`: Show help
 
 ### App

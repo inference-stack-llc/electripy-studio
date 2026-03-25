@@ -71,6 +71,31 @@ Key options:
 - `--report-json`, `--report-csv`: write machine-readable evaluation reports.
 - `--fail-under`: CI-friendly thresholds such as `hit_rate@5=0.85`.
 
+### demo policy-collab
+
+Run an offline end-to-end demo combining the **Policy Gateway**, **LLM Gateway** hooks, and **Agent Collaboration Runtime**.
+No API keys or network required — uses fake adapters for deterministic output.
+
+```bash
+electripy demo policy-collab
+```
+
+Options:
+
+- `--prompt, -p`: User prompt sent through the pipeline (default: `"Summarize for admin@example.com"`).
+- `--max-hops`: Maximum agent handoffs before stopping (default: `12`).
+
+Example with custom prompt:
+
+```bash
+electripy demo policy-collab --prompt "Alert user@corp.io about outage" --max-hops 6
+```
+
+The command prints a Rich table report showing:
+
+- **Pipeline Summary** — user prompt, LLM response, collaboration status, hop count, telemetry events.
+- **Agent Transcript** — each agent handoff with sender, receiver, and content.
+
 ### Global Options
 
 - `--verbose, -v`: Enable verbose output
