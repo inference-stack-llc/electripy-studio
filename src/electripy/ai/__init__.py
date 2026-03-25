@@ -15,6 +15,11 @@ Usage:
 """
 
 __all__ = [
+    "agent_runtime",
+    "hallucination_guard",
     "llm_gateway",
     "rag",
+    "rag_quality",
+    "response_robustness",
+    "streaming_chat",
 ]

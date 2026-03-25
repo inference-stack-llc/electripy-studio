@@ -19,6 +19,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - **CLI**: Typer-based command-line interface with health checks and evaluation commands
 - **AI & LLM Gateway**: Provider-agnostic LLM clients with structured output and safety seams, plus a RAG Evaluation Runner for benchmarking retrieval quality.
 - **AI Telemetry**: Provider-agnostic telemetry primitives and adapters for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation, with a safe-by-default posture.
+- **AI Product Engineering Utilities**: Streaming chat, deterministic agent runtime helpers, RAG quality/drift metrics, hallucination-risk grounding checks, and response robustness helpers.
 
 ## Documentation Map
 
@@ -34,6 +35,9 @@ ElectriPy Studio is a curated collection of production-ready Python components a
  - [I/O Utilities](user-guide/io.md)
  - [CLI Guide](user-guide/cli.md)
  - [LLM Gateway & AI](user-guide/ai-llm-gateway.md)
+ - [AI Product Engineering Utilities](user-guide/ai-product-engineering.md)
+ - [AI Telemetry](user-guide/ai-telemetry.md)
+ - [RAG Evaluation Runner](user-guide/ai-rag-eval-runner.md)
 
 ## Requirements
 

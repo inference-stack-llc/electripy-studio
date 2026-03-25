@@ -61,6 +61,40 @@ Complete API reference for ElectriPy modules.
 
 ::: electripy.cli.app
 
+## AI Utilities Module
+
+### Streaming Chat
+
+- `StreamChunk`: typed stream chunk model
+- `collect_text(chunks) -> str`
+- `async_collect_text(chunks) -> str`
+- `with_timeout(chunks, timeout_seconds=...) -> AsyncIterator[StreamChunk]`
+
+### Agent Runtime
+
+- `ToolInvocation`: tool call model
+- `AgentExecutor.run(plan) -> AgentRunResult`
+
+### RAG Quality
+
+- `hit_rate_at_k(retrieved_ids, relevant_ids, k) -> float`
+- `precision_at_k(retrieved_ids, relevant_ids, k) -> float`
+- `recall_at_k(retrieved_ids, relevant_ids, k) -> float`
+- `mrr_at_k(retrieved_ids, relevant_ids, k) -> float`
+- `retrieval_drift(baseline, candidate, k=...) -> DriftComparison`
+
+### Hallucination Guard
+
+- `extract_citation_ids(text) -> list[str]`
+- `evaluate_grounding(response_text=..., evidence_texts=..., min_overlap=...) -> GroundingCheckResult`
+
+### Response Robustness
+
+- `extract_json_object(text) -> str`
+- `parse_json_with_repair(text) -> JsonRepairResult`
+- `require_fields(value, fields) -> None`
+- `coalesce_non_empty(candidates) -> str`
+
 ---
 
 For more detailed examples, see the [User Guide](user-guide/core.md) and [Recipes](recipes/cli-tool.md).

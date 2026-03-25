@@ -37,6 +37,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - 💻 **CLI**: Typer-based command-line interface with health checks
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
 - 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
+- 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, and response robustness helpers for structured outputs.
 
 ## Quick Start
 
@@ -121,6 +122,7 @@ Full documentation is available in the [docs/](docs/) directory:
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
 - [AI Telemetry](docs/user-guide/ai-telemetry.md)
 - [RAG Evaluation Runner](docs/user-guide/ai-rag-eval-runner.md)
+- [AI Product Engineering Utilities](docs/user-guide/ai-product-engineering.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
@@ -150,9 +152,14 @@ electripy-studio/
 │   ├── concurrency/        # Retry & rate limiting
 │   ├── io/                 # JSONL utilities
 │   └── cli/                # CLI commands
-│   └── ai/                 # AI building blocks (LLM + RAG)
+│   └── ai/                 # AI building blocks and product-engineering utilities
 │       ├── llm_gateway/    # Provider-agnostic LLM client + structured output helpers
-│       └── rag_eval_runner/# Dataset + eval runner + CLI benchmarking
+│       ├── rag_eval_runner/# Dataset + eval runner + CLI benchmarking
+│       ├── streaming_chat/ # Sync/async stream chunk and collection helpers
+│       ├── agent_runtime/  # Deterministic tool-plan execution primitives
+│       ├── rag_quality/    # Retrieval metrics and drift comparison helpers
+│       ├── hallucination_guard/ # Grounding and citation checks
+│       └── response_robustness/ # JSON extraction/repair and output guards
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
 ├── recipes/                # Example recipes

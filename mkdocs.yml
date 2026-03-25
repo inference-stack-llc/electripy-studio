@@ -38,6 +38,8 @@ nav:
       - IO: user-guide/io.md
       - CLI: user-guide/cli.md
       - AI / LLM Gateway: user-guide/ai-llm-gateway.md
+      - AI / RAG Eval Runner: user-guide/ai-rag-eval-runner.md
+      - AI Product Engineering: user-guide/ai-product-engineering.md
       - AI Telemetry: user-guide/ai-telemetry.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md
