@@ -40,6 +40,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
 - 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
 - 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, response robustness helpers for structured outputs, prompt templating and composition, token budget tracking and truncation, priority-based context window assembly, rule-based model routing, sliding-window conversation memory, and a declarative tool registry with JSON schema generation.
+- 🛡️ **AI policy and collaboration runtime**: Deterministic policy gateway checks for preflight/postflight/stream/tool flows, plus bounded agent-to-agent collaboration runtime for specialist orchestration patterns.
 
 ## Quick Start
 
@@ -123,8 +124,11 @@ Full documentation is available in the [docs/](docs/) directory:
 - [CLI Guide](docs/user-guide/cli.md)
 - [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
 - [AI Telemetry](docs/user-guide/ai-telemetry.md)
+- [AI Policy Gateway](docs/user-guide/ai-policy-gateway.md)
+- [AI Agent Collaboration Runtime](docs/user-guide/ai-agent-collaboration.md)
 - [RAG Evaluation Runner](docs/user-guide/ai-rag-eval-runner.md)
 - [AI Product Engineering Utilities](docs/user-guide/ai-product-engineering.md)
+- [Component Maturity Model](docs/user-guide/component-maturity.md)
 - [Recipes](docs/recipes/cli-tool.md)
 - [API Reference](docs/api.md)
 
@@ -153,7 +157,7 @@ electripy-studio/
 │   ├── core/               # Config, logging, errors, typing
 │   ├── concurrency/        # Retry & rate limiting
 │   ├── io/                 # JSONL utilities
-│   └── cli/                # CLI commands
+│   ├── cli/                # CLI commands
 │   └── ai/                 # AI building blocks and product-engineering utilities
 │       ├── llm_gateway/    # Provider-agnostic LLM client + structured output helpers
 │       ├── rag_eval_runner/# Dataset + eval runner + CLI benchmarking
@@ -167,11 +171,15 @@ electripy-studio/
 │       ├── context_assembly/    # Priority-based context window packing
 │       ├── model_router/        # Rule-based model selection and routing
 │       ├── conversation_memory/ # Sliding window and token-aware chat history
-│       └── tool_registry/       # Declarative tool definitions and JSON schema
+│       ├── policy_gateway/      # Deterministic pre/post/tool/stream policy decisions
+│       ├── tool_registry/       # Declarative tool definitions and JSON schema
+│       └── agent_collaboration/ # Bounded multi-agent handoff orchestration
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
 ├── recipes/                # Example recipes
-│   └── 01_cli_tool/        # CLI tool example
+│   ├── 01_cli_tool/        # CLI tool example
+│   ├── 02_llm_gateway/     # LLM gateway examples
+│   └── 03_policy_collaboration/ # End-to-end policy + multi-agent flow
 ├── packages/               # NPM packages
 │   └── electripy-cli/      # NPM CLI wrapper
 ├── pyproject.toml          # Project config

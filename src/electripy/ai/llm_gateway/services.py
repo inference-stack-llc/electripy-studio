@@ -192,8 +192,13 @@ class LlmGatewaySyncClient:
         """
 
         started_at = time.monotonic()
-        _enforce_token_budget(request, self._settings)
-        guarded_request, guard_result = _maybe_guard(request, self._settings.prompt_guard)
+        request_for_call = request
+        request_hook = self._settings.request_hook
+        if request_hook is not None:
+            request_for_call = request_hook(request_for_call)
+
+        _enforce_token_budget(request_for_call, self._settings)
+        guarded_request, guard_result = _maybe_guard(request_for_call, self._settings.prompt_guard)
 
         if structured_spec is None:
             response = self._call_with_retry(guarded_request, timeout=timeout)
@@ -203,6 +208,10 @@ class LlmGatewaySyncClient:
                 structured_spec=structured_spec,
                 timeout=timeout,
             )
+
+        response_hook = self._settings.response_hook
+        if response_hook is not None:
+            response = response_hook(request_for_call, response)
 
         if guard_result is not None:
             response.metadata["prompt_guard"] = {
@@ -214,10 +223,10 @@ class LlmGatewaySyncClient:
         hook = self._settings.on_llm_call
         if hook is not None:
             try:
-                hook(request, response, latency_ms)
+                hook(request_for_call, response, latency_ms)
             except Exception:  # pragma: no cover - defensive
                 logger.exception("on_llm_call hook raised")
-        _maybe_log_safe(settings=self._settings, request=request, response=response)
+        _maybe_log_safe(settings=self._settings, request=request_for_call, response=response)
         return response
 
     def _call_with_retry(self, request: LlmRequest, *, timeout: float | None) -> LlmResponse:
@@ -342,8 +351,13 @@ class LlmGatewayAsyncClient:
         """Perform an asynchronous completion with optional structured mode."""
 
         started_at = time.monotonic()
-        _enforce_token_budget(request, self._settings)
-        guarded_request, guard_result = _maybe_guard(request, self._settings.prompt_guard)
+        request_for_call = request
+        request_hook = self._settings.request_hook
+        if request_hook is not None:
+            request_for_call = request_hook(request_for_call)
+
+        _enforce_token_budget(request_for_call, self._settings)
+        guarded_request, guard_result = _maybe_guard(request_for_call, self._settings.prompt_guard)
 
         if structured_spec is None:
             response = await self._call_with_retry_async(guarded_request, timeout=timeout)
@@ -353,6 +367,10 @@ class LlmGatewayAsyncClient:
                 structured_spec=structured_spec,
                 timeout=timeout,
             )
+
+        response_hook = self._settings.response_hook
+        if response_hook is not None:
+            response = response_hook(request_for_call, response)
 
         if guard_result is not None:
             response.metadata["prompt_guard"] = {
@@ -364,10 +382,10 @@ class LlmGatewayAsyncClient:
         hook = self._settings.on_llm_call
         if hook is not None:
             try:
-                hook(request, response, latency_ms)
+                hook(request_for_call, response, latency_ms)
             except Exception:  # pragma: no cover - defensive
                 logger.exception("on_llm_call hook raised")
-        _maybe_log_safe(settings=self._settings, request=request, response=response)
+        _maybe_log_safe(settings=self._settings, request=request_for_call, response=response)
         return response
 
     async def _call_with_retry_async(

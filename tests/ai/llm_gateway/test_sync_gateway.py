@@ -16,6 +16,7 @@ from electripy.ai.llm_gateway import (
     RetryPolicy,
 )
 from electripy.ai.llm_gateway.errors import (
+    PolicyViolationError,
     PromptRejectedError,
     RateLimitedError,
     RetryExhaustedError,
@@ -154,3 +155,46 @@ def test_safe_logging_uses_redactor() -> None:
     assert response.text == "secret response"
     assert redactor.last_text is not None
     assert "user@example.com" in redactor.last_text
+
+
+def test_request_hook_can_sanitize_messages() -> None:
+    port = FakeSyncPort(text="ok")
+
+    def request_hook(request: LlmRequest) -> LlmRequest:
+        replacement = [
+            LlmMessage(role=message.role, content=message.content.replace("secret", "[REDACTED]"))
+            for message in request.messages
+        ]
+        return request.clone_with_messages(replacement)
+
+    settings = LlmGatewaySettings(request_hook=request_hook)
+    client = LlmGatewaySyncClient(port=port, settings=settings)
+    response = client.complete(
+        LlmRequest(
+            model="gpt-test",
+            messages=[LlmMessage.user("this contains secret")],
+        )
+    )
+
+    assert response.text == "ok"
+
+
+def test_response_hook_can_block_response() -> None:
+    port = FakeSyncPort(text="SECRET_123 should not leave")
+
+    def response_hook(request: LlmRequest, response: LlmResponse) -> LlmResponse:
+        del request
+        if "SECRET_" in response.text:
+            raise PolicyViolationError(stage="postflight", reasons=("SECRET_LEAK",))
+        return response
+
+    settings = LlmGatewaySettings(response_hook=response_hook)
+    client = LlmGatewaySyncClient(port=port, settings=settings)
+
+    with pytest.raises(PolicyViolationError):
+        client.complete(
+            LlmRequest(
+                model="gpt-test",
+                messages=[LlmMessage.user("hi")],
+            )
+        )

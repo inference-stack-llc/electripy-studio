@@ -38,7 +38,7 @@ from .adapters import (
     OpenAiSyncAdapter,
     SimpleRedactor,
 )
-from .config import LlmGatewaySettings, RetryPolicy
+from .config import LlmCallHook, LlmGatewaySettings, LlmRequestHook, LlmResponseHook, RetryPolicy
 from .domain import (
     LlmMessage,
     LlmRequest,
@@ -48,6 +48,7 @@ from .domain import (
 )
 from .errors import (
     LlmGatewayError,
+    PolicyViolationError,
     PromptRejectedError,
     RateLimitedError,
     RetryExhaustedError,
@@ -86,6 +87,9 @@ __all__ = [
     # Config
     "RetryPolicy",
     "LlmGatewaySettings",
+    "LlmCallHook",
+    "LlmRequestHook",
+    "LlmResponseHook",
     # Errors
     "LlmGatewayError",
     "RateLimitedError",
@@ -93,4 +97,5 @@ __all__ = [
     "StructuredOutputError",
     "TokenBudgetExceededError",
     "PromptRejectedError",
+    "PolicyViolationError",
 ]

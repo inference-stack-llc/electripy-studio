@@ -49,6 +49,9 @@ Use the LLM Gateway when you want:
   - Observability hook: `LlmGatewaySettings.on_llm_call` – optional
     callback invoked after each successful LLM call with
     `(request, response, latency_ms)`.
+  - Policy hooks: `LlmGatewaySettings.request_hook` and
+    `LlmGatewaySettings.response_hook` for deterministic pre/post
+    request enforcement.
 
 ## Basic example: OpenAI text completion
 
@@ -218,3 +221,33 @@ client = build_llm_sync_client("openai", settings=settings)
 
 If the hook raises an exception, it is logged and ignored so that
 observability issues never break core LLM functionality.
+
+## Request/response policy hooks
+
+`LlmGatewaySettings` exposes two additional seams for enterprise policy
+enforcement:
+
+- `request_hook(request) -> request`: runs before budget and provider call.
+- `response_hook(request, response) -> response`: runs after provider call
+  and before returning to the caller.
+
+If these hooks block execution they can raise
+`PolicyViolationError(stage=..., reasons=...)`.
+
+```python
+from electripy.ai.llm_gateway import LlmGatewaySettings, PolicyViolationError
+from electripy.ai.policy_gateway import PolicyGateway, build_llm_policy_hooks
+
+policy = PolicyGateway(rules=[...])
+request_hook, response_hook = build_llm_policy_hooks(policy)
+
+settings = LlmGatewaySettings(
+  request_hook=request_hook,
+  response_hook=response_hook,
+)
+
+try:
+  response = client.complete(request)
+except PolicyViolationError as exc:
+  print(exc.stage, exc.reasons)
+```

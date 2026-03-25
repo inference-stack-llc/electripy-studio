@@ -30,6 +30,8 @@ if TYPE_CHECKING:  # pragma: no cover - import-time only
 
 
 LlmCallHook = Callable[["LlmRequest", "LlmResponse", float], None]
+LlmRequestHook = Callable[["LlmRequest"], "LlmRequest"]
+LlmResponseHook = Callable[["LlmRequest", "LlmResponse"], "LlmResponse"]
 
 
 @dataclass(slots=True)
@@ -77,3 +79,9 @@ class LlmGatewaySettings:
 
     # Structured output
     structured_output_max_repair_attempts: int = 1
+
+    # Optional transform hooks for request/response policy seams.
+    # request_hook can sanitize or reject by raising an exception.
+    request_hook: LlmRequestHook | None = None
+    # response_hook can sanitize or reject by raising an exception.
+    response_hook: LlmResponseHook | None = None

@@ -146,6 +146,23 @@ class PromptRejectedError(LlmGatewayError):
 
 
 @dataclass(slots=True)
+class PolicyViolationError(LlmGatewayError):
+    """Raised when request/response policy hooks block execution.
+
+    Attributes:
+      stage: Policy stage that triggered the violation.
+      reasons: Stable reason codes produced by the policy gateway.
+    """
+
+    stage: str
+    reasons: tuple[str, ...]
+
+    def __str__(self) -> str:  # pragma: no cover - trivial formatting
+        reasons_text = "; ".join(self.reasons) or "no reasons provided"
+        return f"Policy violation at {self.stage}: {reasons_text}"
+
+
+@dataclass(slots=True)
 class TransientLlmError(LlmGatewayError):
     """Internal error class for transient provider failures.
 

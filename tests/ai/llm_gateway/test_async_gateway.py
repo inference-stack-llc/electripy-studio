@@ -12,7 +12,12 @@ from electripy.ai.llm_gateway import (
     LlmResponse,
     RetryPolicy,
 )
-from electripy.ai.llm_gateway.errors import RateLimitedError, RetryExhaustedError, TransientLlmError
+from electripy.ai.llm_gateway.errors import (
+    PolicyViolationError,
+    RateLimitedError,
+    RetryExhaustedError,
+    TransientLlmError,
+)
 from electripy.ai.llm_gateway.ports import AsyncLlmPort
 
 
@@ -109,3 +114,45 @@ async def test_async_retry_exhausted_error() -> None:
 
     with pytest.raises(RetryExhaustedError):
         await client.complete(request)
+
+
+@pytest.mark.asyncio
+async def test_async_request_hook_applies_before_call() -> None:
+    port = FakeAsyncPort(text="ok")
+
+    def request_hook(request: LlmRequest) -> LlmRequest:
+        replacement = [
+            LlmMessage(role=message.role, content=message.content.replace("secret", "safe"))
+            for message in request.messages
+        ]
+        return request.clone_with_messages(replacement)
+
+    client = LlmGatewayAsyncClient(
+        port=port,
+        settings=LlmGatewaySettings(request_hook=request_hook),
+    )
+
+    response = await client.complete(
+        LlmRequest(model="gpt-test", messages=[LlmMessage.user("secret text")])
+    )
+
+    assert response.text == "ok"
+
+
+@pytest.mark.asyncio
+async def test_async_response_hook_can_block() -> None:
+    port = FakeAsyncPort(text="SECRET_ABC")
+
+    def response_hook(request: LlmRequest, response: LlmResponse) -> LlmResponse:
+        del request
+        if "SECRET_" in response.text:
+            raise PolicyViolationError(stage="postflight", reasons=("SECRET_LEAK",))
+        return response
+
+    client = LlmGatewayAsyncClient(
+        port=port,
+        settings=LlmGatewaySettings(response_hook=response_hook),
+    )
+
+    with pytest.raises(PolicyViolationError):
+        await client.complete(LlmRequest(model="gpt-test", messages=[LlmMessage.user("Hi")]))

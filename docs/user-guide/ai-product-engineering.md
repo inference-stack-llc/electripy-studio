@@ -15,6 +15,8 @@ ElectriPy Studio includes lightweight, composable Python components for advanced
 - Rule-based model routing for cost/capability optimization.
 - Sliding-window conversation memory with token-budget-aware trimming.
 - Declarative tool registry with automatic JSON schema generation and OpenAI export.
+- Deterministic policy gateway for pre/post/stream/tool safety decisions.
+- Bounded agent collaboration runtime for specialist agent handoffs.
 
 ## Component map
 
@@ -29,6 +31,8 @@ ElectriPy Studio includes lightweight, composable Python components for advanced
 - `electripy.ai.model_router`
 - `electripy.ai.conversation_memory`
 - `electripy.ai.tool_registry`
+- `electripy.ai.policy_gateway`
+- `electripy.ai.agent_collaboration`
 
 ## Quick examples
 
@@ -215,4 +219,56 @@ registry.register(tool_from_function(search, name="search"))
 
 # Export for OpenAI function-calling API
 tools = registry.to_openai_tools()
+```
+
+### Policy gateway hooks for LLM flows
+
+```python
+from electripy.ai.llm_gateway import LlmGatewaySettings
+from electripy.ai.policy_gateway import PolicyGateway, build_llm_policy_hooks
+
+policy = PolicyGateway(rules=[...])
+request_hook, response_hook = build_llm_policy_hooks(policy)
+
+settings = LlmGatewaySettings(
+    request_hook=request_hook,
+    response_hook=response_hook,
+)
+```
+
+### Specialist-agent collaboration runtime
+
+```python
+from electripy.ai.agent_collaboration import (
+    AgentCollaborationRuntime,
+    AgentTurnResult,
+    CollaborationTask,
+    make_message,
+)
+
+class Planner:
+    def handle(self, message, *, task):
+        return AgentTurnResult(
+            produced_messages=[
+                make_message(
+                    task_id=task.task_id,
+                    seq=1,
+                    from_agent="planner",
+                    to_agent="verifier",
+                    content=f"plan::{task.objective}",
+                )
+            ]
+        )
+
+class Verifier:
+    def handle(self, message, *, task):
+        return AgentTurnResult(completed=True, outcome="verified")
+
+runtime = AgentCollaborationRuntime(agents={"planner": Planner(), "verifier": Verifier()})
+result = runtime.run(
+    task=CollaborationTask(task_id="task-1", objective="triage"),
+    entry_agent="planner",
+    input_text="begin",
+)
+assert result.success
 ```

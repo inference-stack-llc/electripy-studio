@@ -41,10 +41,16 @@ nav:
       - AI / RAG Eval Runner: user-guide/ai-rag-eval-runner.md
       - AI Product Engineering: user-guide/ai-product-engineering.md
       - AI Telemetry: user-guide/ai-telemetry.md
+      - AI / Policy Gateway: user-guide/ai-policy-gateway.md
+      - AI / Agent Collaboration: user-guide/ai-agent-collaboration.md
+      - Component Maturity Model: user-guide/component-maturity.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md
       - RAG Evaluation Runner: recipes/rag-eval-runner.md
       - AI Telemetry: recipes/ai-telemetry.md
+      - Policy-Governed LLM Flow: recipes/policy-gateway.md
+      - Agent Collaboration Runtime: recipes/agent-collaboration-runtime.md
+      - Policy + Collaboration E2E: recipes/policy-collaboration-e2e.md
   - API Reference: api.md
 
 markdown_extensions:

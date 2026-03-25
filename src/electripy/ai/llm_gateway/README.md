@@ -9,6 +9,7 @@ It standardizes:
 - Reliability behavior (retries, rate limits, transient failures)
 - Structured JSON output with validation and repair
 - Token budgeting and safety seams (redaction + prompt guard)
+- Optional request/response policy hooks for pre/postflight enforcement
 
 It currently ships with an OpenAI adapter and is designed to support additional
 providers (Anthropic, Azure OpenAI, OpenRouter, etc.) via adapters.
@@ -38,7 +39,6 @@ from electripy.ai.llm_gateway import (
 )
 
 client = build_llm_sync_client("openai")
-
 response = client.complete(
   LlmRequest(
     model="gpt-4o-mini",
@@ -46,6 +46,30 @@ response = client.complete(
   )
 )
 print(response.text)
+```
+
+## Request/response policy hooks
+
+`LlmGatewaySettings` includes two hook seams for deterministic policy
+enforcement:
+
+- `request_hook(request) -> request`
+- `response_hook(request, response) -> response`
+
+These hooks run inside the gateway execution path and can sanitize or
+block content. Blocking hooks should raise `PolicyViolationError`.
+
+```python
+from electripy.ai.llm_gateway import LlmGatewaySettings
+from electripy.ai.policy_gateway import PolicyGateway, build_llm_policy_hooks
+
+policy = PolicyGateway(rules=[...])
+request_hook, response_hook = build_llm_policy_hooks(policy)
+
+settings = LlmGatewaySettings(
+  request_hook=request_hook,
+  response_hook=response_hook,
+)
 ```
 
 ### Example: OpenRouter / Copilot / Grok via HTTP JSON

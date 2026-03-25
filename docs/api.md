@@ -141,6 +141,28 @@ Complete API reference for ElectriPy modules.
 - `ToolRegistry()`: Register, look up, and export tools.
 - `ToolRegistry.to_openai_tools() -> list[dict]`: Export in OpenAI function-calling format.
 
+### Policy Gateway
+
+- `PolicyGateway(rules=..., settings=..., telemetry=...)`: deterministic policy evaluation service.
+- `PolicyRule(rule_id, code, description, stage, pattern, ...)`: rule model.
+- `PolicyDecision`: action/result model with reason codes and optional sanitized text.
+- `PolicyAction`: `allow`, `sanitize`, `deny`, `require_approval`.
+- `build_llm_policy_hooks(gateway) -> tuple[request_hook, response_hook]`: bridge for LLM Gateway hooks.
+
+### Agent Collaboration Runtime
+
+- `CollaborationTask(task_id, objective, metadata=...)`: top-level collaboration task.
+- `AgentMessage(...)`: typed handoff envelope.
+- `AgentCollaborationRuntime(agents, settings=..., policy_gateway=...)`: bounded orchestration runtime.
+- `CollaborationRuntimeSettings(max_hops=..., fail_on_blocked_handoff=...)`: reliability controls.
+- `make_message(...) -> AgentMessage`: deterministic message factory.
+
+### LLM Gateway Policy Hooks
+
+- `LlmGatewaySettings.request_hook`: preflight request transform/block seam.
+- `LlmGatewaySettings.response_hook`: postflight response transform/block seam.
+- `PolicyViolationError(stage, reasons)`: raised by policy hooks when blocked.
+
 ---
 
 For more detailed examples, see the [User Guide](user-guide/core.md) and [Recipes](recipes/cli-tool.md).
