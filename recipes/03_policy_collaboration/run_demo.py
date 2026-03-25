@@ -101,8 +101,8 @@ def main() -> None:
     client = LlmGatewaySyncClient(port=FakeSyncPort(), settings=settings)
     response = client.complete(
         LlmRequest(
-        model="fake-model",
-        messages=[LlmMessage.user("Summarize for admin@example.com")],
+            model="fake-model",
+            messages=[LlmMessage.user("Summarize for admin@example.com")],
         )
     )
 
