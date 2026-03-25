@@ -20,13 +20,15 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 
 ## Status & recent updates
 
-- **Last updated**: 2026-03-04
-- **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and first AI building blocks are in place.
+- **Last updated**: 2026-03-24
+- **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and a growing suite of AI product engineering utilities are in place.
 - **Versioning**: SemVer begins at `v0.x` — expect breaking changes until `v1.0`.
 - **Recent highlights**:
     - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
     - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
     - Added an AI Telemetry component for safe, provider-agnostic observability across HTTP resilience, LLM gateway, policy decisions, and RAG evaluation.
+    - Phase 1: Streaming chat, agent runtime, RAG quality/drift, hallucination guard, and response robustness utilities.
+    - Phase 2: Prompt engine, token budget management, context assembly, model routing, conversation memory, and tool registry.
     - Expanded documentation and user guides for core, concurrency, I/O, CLI, AI, and observability components.
 
 ## Features
@@ -37,7 +39,7 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - 💻 **CLI**: Typer-based command-line interface with health checks
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients and structured-output helpers, plus a RAG Evaluation Runner for retrieval benchmarking.
 - 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
-- 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, and response robustness helpers for structured outputs.
+- 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, response robustness helpers for structured outputs, prompt templating and composition, token budget tracking and truncation, priority-based context window assembly, rule-based model routing, sliding-window conversation memory, and a declarative tool registry with JSON schema generation.
 
 ## Quick Start
 
@@ -159,7 +161,13 @@ electripy-studio/
 │       ├── agent_runtime/  # Deterministic tool-plan execution primitives
 │       ├── rag_quality/    # Retrieval metrics and drift comparison helpers
 │       ├── hallucination_guard/ # Grounding and citation checks
-│       └── response_robustness/ # JSON extraction/repair and output guards
+│       ├── response_robustness/ # JSON extraction/repair and output guards
+│       ├── prompt_engine/       # Template composition and few-shot management
+│       ├── token_budget/        # Pluggable token counting and truncation
+│       ├── context_assembly/    # Priority-based context window packing
+│       ├── model_router/        # Rule-based model selection and routing
+│       ├── conversation_memory/ # Sliding window and token-aware chat history
+│       └── tool_registry/       # Declarative tool definitions and JSON schema
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
 ├── recipes/                # Example recipes

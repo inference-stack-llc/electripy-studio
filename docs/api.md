@@ -95,6 +95,52 @@ Complete API reference for ElectriPy modules.
 - `require_fields(value, fields) -> None`
 - `coalesce_non_empty(candidates) -> str`
 
+### Prompt Engine
+
+- `render_template(template, variables) -> str`: Replace `{{var}}` placeholders in a template string.
+- `build_few_shot_block(examples, max_examples=...) -> list[RenderedMessage]`: Convert few-shot examples into interleaved user/assistant messages.
+- `compose_messages(system=..., few_shot=..., user=..., variables=...) -> RenderedPrompt`: Compose a full chat prompt from building blocks.
+- `FewShotExample`: Typed few-shot example pair.
+- `RenderedPrompt.to_dicts() -> list[dict]`: Export messages for LLM API payloads.
+
+### Token Budget
+
+- `TokenizerPort`: Protocol for pluggable token counting.
+- `CharEstimatorTokenizer(chars_per_token=4.0)`: Zero-dependency character-based token estimator.
+- `count_tokens(text, tokenizer) -> TokenCount`
+- `fits_budget(text, budget, tokenizer) -> bool`
+- `truncate_to_budget(text, budget, tokenizer, strategy=..., strict=...) -> TruncationResult`
+- `TruncationStrategy`: TAIL, HEAD, or MIDDLE truncation.
+
+### Context Assembly
+
+- `ContextBlock(label, content, priority)`: A block of content with a priority level.
+- `ContextPriority`: LOW, MEDIUM, HIGH, CRITICAL.
+- `assemble_context(blocks, budget, tokenizer) -> AssembledContext`: Pack blocks into a token-limited window, dropping lowest priority first.
+
+### Model Router
+
+- `ModelProfile(model_id, provider, cost_tier, ...)`: Model capability/cost profile.
+- `RoutingRule(name, predicate)`: Composable model selection predicate.
+- `ModelRouter(models).route(rules) -> RoutingDecision`: Select cheapest model satisfying all rules.
+- `CostTier`: FREE, LOW, MEDIUM, HIGH, PREMIUM.
+
+### Conversation Memory
+
+- `append_turn(window, role, content, tokenizer) -> ConversationWindow`
+- `recent_turns(window, n) -> ConversationWindow`
+- `sliding_window(window, max_turns, tokenizer) -> ConversationWindow`
+- `trim_to_budget(window, budget, tokenizer, preserve_system=True) -> ConversationWindow`
+- `ConversationWindow.to_dicts() -> list[dict]`: Export for LLM API payloads.
+
+### Tool Registry
+
+- `tool_from_function(func, name=..., description=...) -> ToolDefinition`: Create tool definitions from Python functions.
+- `generate_schema(func) -> ToolSchema`: Infer JSON Schema from function signature.
+- `validate_arguments(tool, arguments) -> dict`: Validate and fill defaults.
+- `ToolRegistry()`: Register, look up, and export tools.
+- `ToolRegistry.to_openai_tools() -> list[dict]`: Export in OpenAI function-calling format.
+
 ---
 
 For more detailed examples, see the [User Guide](user-guide/core.md) and [Recipes](recipes/cli-tool.md).
