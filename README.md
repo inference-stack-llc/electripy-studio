@@ -18,6 +18,22 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 - Typed, production APIs: small public surfaces, strict typing, structured outputs where it matters.
 - Testability: unit tests are offline and deterministic by default (no network required).
 
+## How ElectriPy compares
+
+ElectriPy is **not** a framework — it's a composable toolkit of production-grade building blocks for AI-powered Python applications. Here's how it relates to popular alternatives:
+
+| Library | Stars | Overlap | ElectriPy's edge |
+| --- | --- | --- | --- |
+| [LiteLLM](https://github.com/BerriAI/litellm) | 40 k | Provider-agnostic LLM gateway | Bundles policy hooks, telemetry & structured output inline — no proxy server needed |
+| [Guardrails AI](https://github.com/guardrails-ai/guardrails) | 6.6 k | Input / output validation | Lighter-weight, composable policy gateway — no XML DSL or Hub dependency |
+| [CrewAI](https://github.com/crewAIInc/crewAI) / [AutoGen](https://github.com/microsoft/autogen) | 50 k+ | Multi-agent orchestration | Bounded & deterministic with hop limits; building-block, not a framework |
+| [RAGAS](https://github.com/explodinggradients/ragas) | 13 k | RAG evaluation metrics | Integrates eval directly into CLI & CI gating; ships with drift comparison |
+| [Instructor](https://github.com/instructor-ai/instructor) | 12.6 k | Structured LLM output | Wraps the pattern alongside retry, token budget & telemetry in one toolkit |
+| [Pydantic AI](https://github.com/pydantic/pydantic-ai) | 10 k+ | Typed AI agents | Narrower scope; ElectriPy ships concurrency, I/O, CLI & observability too |
+| [Haystack](https://github.com/deepset-ai/haystack) / [LangChain](https://github.com/langchain-ai/langchain) | 40 k+ | Full RAG / agent framework | Composable building blocks you import — not a framework you adopt wholesale |
+
+> **TL;DR** — Use ElectriPy when you want discrete, well-typed utilities that compose into **your** architecture rather than a monolithic framework that owns it.
+
 ## Status & recent updates
 
 - **Last updated**: 2026-03-25
@@ -318,7 +334,7 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ## Contributing
 
-Contributions are welcome! Please ensure all tests pass and code quality checks succeed before submitting PRs.
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before submitting PRs. For security issues, see [SECURITY.md](SECURITY.md).
 
 ## Links
 
