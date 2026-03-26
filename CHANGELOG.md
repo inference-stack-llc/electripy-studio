@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-03-25
+
+### Fixed
+
+- Repository map and development workflow images now use absolute URLs for PyPI rendering.
+
 ## [0.1.1] — 2026-03-25
 
 ### Fixed

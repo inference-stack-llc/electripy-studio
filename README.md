@@ -185,11 +185,11 @@ mkdocs serve
 
 ### Repository Map
 
-![Repository map](docs/images/repo_map.png)
+![Repository map](https://raw.githubusercontent.com/inference-stack-llc/electripy-studio/main/docs/images/repo_map.png)
 
 ### Development Workflow
 
-![Development workflow](docs/images/dev_workflow.png)
+![Development workflow](https://raw.githubusercontent.com/inference-stack-llc/electripy-studio/main/docs/images/dev_workflow.png)
 
 ## Project Structure
 
