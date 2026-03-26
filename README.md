@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/social-preview.png" alt="ElectriPy Studio — Production-grade Python toolkit for AI product engineering" width="100%">
+  <img src="https://raw.githubusercontent.com/inference-stack-llc/electripy-studio/main/images/social-preview.png" alt="ElectriPy Studio — Production-grade Python toolkit for AI product engineering" width="100%">
 </p>
 
 # ElectriPy Studio
