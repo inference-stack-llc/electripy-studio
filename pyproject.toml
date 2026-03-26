@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "electripy-studio"
-version = "0.3.0"
+version = "0.3.1"
 description = "Production-grade Python toolkit for AI product engineering — LLM gateway, policy guardrails, RAG eval, agent collaboration, telemetry, and more."
 readme = "README.md"
 requires-python = ">=3.11"

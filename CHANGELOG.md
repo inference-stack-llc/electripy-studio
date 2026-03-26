@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-03-25
+
+### Changed
+
+- Expanded PyPI keywords (10 → 25) and classifiers (9 → 16) for search discoverability.
+- Improved MkDocs `site_description` with keyword-rich summary, added `site_url` and social links.
+- Set 20 GitHub repository topics via API.
+
 ## [0.3.0] — 2026-03-25
 
 ### Added
