@@ -34,8 +34,8 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 | [Guardrails AI](https://github.com/guardrails-ai/guardrails) | 6.6 k | Input / output validation | Lighter-weight, composable policy gateway — no XML DSL or Hub dependency |
 | [CrewAI](https://github.com/crewAIInc/crewAI) / [AutoGen](https://github.com/microsoft/autogen) | 50 k+ | Multi-agent orchestration | Bounded & deterministic with hop limits; building-block, not a framework |
 | [RAGAS](https://github.com/explodinggradients/ragas) | 13 k | RAG evaluation metrics | Integrates eval directly into CLI & CI gating; ships with drift comparison |
-| [Instructor](https://github.com/instructor-ai/instructor) | 12.6 k | Structured LLM output | Wraps the pattern alongside retry, token budget & telemetry in one toolkit |
-| [Pydantic AI](https://github.com/pydantic/pydantic-ai) | 10 k+ | Typed AI agents | Narrower scope; ElectriPy ships concurrency, I/O, CLI & observability too |
+| [Instructor](https://github.com/instructor-ai/instructor) | 12.6 k | Structured LLM output | Dedicated Structured Output Engine with retry + temperature decay, plus caching & replay tape |
+| [Pydantic AI](https://github.com/pydantic/pydantic-ai) | 10 k+ | Typed AI agents | Narrower scope; ElectriPy ships caching, replay tape, eval assertions, multi-provider adapters & more |
 | [Haystack](https://github.com/deepset-ai/haystack) / [LangChain](https://github.com/langchain-ai/langchain) | 40 k+ | Full RAG / agent framework | Composable building blocks you import — not a framework you adopt wholesale |
 
 > **TL;DR** — Use ElectriPy when you want discrete, well-typed utilities that compose into **your** architecture rather than a monolithic framework that owns it.
@@ -46,16 +46,17 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 - **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and a growing suite of AI product engineering utilities are in place.
 - **Versioning**: SemVer begins at `v0.x` — expect breaking changes until `v1.0`.
 - **Recent highlights**:
+    - Added a **Structured Output Engine** — extract typed Pydantic models from LLM text with auto-retry and temperature decay.
+    - Added an **LLM Caching Layer** — pluggable response caching (in-memory LRU, SQLite WAL) with hit-rate tracking.
+    - Added an **LLM Replay Tape** — record, replay, and diff LLM interactions for deterministic offline tests.
+    - Added **Eval Assertions** — pytest-native assertion helpers for LLM outputs with structured diagnostics.
+    - Added **Provider Adapters** — Anthropic (Messages API) and Ollama (HTTP) adapters for multi-provider support.
     - Added `electripy demo policy-collab` CLI command — run the full policy + agent collaboration pipeline offline with a Rich table report.
     - Added a **Policy Gateway** with regex-based detection, sanitization, deny/allow/require-approval actions across preflight, postflight, stream, and tool-call stages.
     - Added a **Agent Collaboration Runtime** for bounded multi-agent orchestration with hop limits, deque-based message routing, and optional policy gateway integration.
     - Added **LLM Gateway request/response hooks** and `build_llm_policy_hooks()` bridge so policy decisions plug directly into the LLM call path.
-    - Added an LLM Gateway for provider-agnostic LLM calls with structured output and safety seams.
-    - Added a RAG Evaluation Runner and `electripy rag eval` CLI for benchmarking retrieval quality over JSONL datasets.
-    - Added an AI Telemetry component for safe, provider-agnostic observability across HTTP resilience, LLM gateway, policy decisions, and RAG evaluation.
-    - Phase 1: Streaming chat, agent runtime, RAG quality/drift, hallucination guard, and response robustness utilities.
-    - Phase 2: Prompt engine, token budget management, context assembly, model routing, conversation memory, and tool registry.
-    - Expanded documentation and user guides for core, concurrency, I/O, CLI, AI, and observability components.
+    - Phase 1–2: LLM Gateway, RAG eval, streaming chat, agent runtime, hallucination guard, response robustness, prompt engine, token budget, context assembly, model routing, conversation memory, tool registry, AI telemetry.
+    - Expanded documentation and user guides for all components.
 
 ## Features
 
@@ -64,7 +65,12 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
 - 💻 **CLI**: Typer-based command-line interface with health checks, RAG eval runner, and an offline demo showcase (`electripy demo policy-collab`)
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients, request/response policy hooks, structured-output helpers, and a RAG Evaluation Runner for retrieval benchmarking.
-- 📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
+- � **Multi-provider adapters**: Anthropic (Messages API) and Ollama (HTTP) adapters plus OpenAI and generic HTTP-JSON — swap providers with a one-line change.
+- 🎯 **Structured Output Engine**: Parse LLM text into typed Pydantic models with auto-retry and temperature decay for convergence.
+- 💾 **LLM Caching Layer**: Pluggable response caching (in-memory LRU, SQLite WAL) with deterministic cache keys, hit-rate tracking, and custom backend support.
+- 🔄 **LLM Replay Tape**: Record, replay, and diff LLM interactions — JSONL-serializable tapes for deterministic offline tests and output regression detection.
+- ✅ **Eval Assertions**: pytest-native assertion helpers (keyword, regex, JSON schema, predicate, length) with structured diagnostic reports for CI.
+- �📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
 - 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, response robustness helpers for structured outputs, prompt templating and composition, token budget tracking and truncation, priority-based context window assembly, rule-based model routing, sliding-window conversation memory, and a declarative tool registry with JSON schema generation.
 - 🛡️ **AI policy and collaboration runtime**: Deterministic policy gateway checks for preflight/postflight/stream/tool flows, plus bounded agent-to-agent collaboration runtime for specialist orchestration patterns.
 
@@ -168,6 +174,11 @@ Full documentation is available in the [docs/](https://github.com/inference-stac
 - [AI Telemetry](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-telemetry.md)
 - [AI Policy Gateway](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-policy-gateway.md)
 - [AI Agent Collaboration Runtime](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-agent-collaboration.md)
+- [Structured Output Engine](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-structured-output.md)
+- [LLM Caching Layer](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-llm-cache.md)
+- [LLM Replay Tape](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-replay-tape.md)
+- [Eval Assertions](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-eval-assertions.md)
+- [Provider Adapters (Anthropic, Ollama)](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-provider-adapters.md)
 - [RAG Evaluation Runner](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-rag-eval-runner.md)
 - [AI Product Engineering Utilities](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-product-engineering.md)
 - [Component Maturity Model](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/component-maturity.md)
@@ -213,6 +224,10 @@ electripy-studio/
 │       ├── context_assembly/    # Priority-based context window packing
 │       ├── model_router/        # Rule-based model selection and routing
 │       ├── conversation_memory/ # Sliding window and token-aware chat history
+│       ├── structured_output/   # Pydantic extraction with retry & temp decay
+│       ├── llm_cache/           # Pluggable response caching (memory, SQLite)
+│       ├── replay_tape/         # Record, replay, and diff LLM interactions
+│       ├── eval_assertions/     # pytest-native assertion helpers for LLM outputs
 │       ├── policy_gateway/      # Deterministic pre/post/tool/stream policy decisions
 │       ├── tool_registry/       # Declarative tool definitions and JSON schema
 │       └── agent_collaboration/ # Bounded multi-agent handoff orchestration

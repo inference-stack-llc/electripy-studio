@@ -56,6 +56,7 @@ from .errors import (
     TokenBudgetExceededError,
 )
 from .ports import AsyncLlmPort, GuardResult, PromptGuardPort, RedactorPort, SyncLlmPort
+from .provider_adapters import AnthropicSyncAdapter, OllamaSyncAdapter
 from .providers import build_llm_async_client, build_llm_sync_client
 from .services import LlmGatewayAsyncClient, LlmGatewaySyncClient
 
@@ -79,6 +80,8 @@ __all__ = [
     "HttpJsonChatAsyncAdapter",
     "SimpleRedactor",
     "HeuristicPromptGuard",
+    "AnthropicSyncAdapter",
+    "OllamaSyncAdapter",
     # Services
     "LlmGatewaySyncClient",
     "LlmGatewayAsyncClient",

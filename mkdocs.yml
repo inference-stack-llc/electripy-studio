@@ -38,6 +38,11 @@ nav:
       - IO: user-guide/io.md
       - CLI: user-guide/cli.md
       - AI / LLM Gateway: user-guide/ai-llm-gateway.md
+      - AI / Provider Adapters: user-guide/ai-provider-adapters.md
+      - AI / Structured Output: user-guide/ai-structured-output.md
+      - AI / LLM Caching: user-guide/ai-llm-cache.md
+      - AI / Replay Tape: user-guide/ai-replay-tape.md
+      - AI / Eval Assertions: user-guide/ai-eval-assertions.md
       - AI / RAG Eval Runner: user-guide/ai-rag-eval-runner.md
       - AI Product Engineering: user-guide/ai-product-engineering.md
       - AI Telemetry: user-guide/ai-telemetry.md

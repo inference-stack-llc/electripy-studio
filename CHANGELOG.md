@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-03-25
+
+### Added
+
+- **Structured Output Engine** — extract typed Pydantic models from LLM text with auto-retry and temperature decay.
+- **LLM Caching Layer** — pluggable response caching with in-memory LRU and SQLite WAL backends, deterministic cache keys, and hit-rate tracking.
+- **LLM Replay Tape** — record, replay, and diff LLM interactions as JSONL tapes for deterministic offline tests and output regression detection.
+- **Eval Assertions** — pytest-native assertion helpers (keyword, regex, JSON schema, predicate, length) with structured diagnostic reports.
+- **Provider Adapters** — OpenAI, Anthropic (Messages API), and Ollama (HTTP) adapters with lazy imports and domain exception mapping.
+- User guide documentation for all five new components.
+- 105 new tests (total suite now at 269).
+
 ## [0.1.3] — 2026-03-25
 
 ### Fixed
