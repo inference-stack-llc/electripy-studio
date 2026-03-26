@@ -48,6 +48,13 @@ nav:
       - AI Telemetry: user-guide/ai-telemetry.md
       - AI / Policy Gateway: user-guide/ai-policy-gateway.md
       - AI / Agent Collaboration: user-guide/ai-agent-collaboration.md
+      - AI / Fallback Chain: user-guide/ai-fallback-chain.md
+      - AI / Batch Complete: user-guide/ai-batch-complete.md
+      - AI / Cost Ledger: user-guide/ai-cost-ledger.md
+      - AI / Prompt Fingerprint: user-guide/ai-prompt-fingerprint.md
+      - AI / JSON Repair: user-guide/ai-json-repair.md
+      - AI / Sensitive Data Scanner: user-guide/ai-sensitive-data-scanner.md
+      - Concurrency / Circuit Breaker: user-guide/circuit-breaker.md
       - Component Maturity Model: user-guide/component-maturity.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md

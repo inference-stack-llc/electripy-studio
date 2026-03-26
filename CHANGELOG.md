@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-03-25
+
+### Added
+
+- **Fallback Chain** — automatic provider failover across ranked `SyncLlmPort` adapters with metadata tracking (`_fallback_provider_index`).
+- **Batch Complete** — fan-out N LLM requests with bounded concurrency (`ThreadPoolExecutor`), order-preserving results, per-request error isolation, and progress callbacks.
+- **Cost Ledger** — thread-safe token cost accumulation with multi-dimensional label slicing (`by_label`), estimated cost calculation, and snapshot/reset support.
+- **Prompt Fingerprint** — deterministic SHA-256 request hashing (compatible with LLM Cache key algorithm) with full and short digest variants.
+- **JSON Repair** — fix 7 common LLM JSON breakage patterns: markdown fences, trailing commas, single quotes, unquoted keys, mismatched brackets, and truncated JSON.
+- **Circuit Breaker** — closed→open→half_open FSM for cascading failure protection with configurable thresholds, decorator support, and thread-safe state transitions.
+- **Sensitive Data Scanner** — regex-based PII and secret detection with 9 built-in patterns (email, phone, SSN, credit card, API keys, AWS, IPv4), extensible via `add_pattern()`.
+- User guide documentation for all seven new components.
+- 82 new tests (total suite now at 351).
+
 ## [0.2.0] — 2026-03-25
 
 ### Added

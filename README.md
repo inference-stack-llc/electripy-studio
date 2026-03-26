@@ -46,6 +46,13 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 - **Maturity**: Early alpha (APIs may still evolve), but core components, CLI, concurrency primitives, and a growing suite of AI product engineering utilities are in place.
 - **Versioning**: SemVer begins at `v0.x` — expect breaking changes until `v1.0`.
 - **Recent highlights**:
+    - Added **Fallback Chain** — automatic provider failover across ranked `SyncLlmPort` adapters with metadata tracking.
+    - Added **Batch Complete** — fan-out N LLM requests with bounded concurrency, order-preserving results, and per-request error isolation.
+    - Added **Cost Ledger** — thread-safe token cost accumulation with per-label slicing (tenant, model, feature).
+    - Added **Prompt Fingerprint** — deterministic SHA-256 request hashing for caching, dedup, and audit trails.
+    - Added **JSON Repair** — fix markdown fences, trailing commas, single quotes, unquoted keys, mismatched brackets, and truncated JSON in one call.
+    - Added **Circuit Breaker** — closed→open→half_open FSM protecting against cascading provider failures.
+    - Added **Sensitive Data Scanner** — regex-based PII and secret detection (email, phone, SSN, API keys, AWS keys) with extensible patterns.
     - Added a **Structured Output Engine** — extract typed Pydantic models from LLM text with auto-retry and temperature decay.
     - Added an **LLM Caching Layer** — pluggable response caching (in-memory LRU, SQLite WAL) with hit-rate tracking.
     - Added an **LLM Replay Tape** — record, replay, and diff LLM interactions for deterministic offline tests.
@@ -61,7 +68,7 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 ## Features
 
 - 🔧 **Core Components**: Configuration, logging, error handling, and type utilities
-- ⚡ **Concurrency**: Retry mechanisms (sync/async) and async token bucket rate limiter
+- ⚡ **Concurrency**: Retry mechanisms (sync/async), async token bucket rate limiter, and circuit breaker for cascading failure protection
 - 📁 **I/O**: JSONL read/write utilities for efficient data processing
 - 💻 **CLI**: Typer-based command-line interface with health checks, RAG eval runner, and an offline demo showcase (`electripy demo policy-collab`)
 - 🤖 **AI building blocks**: Provider-agnostic LLM Gateway with sync/async clients, request/response policy hooks, structured-output helpers, and a RAG Evaluation Runner for retrieval benchmarking.
@@ -73,6 +80,12 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 - �📊 **AI Telemetry**: Provider-agnostic telemetry primitives and adapters (JSONL, optional OpenTelemetry) for HTTP resilience, LLM gateway, policy decisions, and RAG evaluation runs.
 - 🧠 **AI product engineering utilities**: Streaming chat primitives, deterministic agent runtime helpers, RAG quality/drift metrics, grounding checks for hallucination reduction, response robustness helpers for structured outputs, prompt templating and composition, token budget tracking and truncation, priority-based context window assembly, rule-based model routing, sliding-window conversation memory, and a declarative tool registry with JSON schema generation.
 - 🛡️ **AI policy and collaboration runtime**: Deterministic policy gateway checks for preflight/postflight/stream/tool flows, plus bounded agent-to-agent collaboration runtime for specialist orchestration patterns.
+- 🔗 **Fallback Chain**: Automatic provider failover — tries ranked LLM adapters in order with metadata tracking.
+- 📦 **Batch Complete**: Fan-out N LLM requests with bounded concurrency, order-preserving results, and per-request error isolation.
+- 💰 **Cost Ledger**: Thread-safe token cost accumulation with multi-dimensional label slicing.
+- 🔑 **Prompt Fingerprint**: Deterministic SHA-256 request hashing for caching, dedup, and drift detection.
+- 🔧 **JSON Repair**: Fix 7 common LLM JSON breakage patterns (fences, trailing commas, single quotes, unquoted keys, mismatched brackets, truncation) in one call.
+- 🔒 **Sensitive Data Scanner**: Regex-based PII and secret detection with 9 built-in patterns and extensible custom rules.
 
 ## Quick Start
 
@@ -179,6 +192,13 @@ Full documentation is available in the [docs/](https://github.com/inference-stac
 - [LLM Replay Tape](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-replay-tape.md)
 - [Eval Assertions](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-eval-assertions.md)
 - [Provider Adapters (Anthropic, Ollama)](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-provider-adapters.md)
+- [Fallback Chain](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-fallback-chain.md)
+- [Batch Complete](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-batch-complete.md)
+- [Cost Ledger](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-cost-ledger.md)
+- [Prompt Fingerprint](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-prompt-fingerprint.md)
+- [JSON Repair](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-json-repair.md)
+- [Sensitive Data Scanner](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-sensitive-data-scanner.md)
+- [Circuit Breaker](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/circuit-breaker.md)
 - [RAG Evaluation Runner](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-rag-eval-runner.md)
 - [AI Product Engineering Utilities](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-product-engineering.md)
 - [Component Maturity Model](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/component-maturity.md)
@@ -208,7 +228,7 @@ mkdocs serve
 electripy-studio/
 ├── src/electripy/          # Main package
 │   ├── core/               # Config, logging, errors, typing
-│   ├── concurrency/        # Retry & rate limiting
+│   ├── concurrency/        # Retry, rate limiting & circuit breaker
 │   ├── io/                 # JSONL utilities
 │   ├── cli/                # CLI commands
 │   └── ai/                 # AI building blocks and product-engineering utilities
@@ -230,7 +250,13 @@ electripy-studio/
 │       ├── eval_assertions/     # pytest-native assertion helpers for LLM outputs
 │       ├── policy_gateway/      # Deterministic pre/post/tool/stream policy decisions
 │       ├── tool_registry/       # Declarative tool definitions and JSON schema
-│       └── agent_collaboration/ # Bounded multi-agent handoff orchestration
+│       ├── agent_collaboration/ # Bounded multi-agent handoff orchestration
+│       ├── fallback_chain.py   # Automatic provider failover
+│       ├── batch_complete.py   # Concurrent LLM fan-out with backpressure
+│       ├── cost_ledger.py      # Thread-safe token cost accumulation
+│       ├── prompt_fingerprint.py # Deterministic SHA-256 request hashing
+│       ├── json_repair.py      # Fix common LLM JSON breakage
+│       └── sensitive_data_scanner.py # PII & secret detection
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
 ├── recipes/                # Example recipes
