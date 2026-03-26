@@ -1,5 +1,9 @@
 site_name: ElectriPy Studio
-site_description: Production-minded Python components and recipes
+site_url: https://inference-stack-llc.github.io/electripy-studio/
+site_description: >-
+  Production-grade Python toolkit for AI product engineering — LLM gateway,
+  provider failover, JSON repair, cost tracking, RAG evaluation, policy
+  guardrails, circuit breaker, PII scanning, and 30+ composable utilities.
 site_author: Inference Stack
 repo_url: https://github.com/inference-stack-llc/electripy-studio
 repo_name: inference-stack-llc/electripy-studio
@@ -78,3 +82,10 @@ markdown_extensions:
 
 plugins:
   - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/inference-stack-llc/electripy-studio
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/electripy-studio/

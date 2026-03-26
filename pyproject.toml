@@ -12,17 +12,30 @@ license = {text = "MIT"}
 authors = [
     {name = "Inference Stack", email = "team@inferencestack.com"},
 ]
-keywords = ["ai", "llm", "rag", "guardrails", "agent", "evaluation", "telemetry", "structured-output", "llmops", "ai-engineering"]
+keywords = [
+    "ai", "llm", "rag", "guardrails", "agent", "evaluation", "telemetry",
+    "structured-output", "llmops", "ai-engineering", "openai", "anthropic",
+    "ollama", "circuit-breaker", "json-repair", "pii-detection", "cost-tracking",
+    "prompt-engineering", "caching", "batch-processing", "fallback", "resilience",
+    "production", "toolkit", "mlops",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Topic :: System :: Networking",
     "Typing :: Typed",
+    "Framework :: Pytest",
 ]
 
 dependencies = [
