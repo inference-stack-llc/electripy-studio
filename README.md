@@ -7,6 +7,7 @@
 Production-minded Python components and recipes (cookbook) by Inference Stack.
 
 [![CI](https://github.com/reactlabs-dev/electripy-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/reactlabs-dev/electripy-studio/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/reactlabs-dev/electripy-studio?label=release&color=brightgreen)](https://github.com/reactlabs-dev/electripy-studio/releases/latest)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
