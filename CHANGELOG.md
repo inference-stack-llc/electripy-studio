@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-03-25
+
+### Fixed
+
+- All README links converted to absolute GitHub URLs so they work on PyPI.
+- PyPI badge cache-buster to force fresh render on GitHub.
+
 ## [0.1.2] — 2026-03-25
 
 ### Fixed

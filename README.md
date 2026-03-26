@@ -7,7 +7,7 @@
 Production-minded Python components and recipes (cookbook) by Inference Stack.
 
 [![CI](https://github.com/inference-stack-llc/electripy-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/inference-stack-llc/electripy-studio/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/electripy-studio?color=brightgreen)](https://pypi.org/project/electripy-studio/)
+[![PyPI](https://img.shields.io/pypi/v/electripy-studio?color=brightgreen&v=2)](https://pypi.org/project/electripy-studio/)
 [![Release](https://img.shields.io/github/v/release/inference-stack-llc/electripy-studio?label=release&color=brightgreen)](https://github.com/inference-stack-llc/electripy-studio/releases/latest)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -136,7 +136,7 @@ electripy rag eval --corpus data/corpus.jsonl --queries data/queries.jsonl \
     --top-k 3,5,10 --report-json out/report.json
 ```
 
-- LLM Gateway usage (offline-friendly fake provider example): see [recipes/02_llm_gateway/](recipes/02_llm_gateway/).
+- LLM Gateway usage (offline-friendly fake provider example): see [recipes/02_llm_gateway/](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes/02_llm_gateway/).
 
 ### Demo: Policy Gateway + Agent Collaboration
 
@@ -152,27 +152,27 @@ Customise with `--prompt` and `--max-hops`:
 electripy demo policy-collab --prompt "Alert user@corp.io about outage" --max-hops 6
 ```
 
-See [recipes/03_policy_collaboration/](recipes/03_policy_collaboration/) for the standalone script.
+See [recipes/03_policy_collaboration/](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes/03_policy_collaboration/) for the standalone script.
 
 ## Documentation
 
-Full documentation is available in the [docs/](docs/) directory:
+Full documentation is available in the [docs/](https://github.com/inference-stack-llc/electripy-studio/tree/main/docs) directory:
 
-- [Installation Guide](docs/getting-started/installation.md)
-- [Quickstart](docs/getting-started/quickstart.md)
-- [Core Concepts](docs/user-guide/core.md)
-- [Concurrency & Resilience](docs/user-guide/concurrency.md)
-- [I/O Utilities](docs/user-guide/io.md)
-- [CLI Guide](docs/user-guide/cli.md)
-- [LLM Gateway & AI](docs/user-guide/ai-llm-gateway.md)
-- [AI Telemetry](docs/user-guide/ai-telemetry.md)
-- [AI Policy Gateway](docs/user-guide/ai-policy-gateway.md)
-- [AI Agent Collaboration Runtime](docs/user-guide/ai-agent-collaboration.md)
-- [RAG Evaluation Runner](docs/user-guide/ai-rag-eval-runner.md)
-- [AI Product Engineering Utilities](docs/user-guide/ai-product-engineering.md)
-- [Component Maturity Model](docs/user-guide/component-maturity.md)
-- [Recipes](docs/recipes/cli-tool.md)
-- [API Reference](docs/api.md)
+- [Installation Guide](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/getting-started/installation.md)
+- [Quickstart](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/getting-started/quickstart.md)
+- [Core Concepts](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/core.md)
+- [Concurrency & Resilience](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/concurrency.md)
+- [I/O Utilities](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/io.md)
+- [CLI Guide](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/cli.md)
+- [LLM Gateway & AI](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-llm-gateway.md)
+- [AI Telemetry](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-telemetry.md)
+- [AI Policy Gateway](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-policy-gateway.md)
+- [AI Agent Collaboration Runtime](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-agent-collaboration.md)
+- [RAG Evaluation Runner](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-rag-eval-runner.md)
+- [AI Product Engineering Utilities](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/ai-product-engineering.md)
+- [Component Maturity Model](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/user-guide/component-maturity.md)
+- [Recipes](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/cli-tool.md)
+- [API Reference](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/api.md)
 
 Build and serve docs locally:
 
@@ -301,7 +301,7 @@ The library itself has no dependency on Poetry; it's just a convenient project m
 
 #### 4. pre-commit (for contributors)
 
-Once `pre-commit` is installed, enable the hooks defined in [.pre-commit-config.yaml](.pre-commit-config.yaml):
+Once `pre-commit` is installed, enable the hooks defined in [.pre-commit-config.yaml](https://github.com/inference-stack-llc/electripy-studio/blob/main/.pre-commit-config.yaml):
 
 ```bash
 pre-commit install
@@ -311,23 +311,23 @@ This will automatically run Black, Ruff, and basic whitespace checks on changed 
 
 ### CI/CD
 
-GitHub Actions automatically runs tests, linting, and type checking on all pull requests. See [.github/workflows/ci.yml](.github/workflows/ci.yml).
+GitHub Actions automatically runs tests, linting, and type checking on all pull requests. See [.github/workflows/ci.yml](https://github.com/inference-stack-llc/electripy-studio/blob/main/.github/workflows/ci.yml).
 
 ## Recipes
 
-Check out the [recipes/](recipes/) directory for complete examples:
+Check out the [recipes/](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes) directory for complete examples:
 
-- [01_cli_tool](recipes/01_cli_tool/) — Building a production-ready CLI tool
-- [02_llm_gateway](recipes/02_llm_gateway/) — LLM Gateway basics using a fake provider (offline-friendly)
-- [03_policy_collaboration](recipes/03_policy_collaboration/) — End-to-end policy gateway + LLM hooks + multi-agent collaboration demo
+- [01_cli_tool](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes/01_cli_tool/) — Building a production-ready CLI tool
+- [02_llm_gateway](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes/02_llm_gateway/) — LLM Gateway basics using a fake provider (offline-friendly)
+- [03_policy_collaboration](https://github.com/inference-stack-llc/electripy-studio/tree/main/recipes/03_policy_collaboration/) — End-to-end policy gateway + LLM hooks + multi-agent collaboration demo
 
 Additional recipe guides are available in the docs:
 
-- [Policy Gateway recipe](docs/recipes/policy-gateway.md) — standalone policy evaluation walkthrough
-- [Agent Collaboration Runtime recipe](docs/recipes/agent-collaboration-runtime.md) — bounded agent handoff patterns
-- [Policy + Collaboration E2E recipe](docs/recipes/policy-collaboration-e2e.md) — full pipeline with telemetry
-- [RAG Evaluation Runner recipe](docs/recipes/rag-eval-runner.md) — benchmarking retrieval quality
-- [AI Telemetry recipe](docs/recipes/ai-telemetry.md) — wiring observability across components
+- [Policy Gateway recipe](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/policy-gateway.md) — standalone policy evaluation walkthrough
+- [Agent Collaboration Runtime recipe](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/agent-collaboration-runtime.md) — bounded agent handoff patterns
+- [Policy + Collaboration E2E recipe](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/policy-collaboration-e2e.md) — full pipeline with telemetry
+- [RAG Evaluation Runner recipe](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/rag-eval-runner.md) — benchmarking retrieval quality
+- [AI Telemetry recipe](https://github.com/inference-stack-llc/electripy-studio/blob/main/docs/recipes/ai-telemetry.md) — wiring observability across components
 
 ## Requirements
 
@@ -336,14 +336,14 @@ Additional recipe guides are available in the docs:
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT License - See [LICENSE](https://github.com/inference-stack-llc/electripy-studio/blob/main/LICENSE) for details.
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before submitting PRs. For security issues, see [SECURITY.md](SECURITY.md).
+Contributions are welcome! Please read our [Contributing Guide](https://github.com/inference-stack-llc/electripy-studio/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/inference-stack-llc/electripy-studio/blob/main/CODE_OF_CONDUCT.md) before submitting PRs. For security issues, see [SECURITY.md](https://github.com/inference-stack-llc/electripy-studio/blob/main/SECURITY.md).
 
 ## Links
 
 - [GitHub Repository](https://github.com/inference-stack-llc/electripy-studio)
-- [Documentation](docs/)
+- [Documentation](https://github.com/inference-stack-llc/electripy-studio/tree/main/docs)
 - [Issue Tracker](https://github.com/inference-stack-llc/electripy-studio/issues)
