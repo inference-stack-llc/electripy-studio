@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/social-preview.png" alt="ElectriPy Studio — Production-grade Python toolkit for AI product engineering" width="100%">
+</p>
+
 # ElectriPy Studio
 
 Production-minded Python components and recipes (cookbook) by Inference Stack.
