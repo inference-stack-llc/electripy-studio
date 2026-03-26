@@ -51,4 +51,4 @@ ElectriPy Studio is a curated collection of production-ready Python components a
 
 ## License
 
-MIT License - See [LICENSE](https://github.com/reactlabs-dev/electripy-studio/blob/main/LICENSE) for details.
+MIT License - See [LICENSE](https://github.com/inference-stack-llc/electripy-studio/blob/main/LICENSE) for details.

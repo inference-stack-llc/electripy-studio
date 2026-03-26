@@ -5,7 +5,7 @@ Thank you for your interest in contributing! This guide covers everything you ne
 ## Development setup
 
 ```bash
-git clone https://github.com/reactlabs-dev/electripy-studio.git
+git clone https://github.com/inference-stack-llc/electripy-studio.git
 cd electripy-studio
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
@@ -55,7 +55,7 @@ When adding a new module, mirror this structure.
 
 ## Reporting issues
 
-Open a [GitHub issue](https://github.com/reactlabs-dev/electripy-studio/issues) with:
+Open a [GitHub issue](https://github.com/inference-stack-llc/electripy-studio/issues) with:
 
 - A minimal reproduction or failing test case
 - Python version and OS

@@ -3,16 +3,16 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "electripy"
+name = "electripy-studio"
 version = "0.1.0"
-description = "Production-minded Python components and recipes"
+description = "Production-grade Python toolkit for AI product engineering — LLM gateway, policy guardrails, RAG eval, agent collaboration, telemetry, and more."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
     {name = "Inference Stack", email = "team@inferencestack.com"},
 ]
-keywords = ["utilities", "cookbook", "recipes", "production"]
+keywords = ["ai", "llm", "rag", "guardrails", "agent", "evaluation", "telemetry", "structured-output", "llmops", "ai-engineering"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -20,6 +20,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 
 dependencies = [
@@ -43,6 +46,13 @@ docs = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/inference-stack-llc/electripy-studio"
+Documentation = "https://github.com/inference-stack-llc/electripy-studio/tree/main/docs"
+Repository = "https://github.com/inference-stack-llc/electripy-studio"
+Changelog = "https://github.com/inference-stack-llc/electripy-studio/blob/main/CHANGELOG.md"
+Issues = "https://github.com/inference-stack-llc/electripy-studio/issues"
 
 [project.scripts]
 electripy = "electripy.cli:app"

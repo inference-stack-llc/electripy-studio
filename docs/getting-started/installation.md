@@ -16,7 +16,7 @@ pip install electripy
 Clone the repository and install in editable mode:
 
 ```bash
-git clone https://github.com/reactlabs-dev/electripy-studio.git
+git clone https://github.com/inference-stack-llc/electripy-studio.git
 cd electripy-studio
 pip install -e .
 ```

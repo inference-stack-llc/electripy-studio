@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/reactlabs-dev/electripy-studio.git",
+    "url": "https://github.com/inference-stack-llc/electripy-studio.git",
     "directory": "packages/electripy-cli"
   },
   "license": "MIT",

@@ -27,7 +27,7 @@ electripy --help    # Show help
 ## Documentation
 
 See the main documentation at:
-https://github.com/reactlabs-dev/electripy-studio
+https://github.com/inference-stack-llc/electripy-studio
 
 ## License
 

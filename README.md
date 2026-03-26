@@ -6,8 +6,9 @@
 
 Production-minded Python components and recipes (cookbook) by Inference Stack.
 
-[![CI](https://github.com/reactlabs-dev/electripy-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/reactlabs-dev/electripy-studio/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/reactlabs-dev/electripy-studio?label=release&color=brightgreen)](https://github.com/reactlabs-dev/electripy-studio/releases/latest)
+[![CI](https://github.com/inference-stack-llc/electripy-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/inference-stack-llc/electripy-studio/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/electripy-studio?color=brightgreen)](https://pypi.org/project/electripy-studio/)
+[![Release](https://img.shields.io/github/v/release/inference-stack-llc/electripy-studio?label=release&color=brightgreen)](https://github.com/inference-stack-llc/electripy-studio/releases/latest)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -73,10 +74,10 @@ ElectriPy is **not** a framework — it's a composable toolkit of production-gra
 
 For most users, ElectriPy is just a Python library you depend on in your own project.
 
-Once published to PyPI, you can install it directly:
+Install from PyPI:
 
 ```bash
-pip install electripy
+pip install electripy-studio
 ```
 
 To work against a local clone in editable mode (e.g., to experiment with changes while using it in another project):
@@ -286,14 +287,14 @@ source .venv/bin/activate
 uv pip install -e ".[dev]"
 ```
 
-You can also use `uv pip install electripy` in your own projects once the package is published.
+You can also use `uv pip install electripy-studio` in your own projects.
 
 #### 3. Using poetry in your own projects (optional)
 
 This repo is built with `pyproject.toml` + Hatchling, but you can happily **consume** ElectriPy from a Poetry-managed project:
 
 ```bash
-poetry add electripy
+poetry add electripy-studio
 ```
 
 The library itself has no dependency on Poetry; it's just a convenient project manager if you already use it.
@@ -343,6 +344,6 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 
 ## Links
 
-- [GitHub Repository](https://github.com/reactlabs-dev/electripy-studio)
+- [GitHub Repository](https://github.com/inference-stack-llc/electripy-studio)
 - [Documentation](docs/)
-- [Issue Tracker](https://github.com/reactlabs-dev/electripy-studio/issues)
+- [Issue Tracker](https://github.com/inference-stack-llc/electripy-studio/issues)

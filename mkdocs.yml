@@ -1,8 +1,8 @@
 site_name: ElectriPy Studio
 site_description: Production-minded Python components and recipes
 site_author: Inference Stack
-repo_url: https://github.com/reactlabs-dev/electripy-studio
-repo_name: reactlabs-dev/electripy-studio
+repo_url: https://github.com/inference-stack-llc/electripy-studio
+repo_name: inference-stack-llc/electripy-studio
 
 theme:
   name: material
