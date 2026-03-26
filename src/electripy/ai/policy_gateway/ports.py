@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from typing import Protocol
 
 from .domain import PolicyFinding, PolicyInput, PolicyRule
+
+__all__ = ["PolicyDetectorPort", "TextSanitizerPort"]
 
 
 class PolicyDetectorPort(Protocol):
     """Protocol for policy detectors."""
 
-    def detect(self, policy_input: PolicyInput, rules: list[PolicyRule]) -> list[PolicyFinding]:
+    def detect(self, policy_input: PolicyInput, rules: Sequence[PolicyRule]) -> list[PolicyFinding]:
         """Return policy findings for the given input and rule set."""
 
 
@@ -21,7 +24,7 @@ class TextSanitizerPort(Protocol):
         self,
         *,
         text: str,
-        findings: list[PolicyFinding],
-        rules_by_id: dict[str, PolicyRule],
+        findings: Sequence[PolicyFinding],
+        rules_by_id: Mapping[str, PolicyRule],
     ) -> str:
         """Return sanitized text for the supplied findings."""

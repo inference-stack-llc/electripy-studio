@@ -28,6 +28,14 @@ if TYPE_CHECKING:  # pragma: no cover - import-time only
     from .domain import LlmRequest, LlmResponse
     from .ports import PromptGuardPort, RedactorPort
 
+__all__ = [
+    "LlmCallHook",
+    "LlmGatewaySettings",
+    "LlmRequestHook",
+    "LlmResponseHook",
+    "RetryPolicy",
+]
+
 
 LlmCallHook = Callable[["LlmRequest", "LlmResponse", float], None]
 LlmRequestHook = Callable[["LlmRequest"], "LlmRequest"]

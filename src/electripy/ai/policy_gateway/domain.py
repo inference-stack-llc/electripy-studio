@@ -6,6 +6,17 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
 
+__all__ = [
+    "PolicyAction",
+    "PolicyContext",
+    "PolicyDecision",
+    "PolicyFinding",
+    "PolicyInput",
+    "PolicyRule",
+    "PolicySeverity",
+    "PolicyStage",
+]
+
 
 class PolicyAction(StrEnum):
     """Action returned by policy evaluation."""
@@ -34,17 +45,17 @@ class PolicySeverity(StrEnum):
     CRITICAL = "critical"
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class PolicyContext:
     """Correlation context for policy evaluations."""
 
     request_id: str | None = None
     actor_id: str | None = None
     tenant_id: str | None = None
-    tags: dict[str, str] = field(default_factory=dict)
+    tags: tuple[tuple[str, str], ...] = ()
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class PolicyRule:
     """Rule definition used by detector adapters.
 
@@ -69,7 +80,7 @@ class PolicyRule:
     replacement: str = "[REDACTED]"
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class PolicyInput:
     """Input payload passed to policy detectors."""
 
@@ -81,7 +92,7 @@ class PolicyInput:
     context: PolicyContext | None = None
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class PolicyFinding:
     """Single policy finding from detector evaluation."""
 
@@ -94,7 +105,7 @@ class PolicyFinding:
     end: int | None = None
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class PolicyDecision:
     """Final policy decision for a given request/response."""
 

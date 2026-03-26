@@ -157,6 +157,8 @@ class LlmGatewaySyncClient:
       - Structured JSON output mode with one repair attempt.
     """
 
+    __slots__ = ("_port", "_settings")
+
     def __init__(
         self,
         *,
@@ -325,6 +327,8 @@ class LlmGatewaySyncClient:
 
 class LlmGatewayAsyncClient:
     """Asynchronous LLM gateway client."""
+
+    __slots__ = ("_port", "_settings")
 
     def __init__(
         self,

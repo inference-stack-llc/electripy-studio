@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from .domain import PolicyFinding, PolicyInput, PolicyRule
 from .ports import PolicyDetectorPort, TextSanitizerPort
+
+__all__ = ["RedactionSanitizerAdapter", "RegexPolicyDetectorAdapter"]
 
 
 @dataclass(slots=True)
@@ -18,7 +21,7 @@ class RegexPolicyDetectorAdapter(PolicyDetectorPort):
 
     case_insensitive: bool = True
 
-    def detect(self, policy_input: PolicyInput, rules: list[PolicyRule]) -> list[PolicyFinding]:
+    def detect(self, policy_input: PolicyInput, rules: Sequence[PolicyRule]) -> list[PolicyFinding]:
         """Detect rule matches for the given text input."""
 
         flags = re.IGNORECASE if self.case_insensitive else 0
@@ -52,8 +55,8 @@ class RedactionSanitizerAdapter(TextSanitizerPort):
         self,
         *,
         text: str,
-        findings: list[PolicyFinding],
-        rules_by_id: dict[str, PolicyRule],
+        findings: Sequence[PolicyFinding],
+        rules_by_id: Mapping[str, PolicyRule],
     ) -> str:
         """Sanitize text by replacing matched spans from right to left."""
 
@@ -70,6 +73,6 @@ class RedactionSanitizerAdapter(TextSanitizerPort):
         # Replace from the end to avoid index shifting.
         sanitized = text
         for start, end, replacement in sorted(spans, key=lambda s: (s[0], s[1]), reverse=True):
-            repl = replacement or self.default_replacement
+            repl = replacement if replacement is not None else self.default_replacement
             sanitized = sanitized[:start] + repl + sanitized[end:]
         return sanitized

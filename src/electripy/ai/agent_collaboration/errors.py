@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+__all__ = [
+    "AgentCollaborationError",
+    "HopLimitExceededError",
+    "UnknownAgentError",
+]
+
 
 class AgentCollaborationError(Exception):
     """Base error for collaboration runtime failures."""

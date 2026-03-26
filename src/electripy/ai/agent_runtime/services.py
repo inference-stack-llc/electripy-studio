@@ -9,6 +9,8 @@ from .ports import ToolPort
 class AgentExecutor:
     """Execute ordered tool invocation plans with bounded retries."""
 
+    __slots__ = ("_max_attempts", "_tool_port")
+
     def __init__(self, *, tool_port: ToolPort, max_attempts: int = 2) -> None:
         if max_attempts <= 0:
             raise ValueError("max_attempts must be positive")

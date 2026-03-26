@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class Config:
     """Application configuration with environment variable support."""
 

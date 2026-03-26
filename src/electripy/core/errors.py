@@ -1,5 +1,13 @@
 """Custom exceptions for ElectriPy."""
 
+__all__ = [
+    "ConfigError",
+    "ElectriPyError",
+    "RateLimitError",
+    "RetryError",
+    "ValidationError",
+]
+
 
 class ElectriPyError(Exception):
     """Base exception for all ElectriPy errors."""

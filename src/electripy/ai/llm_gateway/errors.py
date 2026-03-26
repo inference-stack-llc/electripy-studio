@@ -24,6 +24,17 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Final
 
+__all__ = [
+    "LlmGatewayError",
+    "PolicyViolationError",
+    "PromptRejectedError",
+    "RateLimitedError",
+    "RetryExhaustedError",
+    "StructuredOutputError",
+    "TokenBudgetExceededError",
+    "TransientLlmError",
+]
+
 
 class LlmGatewayError(Exception):
     """Base exception for all LLM gateway related errors."""

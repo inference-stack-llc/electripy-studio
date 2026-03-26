@@ -5,8 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
+__all__ = [
+    "AgentMessage",
+    "AgentTurnResult",
+    "CollaborationRunResult",
+    "CollaborationTask",
+]
 
-@dataclass(slots=True)
+
+@dataclass(frozen=True, slots=True)
 class CollaborationTask:
     """Top-level collaboration task for a run."""
 
@@ -15,7 +22,7 @@ class CollaborationTask:
     metadata: dict[str, object] = field(default_factory=dict)
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class AgentMessage:
     """Message exchanged between collaborating agents."""
 
@@ -29,7 +36,7 @@ class AgentMessage:
     created_at: datetime = field(default_factory=lambda: datetime.now(tz=UTC))
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class AgentTurnResult:
     """Output of one agent turn within collaboration runtime."""
 
@@ -38,7 +45,7 @@ class AgentTurnResult:
     outcome: str | None = None
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True, slots=True)
 class CollaborationRunResult:
     """Final result summary for a collaboration run."""
 

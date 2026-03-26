@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+__all__ = [
+    "PolicyConfigurationError",
+    "PolicyEvaluationError",
+    "PolicyGatewayError",
+]
+
 
 class PolicyGatewayError(Exception):
     """Base exception for policy gateway failures."""

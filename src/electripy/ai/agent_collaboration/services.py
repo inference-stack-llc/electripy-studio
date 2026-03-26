@@ -23,6 +23,8 @@ class CollaborationRuntimeSettings:
 class AgentCollaborationRuntime:
     """Orchestrate deterministic message handoffs across specialist agents."""
 
+    __slots__ = ("_agents", "_policy_gateway", "_settings")
+
     def __init__(
         self,
         *,

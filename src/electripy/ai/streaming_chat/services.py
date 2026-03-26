@@ -7,6 +7,13 @@ from collections.abc import AsyncIterable, AsyncIterator, Iterable, Iterator
 
 from .domain import StreamChunk
 
+__all__ = [
+    "async_collect_text",
+    "collect_text",
+    "iter_text_deltas",
+    "with_timeout",
+]
+
 
 def iter_text_deltas(chunks: Iterable[StreamChunk]) -> Iterator[str]:
     """Yield non-empty text deltas from chunks in order."""
@@ -43,11 +50,11 @@ async def with_timeout(
       TimeoutError: If stream iteration exceeds the timeout.
     """
 
-    iterator = chunks.__aiter__()
+    iterator = aiter(chunks)
     while True:
         try:
             async with asyncio.timeout(timeout_seconds):
-                chunk = await iterator.__anext__()
+                chunk = await anext(iterator)
         except StopAsyncIteration:
             return
         except TimeoutError as exc:

@@ -6,6 +6,8 @@ from typing import Protocol
 
 from .domain import AgentMessage, AgentTurnResult, CollaborationTask
 
+__all__ = ["CollaborationAgentPort"]
+
 
 class CollaborationAgentPort(Protocol):
     """Protocol for agent handlers used by collaboration runtime."""
