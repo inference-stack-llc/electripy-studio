@@ -393,8 +393,7 @@ class RoutingService:
     ) -> list[CandidateScore]:
         """Score candidates and return them sorted best → worst."""
         scored = [
-            _score_candidate(c, policy.weights, policy.preferred_providers)
-            for c in candidates
+            _score_candidate(c, policy.weights, policy.preferred_providers) for c in candidates
         ]
         scored.sort(key=lambda s: s.total_score, reverse=True)
         return scored

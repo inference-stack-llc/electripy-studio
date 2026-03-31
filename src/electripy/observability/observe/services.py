@@ -52,9 +52,7 @@ logger = get_logger(__name__)
 # ContextVar for current span propagation
 # ---------------------------------------------------------------------------
 
-_current_span: ContextVar[SpanPort | None] = ContextVar(
-    "observe_current_span", default=None
-)
+_current_span: ContextVar[SpanPort | None] = ContextVar("observe_current_span", default=None)
 
 
 def current_span() -> SpanPort | None:
@@ -468,7 +466,10 @@ def observe_span(
     parent = current_span()
     parent_ctx = parent.context if parent is not None else None
     span = tracer.start_span(
-        name, kind=kind, parent=parent_ctx, attributes=dict(attributes or {}),
+        name,
+        kind=kind,
+        parent=parent_ctx,
+        attributes=dict(attributes or {}),
     )
     token = _current_span.set(span)
     try:
@@ -505,7 +506,10 @@ async def aobserve_span(
     parent = current_span()
     parent_ctx = parent.context if parent is not None else None
     span = tracer.start_span(
-        name, kind=kind, parent=parent_ctx, attributes=dict(attributes or {}),
+        name,
+        kind=kind,
+        parent=parent_ctx,
+        attributes=dict(attributes or {}),
     )
     token = _current_span.set(span)
     try:

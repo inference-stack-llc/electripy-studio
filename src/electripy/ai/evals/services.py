@@ -209,9 +209,7 @@ class EvalRunner:
 
         if fail_on_regression and comparison.has_regressions:
             names = ", ".join(d.metric_name for d in comparison.regressions)
-            raise RegressionError(
-                f"Regression detected in metric(s): {names}"
-            )
+            raise RegressionError(f"Regression detected in metric(s): {names}")
 
         return comparison
 

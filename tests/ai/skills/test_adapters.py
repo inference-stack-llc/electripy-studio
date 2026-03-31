@@ -122,9 +122,7 @@ class TestFileSystemSkillLoader:
     def test_load_missing_name_raises(self, tmp_path: Path) -> None:
         bad = tmp_path / "noname"
         bad.mkdir()
-        (bad / "manifest.json").write_text(
-            json.dumps({"version": "1.0.0"}), encoding="utf-8"
-        )
+        (bad / "manifest.json").write_text(json.dumps({"version": "1.0.0"}), encoding="utf-8")
         loader = FileSystemSkillLoader()
         with pytest.raises(ManifestLoadError, match="missing 'name'"):
             loader.load(str(bad))
@@ -132,9 +130,7 @@ class TestFileSystemSkillLoader:
     def test_load_missing_version_raises(self, tmp_path: Path) -> None:
         bad = tmp_path / "noversion"
         bad.mkdir()
-        (bad / "manifest.json").write_text(
-            json.dumps({"name": "test"}), encoding="utf-8"
-        )
+        (bad / "manifest.json").write_text(json.dumps({"name": "test"}), encoding="utf-8")
         loader = FileSystemSkillLoader()
         with pytest.raises(ManifestLoadError, match="missing 'version'"):
             loader.load(str(bad))
@@ -153,11 +149,13 @@ class TestFileSystemSkillLoader:
         bad = tmp_path / "badkind"
         bad.mkdir()
         (bad / "manifest.json").write_text(
-            json.dumps({
-                "name": "test",
-                "version": "1.0.0",
-                "assets": [{"name": "x", "kind": "bogus", "path": "x.md"}],
-            }),
+            json.dumps(
+                {
+                    "name": "test",
+                    "version": "1.0.0",
+                    "assets": [{"name": "x", "kind": "bogus", "path": "x.md"}],
+                }
+            ),
             encoding="utf-8",
         )
         loader = FileSystemSkillLoader()
@@ -256,9 +254,7 @@ class TestDefaultSkillValidator:
             name="test",
             version=SkillVersion(1, 0, 0),
             entry_instruction="main.md",
-            assets=(
-                SkillAsset(name="ghost", kind=AssetKind.DATA, relative_path="ghost.dat"),
-            ),
+            assets=(SkillAsset(name="ghost", kind=AssetKind.DATA, relative_path="ghost.dat"),),
         )
         validator = DefaultSkillValidator()
         result = validator.validate(manifest, str(tmp_path))
@@ -272,9 +268,7 @@ class TestDefaultSkillValidator:
             name="test",
             version=SkillVersion(1, 0, 0),
             entry_instruction="main.md",
-            assets=(
-                SkillAsset(name="nopath", kind=AssetKind.DATA, relative_path=""),
-            ),
+            assets=(SkillAsset(name="nopath", kind=AssetKind.DATA, relative_path=""),),
         )
         validator = DefaultSkillValidator()
         result = validator.validate(manifest, str(tmp_path))
@@ -384,7 +378,7 @@ class TestDefaultSkillResolver:
         resolver = DefaultSkillResolver()
 
         ctx = SkillExecutionContext(
-            variables=(("code", "test"),("reviewer", "X"),("findings", "Y")),
+            variables=(("code", "test"), ("reviewer", "X"), ("findings", "Y")),
         )
         result = resolver.resolve(pkg, ctx)
         # The style guide fragment has no variables, should pass through.

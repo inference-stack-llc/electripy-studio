@@ -40,7 +40,11 @@ _EXPENSIVE_POWERFUL = CandidateModel(
     model_id="gpt-4o",
     provider="openai",
     capabilities=CapabilityProfile(
-        structured_output=True, tool_use=True, streaming=True, vision=True, reasoning=True,
+        structured_output=True,
+        tool_use=True,
+        streaming=True,
+        vision=True,
+        reasoning=True,
     ),
     cost=CostProfile(cost_per_1k_input=0.005, cost_per_1k_output=0.015),
     latency=LatencyProfile(median_ms=800.0, p99_ms=5000.0),
@@ -52,7 +56,10 @@ _ANTHROPIC_LARGE = CandidateModel(
     model_id="claude-3.5-sonnet",
     provider="anthropic",
     capabilities=CapabilityProfile(
-        structured_output=True, tool_use=True, streaming=True, vision=True,
+        structured_output=True,
+        tool_use=True,
+        streaming=True,
+        vision=True,
     ),
     cost=CostProfile(cost_per_1k_input=0.003, cost_per_1k_output=0.015),
     latency=LatencyProfile(median_ms=600.0, p99_ms=4000.0),
@@ -179,9 +186,7 @@ class TestConstraintFiltering:
             predicate=lambda c: c.model_id == "nonexistent",
         )
         with pytest.raises(NoCandidateError, match="my-custom-rule"):
-            service.route(
-                RoutingRequest(policy=RoutingPolicy(constraints=(constraint,)))
-            )
+            service.route(RoutingRequest(policy=RoutingPolicy(constraints=(constraint,))))
 
     def test_unhealthy_excluded(self) -> None:
         service = _make_service([_CHEAP_FAST, _UNHEALTHY])
@@ -230,9 +235,7 @@ class TestBudgetRouting:
     def test_all_exceed_budget_raises(self) -> None:
         service = _make_service([_EXPENSIVE_POWERFUL, _ANTHROPIC_LARGE])
         with pytest.raises(BudgetExceededError, match="exceed the budget"):
-            service.route(
-                RoutingRequest(policy=RoutingPolicy(max_cost_per_1k=0.0001))
-            )
+            service.route(RoutingRequest(policy=RoutingPolicy(max_cost_per_1k=0.0001)))
 
     def test_route_by_budget_convenience(self) -> None:
         service = _make_service()
@@ -371,17 +374,13 @@ class TestFallbackPlan:
 
     def test_min_fallbacks_satisfied(self) -> None:
         service = _make_service()
-        decision = service.route(
-            RoutingRequest(policy=RoutingPolicy(min_fallbacks=2))
-        )
+        decision = service.route(RoutingRequest(policy=RoutingPolicy(min_fallbacks=2)))
         assert decision.fallback_plan.depth >= 2
 
     def test_min_fallbacks_not_met_raises(self) -> None:
         service = _make_service([_CHEAP_FAST])
         with pytest.raises(NoCandidateError, match="fallback"):
-            service.route(
-                RoutingRequest(policy=RoutingPolicy(min_fallbacks=1))
-            )
+            service.route(RoutingRequest(policy=RoutingPolicy(min_fallbacks=1)))
 
     def test_unhealthy_excluded_from_fallbacks(self) -> None:
         service = _make_service([_CHEAP_FAST, _EXPENSIVE_POWERFUL, _UNHEALTHY])
@@ -445,9 +444,7 @@ class TestExplanation:
     def test_explanation_shows_custom_constraints(self) -> None:
         service = _make_service()
         constraint = RoutingConstraint(name="my-rule", predicate=lambda c: True)
-        decision = service.route(
-            RoutingRequest(policy=RoutingPolicy(constraints=(constraint,)))
-        )
+        decision = service.route(RoutingRequest(policy=RoutingPolicy(constraints=(constraint,))))
         assert "my-rule" in decision.explanation.policy_summary
 
 

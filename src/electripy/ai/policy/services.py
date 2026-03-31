@@ -31,6 +31,7 @@ from .domain import (
     ApprovalToken,
     DecisionOutcome,
     EvidenceItem,
+    EvidenceKind,
     PolicyContext,
     PolicyDecision,
     PolicyPack,
@@ -145,7 +146,7 @@ class PolicyEngine:
 
         # Collect required evidence kinds from violated rules.
         rules = self.repository.list_rules(resource_type=context.resource.resource_type)
-        required_evidence = set()
+        required_evidence: set[EvidenceKind] = set()
         violated_ids = {v.rule_id for v in decision.violations}
         ttl_seconds: int | None = None
         for rule in rules:
@@ -246,9 +247,7 @@ class PolicyEngine:
 
         ids = [r.rule_id for r in pack.rules]
         if len(ids) != len(set(ids)):
-            raise PolicyPackError(
-                f"Policy pack '{pack.pack_id}' contains duplicate rule IDs"
-            )
+            raise PolicyPackError(f"Policy pack '{pack.pack_id}' contains duplicate rule IDs")
 
         existing = self.repository.list_rules()
         existing_ids = {r.rule_id for r in existing}

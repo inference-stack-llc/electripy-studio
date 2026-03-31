@@ -91,9 +91,7 @@ def minimal_skill_dir(tmp_path: Path) -> Path:
         "version": "0.1.0",
         "entry_instruction": "main.md",
     }
-    (root / "manifest.json").write_text(
-        json.dumps(manifest), encoding="utf-8"
-    )
+    (root / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     return root
 
 

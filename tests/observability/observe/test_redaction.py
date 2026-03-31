@@ -16,9 +16,7 @@ class TestDefaultRedactor:
     def test_exact_match_redacts_key(self) -> None:
         """An exact rule redacts a matching key."""
         policy = RedactionPolicy(
-            rules=(
-                RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),
-            ),
+            rules=(RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),),
         )
         redactor = DefaultRedactor(policy=policy)
 
@@ -30,9 +28,7 @@ class TestDefaultRedactor:
     def test_exact_match_is_case_insensitive(self) -> None:
         """Exact matching ignores case."""
         policy = RedactionPolicy(
-            rules=(
-                RedactionRule(kind=RedactionRuleKind.EXACT, match="API_KEY"),
-            ),
+            rules=(RedactionRule(kind=RedactionRuleKind.EXACT, match="API_KEY"),),
         )
         redactor = DefaultRedactor(policy=policy)
 
@@ -52,11 +48,13 @@ class TestDefaultRedactor:
         )
         redactor = DefaultRedactor(policy=policy)
 
-        result = redactor.redact({
-            "authorization": "Bearer tok",
-            "auth_header": "Basic cred",
-            "model": "gpt-4o",
-        })
+        result = redactor.redact(
+            {
+                "authorization": "Bearer tok",
+                "auth_header": "Basic cred",
+                "model": "gpt-4o",
+            }
+        )
 
         assert result["authorization"] == "***"
         assert result["auth_header"] == "***"
@@ -81,6 +79,7 @@ class TestDefaultRedactor:
 
     def test_callable_predicate_exception_treated_as_match(self) -> None:
         """A predicate that raises is conservatively treated as a match."""
+
         def _bad_predicate(k: str, v: object) -> bool:
             raise RuntimeError("boom")
 
@@ -121,9 +120,7 @@ class TestDefaultRedactor:
     def test_disabled_policy_passes_through(self) -> None:
         """A disabled policy returns attributes unchanged."""
         policy = RedactionPolicy(
-            rules=(
-                RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),
-            ),
+            rules=(RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),),
             enabled=False,
         )
         redactor = DefaultRedactor(policy=policy)
@@ -135,14 +132,16 @@ class TestDefaultRedactor:
         """The enterprise default policy redacts known sensitive keys."""
         redactor = DefaultRedactor()
 
-        result = redactor.redact({
-            "prompt": "Tell me a joke",
-            "completion": "Why did the chicken...",
-            "api_key": "sk-abc",
-            "password": "hunter2",
-            "model": "gpt-4o",
-            "latency_ms": 42.0,
-        })
+        result = redactor.redact(
+            {
+                "prompt": "Tell me a joke",
+                "completion": "Why did the chicken...",
+                "api_key": "sk-abc",
+                "password": "hunter2",
+                "model": "gpt-4o",
+                "latency_ms": 42.0,
+            }
+        )
 
         assert result["prompt"] == "[REDACTED]"
         assert result["completion"] == "[REDACTED]"
@@ -156,9 +155,7 @@ class TestDefaultRedactor:
         original = {"secret": "value", "safe": "ok"}
         redactor = DefaultRedactor(
             policy=RedactionPolicy(
-                rules=(
-                    RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),
-                ),
+                rules=(RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),),
             )
         )
 

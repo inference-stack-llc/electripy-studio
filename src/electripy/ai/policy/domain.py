@@ -372,9 +372,7 @@ class ApprovalToken:
     request_id: str = ""
     granted_by: str = ""
     granted_at: datetime = field(default_factory=lambda: datetime.now(tz=UTC))
-    expires_at: datetime = field(
-        default_factory=lambda: datetime.now(tz=UTC) + timedelta(hours=1)
-    )
+    expires_at: datetime = field(default_factory=lambda: datetime.now(tz=UTC) + timedelta(hours=1))
     evidence: tuple[EvidenceItem, ...] = ()
 
     @property

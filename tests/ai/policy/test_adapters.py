@@ -327,9 +327,7 @@ class TestInMemoryApprovalStore:
 class TestLoggingEscalationHandler:
     def test_records_escalation(self) -> None:
         handler = LoggingEscalationHandler()
-        directive = EscalationDirective(
-            level=EscalationLevel.MANAGER, reason="Test"
-        )
+        directive = EscalationDirective(level=EscalationLevel.MANAGER, reason="Test")
         ctx = _make_context()
         handler.escalate(directive, ctx)
         assert len(handler.escalations) == 1

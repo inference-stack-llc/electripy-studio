@@ -265,16 +265,24 @@ class EventEnvelope:
 
 # Valid transitions: mapping from current state to set of allowed next states.
 VALID_TRANSITIONS: dict[SessionState, frozenset[SessionState]] = {
-    SessionState.INITIALIZED: frozenset({SessionState.ACTIVE, SessionState.CLOSED, SessionState.FAILED}),
-    SessionState.ACTIVE: frozenset({
-        SessionState.INTERRUPTED,
-        SessionState.WAITING_ON_TOOL,
-        SessionState.COMPLETED,
-        SessionState.FAILED,
-        SessionState.CLOSED,
-    }),
-    SessionState.INTERRUPTED: frozenset({SessionState.ACTIVE, SessionState.FAILED, SessionState.CLOSED}),
-    SessionState.WAITING_ON_TOOL: frozenset({SessionState.ACTIVE, SessionState.FAILED, SessionState.CLOSED}),
+    SessionState.INITIALIZED: frozenset(
+        {SessionState.ACTIVE, SessionState.CLOSED, SessionState.FAILED}
+    ),
+    SessionState.ACTIVE: frozenset(
+        {
+            SessionState.INTERRUPTED,
+            SessionState.WAITING_ON_TOOL,
+            SessionState.COMPLETED,
+            SessionState.FAILED,
+            SessionState.CLOSED,
+        }
+    ),
+    SessionState.INTERRUPTED: frozenset(
+        {SessionState.ACTIVE, SessionState.FAILED, SessionState.CLOSED}
+    ),
+    SessionState.WAITING_ON_TOOL: frozenset(
+        {SessionState.ACTIVE, SessionState.FAILED, SessionState.CLOSED}
+    ),
     SessionState.COMPLETED: frozenset({SessionState.CLOSED}),
     SessionState.FAILED: frozenset({SessionState.CLOSED}),
     SessionState.CLOSED: frozenset(),

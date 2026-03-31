@@ -101,9 +101,7 @@ class NormalizedTextScorer:
         else:
             norm = _normalize(actual_output)
             expected = {_normalize(case.ground_truth.reference_output)}
-            expected.update(
-                _normalize(a) for a in case.ground_truth.acceptable_alternatives
-            )
+            expected.update(_normalize(a) for a in case.ground_truth.acceptable_alternatives)
             value = 1.0 if norm in expected else 0.0
 
         return [
@@ -144,9 +142,7 @@ class ContainsScorer:
     ) -> list[EvalScore]:
         text = actual_output if self.case_sensitive else actual_output.lower()
         targets = (
-            self.substrings
-            if self.case_sensitive
-            else tuple(s.lower() for s in self.substrings)
+            self.substrings if self.case_sensitive else tuple(s.lower() for s in self.substrings)
         )
         hits = sum(1 for s in targets if s in text) if targets else 0
         total = len(targets) if targets else 1
@@ -354,24 +350,26 @@ class ToolCallScorer:
                         if extra_keys:
                             arg_match *= 0.5  # Penalize unexpected args
 
-            scores.extend([
-                EvalScore(
-                    case_id=case.case_id,
-                    scorer_name=self.name,
-                    metric=EvalMetric(
-                        name=f"tool_name_match{suffix}",
-                        value=name_match,
+            scores.extend(
+                [
+                    EvalScore(
+                        case_id=case.case_id,
+                        scorer_name=self.name,
+                        metric=EvalMetric(
+                            name=f"tool_name_match{suffix}",
+                            value=name_match,
+                        ),
                     ),
-                ),
-                EvalScore(
-                    case_id=case.case_id,
-                    scorer_name=self.name,
-                    metric=EvalMetric(
-                        name=f"tool_arg_match{suffix}",
-                        value=arg_match,
+                    EvalScore(
+                        case_id=case.case_id,
+                        scorer_name=self.name,
+                        metric=EvalMetric(
+                            name=f"tool_arg_match{suffix}",
+                            value=arg_match,
+                        ),
                     ),
-                ),
-            ])
+                ]
+            )
 
         return scores
 

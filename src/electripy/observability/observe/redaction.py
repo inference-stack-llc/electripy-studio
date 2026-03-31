@@ -59,9 +59,7 @@ class DefaultRedactor:
     policy: RedactionPolicy = field(default_factory=RedactionPolicy.enterprise_default)
 
     # Compiled regex cache keyed by pattern string.
-    _pattern_cache: dict[str, re.Pattern[str]] = field(
-        default_factory=dict, repr=False
-    )
+    _pattern_cache: dict[str, re.Pattern[str]] = field(default_factory=dict, repr=False)
 
     def redact(self, attributes: Attributes) -> Attributes:
         """Return a redacted copy of *attributes*.
@@ -97,9 +95,7 @@ class DefaultRedactor:
                 return rule.replacement or self.policy.default_replacement
         return None
 
-    def _rule_matches(
-        self, rule: RedactionRule, key: str, value: AttributeValue
-    ) -> bool:
+    def _rule_matches(self, rule: RedactionRule, key: str, value: AttributeValue) -> bool:
         """Test whether *rule* matches the given key/value pair."""
         if rule.kind == RedactionRuleKind.EXACT:
             return key.lower() == rule.match.lower()
@@ -129,9 +125,7 @@ class DefaultRedactor:
             try:
                 compiled = re.compile(pattern, re.IGNORECASE)
             except re.error as exc:
-                raise RedactionError(
-                    f"Invalid redaction regex pattern: {pattern!r}"
-                ) from exc
+                raise RedactionError(f"Invalid redaction regex pattern: {pattern!r}") from exc
             self._pattern_cache[pattern] = compiled
         return compiled
 

@@ -147,9 +147,7 @@ class TestInMemoryTracer:
     def test_redaction_on_end(self) -> None:
         """When a redactor is configured, attributes are redacted on end."""
         policy = RedactionPolicy(
-            rules=(
-                RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),
-            ),
+            rules=(RedactionRule(kind=RedactionRuleKind.EXACT, match="secret"),),
         )
         redactor = DefaultRedactor(policy=policy)
         tracer = InMemoryTracer(redactor=redactor)

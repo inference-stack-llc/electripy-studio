@@ -48,12 +48,7 @@ class TestJsonlDatasetLoader:
 
     def test_skips_blank_and_comments(self, tmp_path: Path) -> None:
         data = tmp_path / "test.jsonl"
-        data.write_text(
-            '# header comment\n'
-            '\n'
-            '{"id": "q1", "input": "Hello"}\n'
-            '\n'
-        )
+        data.write_text("# header comment\n" "\n" '{"id": "q1", "input": "Hello"}\n' "\n")
         loader = JsonlDatasetLoader()
         dataset = loader.load(str(data))
         assert dataset.size == 1
@@ -84,8 +79,7 @@ class TestJsonlDatasetLoader:
     def test_alternatives(self, tmp_path: Path) -> None:
         data = tmp_path / "alt.jsonl"
         data.write_text(
-            '{"id": "q1", "reference_output": "A",'
-            ' "acceptable_alternatives": ["a", "AA"]}\n'
+            '{"id": "q1", "reference_output": "A",' ' "acceptable_alternatives": ["a", "AA"]}\n'
         )
         dataset = JsonlDatasetLoader().load(str(data))
         gt = dataset.cases[0].ground_truth
@@ -105,8 +99,7 @@ class TestJsonlDatasetLoader:
     def test_retrieval(self, tmp_path: Path) -> None:
         data = tmp_path / "ret.jsonl"
         data.write_text(
-            '{"id": "q1", "expected_retrieval": '
-            '{"expected_ids": ["d1", "d2"], "k": 3}}\n'
+            '{"id": "q1", "expected_retrieval": ' '{"expected_ids": ["d1", "d2"], "k": 3}}\n'
         )
         dataset = JsonlDatasetLoader().load(str(data))
         ret = dataset.cases[0].expected_retrieval
@@ -127,9 +120,7 @@ def _make_summary() -> EvalSummary:
         total=2,
         passed=1,
         failed=1,
-        metrics=(
-            EvalMetric(name="exact_match", value=0.5),
-        ),
+        metrics=(EvalMetric(name="exact_match", value=0.5),),
         results=(
             EvalResult(case_id="q1", passed=True, actual_output="Paris"),
             EvalResult(case_id="q2", passed=False, actual_output="London"),
@@ -188,7 +179,9 @@ class TestFileArtifactStore:
     def test_saves_artifact(self, tmp_path: Path) -> None:
         store = FileArtifactStore(base_dir=str(tmp_path / "artifacts"))
         artifact = EvalArtifact(
-            name="scores.json", format="json", content='{"x": 1}',
+            name="scores.json",
+            format="json",
+            content='{"x": 1}',
         )
         path = store.save(artifact, "run-001")
         assert Path(path).exists()

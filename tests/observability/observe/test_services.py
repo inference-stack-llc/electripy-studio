@@ -77,9 +77,7 @@ class TestObservabilityServiceInMemory:
             temperature=0.5,
         )
 
-        with svc.start_llm_span(
-            provider="anthropic", model="claude-3", request_meta=meta
-        ):
+        with svc.start_llm_span(provider="anthropic", model="claude-3", request_meta=meta):
             pass
 
         attrs = tracer.finished_spans[0].attributes

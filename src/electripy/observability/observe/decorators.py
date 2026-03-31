@@ -89,11 +89,11 @@ def observe_function(
                     span.set_attribute("code.function", fn.__qualname__)
                     t0 = time.monotonic()
                     try:
-                        result = await fn(*args, **kwargs)  # type: ignore[misc]
+                        result = await fn(*args, **kwargs)
                         elapsed_ms = (time.monotonic() - t0) * 1000.0
                         span.set_attribute("code.latency_ms", elapsed_ms)
                         span.set_status(SpanStatus(code=SpanStatusCode.OK))
-                        return result
+                        return result  # type: ignore[no-any-return]
                     except BaseException:
                         elapsed_ms = (time.monotonic() - t0) * 1000.0
                         span.set_attribute("code.latency_ms", elapsed_ms)
@@ -182,12 +182,12 @@ def observe_tool(
                 async with cm as span:
                     t0 = time.monotonic()
                     try:
-                        result = await fn(*args, **kwargs)  # type: ignore[misc]
+                        result = await fn(*args, **kwargs)
                         elapsed_ms = (time.monotonic() - t0) * 1000.0
                         span.set_attribute("tool.latency_ms", elapsed_ms)
                         span.set_attribute("tool.status", "success")
                         span.set_status(SpanStatus(code=SpanStatusCode.OK))
-                        return result
+                        return result  # type: ignore[no-any-return]
                     except BaseException as exc:
                         elapsed_ms = (time.monotonic() - t0) * 1000.0
                         span.set_attribute("tool.latency_ms", elapsed_ms)

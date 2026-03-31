@@ -152,12 +152,8 @@ class TestMCPToolServer:
 
     def test_handle_tools_list_multiple(self) -> None:
         server = MCPToolServer(MCPServerConfig(name="test"))
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
-        server.register_tool(
-            MCPToolDefinition(name="upper", description="Upper"), UpperHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
+        server.register_tool(MCPToolDefinition(name="upper", description="Upper"), UpperHandler())
         resp = server.handle_request(MCPRequest(method="tools/list", id=1))
         names = [t["name"] for t in resp.result["tools"]]
         assert "echo" in names
@@ -245,12 +241,8 @@ class TestMCPToolServer:
 
     def test_tools_call_no_arguments(self) -> None:
         server = MCPToolServer(MCPServerConfig(name="test"))
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
-        resp = server.handle_request(
-            MCPRequest(method="tools/call", params={"name": "echo"}, id=1)
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
+        resp = server.handle_request(MCPRequest(method="tools/call", params={"name": "echo"}, id=1))
         assert not resp.is_error
         assert resp.result["content"][0]["text"] == "echo: "
 
@@ -286,12 +278,8 @@ class TestMCPClient:
 
     def test_list_tools_multiple(self) -> None:
         client, server = _make_wired_pair()
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
-        server.register_tool(
-            MCPToolDefinition(name="upper", description="Upper"), UpperHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
+        server.register_tool(MCPToolDefinition(name="upper", description="Upper"), UpperHandler())
         client.initialize()
         tools = client.list_tools()
         assert len(tools) == 2
@@ -306,9 +294,7 @@ class TestMCPClient:
 
     def test_tools_property_returns_copy(self) -> None:
         client, server = _make_wired_pair()
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
         client.initialize()
         client.list_tools()
         tools = client.tools
@@ -350,9 +336,7 @@ class TestMCPClient:
 
     def test_call_tool_no_arguments(self) -> None:
         client, server = _make_wired_pair()
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
         client.initialize()
         result = client.call_tool("echo")
         assert result.content[0].text == "echo: "
@@ -473,9 +457,7 @@ class TestAsyncMCPClient:
 
     async def test_tools_property(self) -> None:
         server = MCPToolServer(MCPServerConfig(name="async-test"))
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
         client = AsyncMCPClient(transport=_AsyncInMemoryTransport(server))
         await client.initialize()
         await client.list_tools()
@@ -519,12 +501,8 @@ class TestEndToEnd:
     def test_multiple_tools(self) -> None:
         """Server with multiple tools, client calls each."""
         server = MCPToolServer(MCPServerConfig(name="multi"))
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
-        server.register_tool(
-            MCPToolDefinition(name="upper", description="Upper"), UpperHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
+        server.register_tool(MCPToolDefinition(name="upper", description="Upper"), UpperHandler())
         client = MCPClient(
             transport=InMemoryTransportAdapter(handler=server.handle_request),
         )
@@ -539,9 +517,7 @@ class TestEndToEnd:
     async def test_async_full_lifecycle(self) -> None:
         """Complete async client lifecycle."""
         server = MCPToolServer(MCPServerConfig(name="async-e2e"))
-        server.register_tool(
-            MCPToolDefinition(name="echo", description="Echo"), EchoHandler()
-        )
+        server.register_tool(MCPToolDefinition(name="echo", description="Echo"), EchoHandler())
         client = AsyncMCPClient(transport=_AsyncInMemoryTransport(server))
 
         caps = await client.initialize()

@@ -79,19 +79,13 @@ class FileSystemAssetReader:
         try:
             full.resolve().relative_to(Path(base_path).resolve())
         except ValueError:
-            raise AssetResolutionError(
-                f"Path traversal detected: {relative_path!r}"
-            ) from None
+            raise AssetResolutionError(f"Path traversal detected: {relative_path!r}") from None
         if not full.is_file():
-            raise AssetResolutionError(
-                f"Asset not found: {relative_path!r} in {base_path}"
-            )
+            raise AssetResolutionError(f"Asset not found: {relative_path!r} in {base_path}")
         try:
             return full.read_text(encoding=self.encoding)
         except OSError as exc:
-            raise AssetResolutionError(
-                f"Cannot read asset {relative_path!r}: {exc}"
-            ) from exc
+            raise AssetResolutionError(f"Cannot read asset {relative_path!r}: {exc}") from exc
 
     def exists(self, base_path: str, relative_path: str) -> bool:
         """Check whether an asset file exists."""
@@ -123,9 +117,7 @@ class MustacheStyleRenderer:
         def _replace(match: re.Match[str]) -> str:
             var = match.group(1)
             if var not in variables:
-                raise TemplateRenderError(
-                    f"Unresolved template variable: {var!r}"
-                )
+                raise TemplateRenderError(f"Unresolved template variable: {var!r}")
             return variables[var]
 
         return _VAR_PATTERN.sub(_replace, template)
@@ -150,9 +142,7 @@ def _parse_manifest(data: dict[str, Any], source: str) -> SkillManifest:
     try:
         version = SkillVersion.parse(version_str)
     except ValueError as exc:
-        raise ManifestLoadError(
-            f"Invalid version in {source}: {exc}"
-        ) from exc
+        raise ManifestLoadError(f"Invalid version in {source}: {exc}") from exc
 
     # Assets
     assets: list[SkillAsset] = []
@@ -164,9 +154,7 @@ def _parse_manifest(data: dict[str, Any], source: str) -> SkillManifest:
         try:
             kind = AssetKind(kind_str)
         except ValueError:
-            raise ManifestLoadError(
-                f"Invalid asset kind {kind_str!r} in {source}"
-            ) from None
+            raise ManifestLoadError(f"Invalid asset kind {kind_str!r} in {source}") from None
         assets.append(
             SkillAsset(
                 name=asset_name,
@@ -231,9 +219,7 @@ class FileSystemSkillLoader:
         asset_reader: Reader for individual asset files.
     """
 
-    asset_reader: FileSystemAssetReader = field(
-        default_factory=FileSystemAssetReader
-    )
+    asset_reader: FileSystemAssetReader = field(default_factory=FileSystemAssetReader)
 
     def load(self, source: str) -> SkillPackage:
         """Load a skill from a directory path.
@@ -251,16 +237,12 @@ class FileSystemSkillLoader:
         root = Path(source).resolve()
         manifest_path = root / MANIFEST_FILENAME
         if not manifest_path.is_file():
-            raise ManifestLoadError(
-                f"No {MANIFEST_FILENAME} found in {source}"
-            )
+            raise ManifestLoadError(f"No {MANIFEST_FILENAME} found in {source}")
 
         try:
             raw = json.loads(manifest_path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError) as exc:
-            raise ManifestLoadError(
-                f"Cannot parse {MANIFEST_FILENAME} in {source}: {exc}"
-            ) from exc
+            raise ManifestLoadError(f"Cannot parse {MANIFEST_FILENAME} in {source}: {exc}") from exc
 
         manifest = _parse_manifest(raw, source)
         instructions = self._load_instructions(manifest, str(root))
@@ -316,15 +298,11 @@ class FileSystemSkillLoader:
         root = Path(source).resolve()
         manifest_path = root / MANIFEST_FILENAME
         if not manifest_path.is_file():
-            raise ManifestLoadError(
-                f"No {MANIFEST_FILENAME} found in {source}"
-            )
+            raise ManifestLoadError(f"No {MANIFEST_FILENAME} found in {source}")
         try:
             raw = json.loads(manifest_path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError) as exc:
-            raise ManifestLoadError(
-                f"Cannot parse {MANIFEST_FILENAME} in {source}: {exc}"
-            ) from exc
+            raise ManifestLoadError(f"Cannot parse {MANIFEST_FILENAME} in {source}: {exc}") from exc
         return _parse_manifest(raw, source)
 
 
@@ -344,9 +322,7 @@ class DefaultSkillValidator:
       - Version is valid semver.
     """
 
-    asset_reader: FileSystemAssetReader = field(
-        default_factory=FileSystemAssetReader
-    )
+    asset_reader: FileSystemAssetReader = field(default_factory=FileSystemAssetReader)
 
     def validate(
         self,
@@ -468,12 +444,8 @@ class DefaultSkillResolver:
         asset_reader: Reader for template asset files.
     """
 
-    renderer: MustacheStyleRenderer = field(
-        default_factory=MustacheStyleRenderer
-    )
-    asset_reader: FileSystemAssetReader = field(
-        default_factory=FileSystemAssetReader
-    )
+    renderer: MustacheStyleRenderer = field(default_factory=MustacheStyleRenderer)
+    asset_reader: FileSystemAssetReader = field(default_factory=FileSystemAssetReader)
 
     def resolve(
         self,
@@ -489,9 +461,7 @@ class DefaultSkillResolver:
         variables = dict(context.variables)
 
         # Render entry instruction.
-        entry, entry_missing = self._safe_render(
-            package.instructions.entry_instruction, variables
-        )
+        entry, entry_missing = self._safe_render(package.instructions.entry_instruction, variables)
 
         # Render fragments.
         rendered_fragments: list[tuple[str, str]] = []
@@ -511,9 +481,7 @@ class DefaultSkillResolver:
         template_missing: list[str] = []
         for asset in package.manifest.assets:
             if asset.kind == AssetKind.TEMPLATE and asset.relative_path:
-                raw = self.asset_reader.read(
-                    package.root_path, asset.relative_path
-                )
+                raw = self.asset_reader.read(package.root_path, asset.relative_path)
                 rendered, missing = self._safe_render(raw, variables)
                 rendered_templates.append((asset.name, rendered))
                 template_missing.extend(missing)

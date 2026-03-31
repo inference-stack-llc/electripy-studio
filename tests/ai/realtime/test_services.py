@@ -44,7 +44,9 @@ class TestSessionLifecycle:
         started = svc.start_session(session.session_id)
         assert started.state == SessionState.ACTIVE
 
-    def test_start_already_active_raises(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_start_already_active_raises(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         with pytest.raises(SessionStateError, match="active.*active"):
             svc.start_session(active_session_id)
 
@@ -93,12 +95,16 @@ class TestStateTransitionGuards:
         with pytest.raises(SessionStateError):
             svc.complete_session(session.session_id)
 
-    def test_completed_cannot_start(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_completed_cannot_start(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         svc.complete_session(active_session_id)
         with pytest.raises(SessionStateError):
             svc.start_session(active_session_id)
 
-    def test_closed_cannot_transition(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_closed_cannot_transition(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         svc.close_session(active_session_id)
         with pytest.raises(SessionStateError):
             svc.start_session(active_session_id)
@@ -122,7 +128,9 @@ class TestEventIngestion:
         with pytest.raises(SessionStateError, match="active"):
             svc.ingest_event(session.session_id, EventKind.INPUT_TEXT, chunk)
 
-    def test_events_are_sequenced(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_events_are_sequenced(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         for i in range(5):
             svc.ingest_event(
                 active_session_id,
@@ -155,9 +163,7 @@ class TestObserverIntegration:
         svc.start_session(session.session_id)
         # Should capture initialized->active
         found = [
-            (prev, cur)
-            for sid, prev, cur in observer.state_changes
-            if sid == session.session_id
+            (prev, cur) for sid, prev, cur in observer.state_changes if sid == session.session_id
         ]
         assert (SessionState.INITIALIZED, SessionState.ACTIVE) in found
 
@@ -182,7 +188,9 @@ class TestObserverIntegration:
 
 
 class TestInterruption:
-    def test_interrupt_active_session(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_interrupt_active_session(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         env = svc.interrupt(active_session_id, reason="user cancel")
         assert env.kind == EventKind.INTERRUPT
         session = svc.get_session(active_session_id)
@@ -198,12 +206,12 @@ class TestInterruption:
         with pytest.raises(SessionStateError):
             svc.interrupt(session.session_id)
 
-    def test_interrupt_records_reason(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    def test_interrupt_records_reason(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         svc.interrupt(active_session_id, reason="too slow", hard=True)
         session = svc.get_session(active_session_id)
-        interrupt_events = [
-            e for e in session.event_log if e.kind == EventKind.INTERRUPT
-        ]
+        interrupt_events = [e for e in session.event_log if e.kind == EventKind.INTERRUPT]
         assert len(interrupt_events) == 1
         assert interrupt_events[0].payload.hard is True  # type: ignore[union-attr]
 
@@ -212,7 +220,9 @@ class TestInterruption:
 
 
 class TestToolCalls:
-    async def test_tool_call_roundtrip(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    async def test_tool_call_roundtrip(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         call = ToolCallEvent(call_id="c1", tool_name="echo", arguments={"q": "test"})
         result = await svc.handle_tool_call(active_session_id, call)
         assert result.call_id == "c1"
@@ -221,7 +231,9 @@ class TestToolCalls:
         session = svc.get_session(active_session_id)
         assert session.state == SessionState.ACTIVE
 
-    async def test_tool_call_records_events(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    async def test_tool_call_records_events(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         call = ToolCallEvent(call_id="c2", tool_name="echo", arguments={"x": 1})
         await svc.handle_tool_call(active_session_id, call)
         session = svc.get_session(active_session_id)
@@ -268,14 +280,22 @@ class TestBackpressure:
 
 class TestEventReplay:
     def test_replay_all(self, svc: RealtimeSessionService, active_session_id: str) -> None:
-        svc.ingest_event(active_session_id, EventKind.INPUT_TEXT, InputStreamChunk(index=0, text="a"))
-        svc.ingest_event(active_session_id, EventKind.OUTPUT_TEXT, OutputStreamChunk(index=0, text="b"))
+        svc.ingest_event(
+            active_session_id, EventKind.INPUT_TEXT, InputStreamChunk(index=0, text="a")
+        )
+        svc.ingest_event(
+            active_session_id, EventKind.OUTPUT_TEXT, OutputStreamChunk(index=0, text="b")
+        )
         events = svc.replay_events(active_session_id)
         assert len(events) >= 2
 
     def test_replay_filtered(self, svc: RealtimeSessionService, active_session_id: str) -> None:
-        svc.ingest_event(active_session_id, EventKind.INPUT_TEXT, InputStreamChunk(index=0, text="a"))
-        svc.ingest_event(active_session_id, EventKind.OUTPUT_TEXT, OutputStreamChunk(index=0, text="b"))
+        svc.ingest_event(
+            active_session_id, EventKind.INPUT_TEXT, InputStreamChunk(index=0, text="a")
+        )
+        svc.ingest_event(
+            active_session_id, EventKind.OUTPUT_TEXT, OutputStreamChunk(index=0, text="b")
+        )
         filtered = svc.replay_events(
             active_session_id,
             kinds=frozenset({EventKind.OUTPUT_TEXT}),
@@ -302,7 +322,9 @@ class TestTransportIntegration:
         assert len(outbound) == 1
         assert outbound[0].event_id == env.event_id
 
-    async def test_send_without_transport_is_noop(self, svc: RealtimeSessionService, active_session_id: str) -> None:
+    async def test_send_without_transport_is_noop(
+        self, svc: RealtimeSessionService, active_session_id: str
+    ) -> None:
         chunk = OutputStreamChunk(index=0, text="hi")
         env = svc.emit_output(active_session_id, chunk)
         # Should not raise when no transport is set.

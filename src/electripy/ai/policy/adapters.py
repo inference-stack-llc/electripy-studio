@@ -122,16 +122,12 @@ class DefaultPolicyEvaluator:
             return True
         return bool(set(context.subject.roles) & set(rule.required_roles))
 
-    def _build_violation_message(
-        self, rule: PolicyRule, role_ok: bool, evidence_ok: bool
-    ) -> str:
+    def _build_violation_message(self, rule: PolicyRule, role_ok: bool, evidence_ok: bool) -> str:
         parts: list[str] = [rule.description]
         if not role_ok:
             parts.append(f"Required roles: {', '.join(rule.required_roles)}")
         if not evidence_ok:
-            parts.append(
-                f"Required evidence: {', '.join(e.value for e in rule.required_evidence)}"
-            )
+            parts.append(f"Required evidence: {', '.join(e.value for e in rule.required_evidence)}")
         return "; ".join(parts)
 
     def _resolve_outcome(

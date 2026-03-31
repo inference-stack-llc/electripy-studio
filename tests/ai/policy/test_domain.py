@@ -160,9 +160,7 @@ class TestPolicyRule:
             required_roles=("admin",),
             required_evidence=(EvidenceKind.JUSTIFICATION,),
             redaction=RedactionDirective(field_path="response.body"),
-            escalation=EscalationDirective(
-                level=EscalationLevel.SECURITY, reason="Tool access"
-            ),
+            escalation=EscalationDirective(level=EscalationLevel.SECURITY, reason="Tool access"),
             ttl_seconds=3600,
             enabled=True,
         )

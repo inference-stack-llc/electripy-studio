@@ -15,9 +15,7 @@ class SessionStateError(RealtimeError):
     def __init__(self, current: str, target: str) -> None:
         self.current = current
         self.target = target
-        super().__init__(
-            f"Cannot transition from {current!r} to {target!r}"
-        )
+        super().__init__(f"Cannot transition from {current!r} to {target!r}")
 
 
 class SessionNotFoundError(RealtimeError):

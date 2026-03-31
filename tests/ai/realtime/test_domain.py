@@ -37,8 +37,13 @@ from electripy.core.errors import ElectriPyError
 class TestSessionState:
     def test_all_values(self) -> None:
         expected = {
-            "initialized", "active", "interrupted",
-            "waiting_on_tool", "completed", "failed", "closed",
+            "initialized",
+            "active",
+            "interrupted",
+            "waiting_on_tool",
+            "completed",
+            "failed",
+            "closed",
         }
         assert {s.value for s in SessionState} == expected
 
@@ -52,9 +57,16 @@ class TestSessionState:
 class TestEventKind:
     def test_all_kinds(self) -> None:
         expected = {
-            "input_text", "input_audio", "output_text", "output_audio",
-            "tool_call", "tool_result", "interrupt", "lifecycle",
-            "error", "backpressure",
+            "input_text",
+            "input_audio",
+            "output_text",
+            "output_audio",
+            "tool_call",
+            "tool_result",
+            "interrupt",
+            "lifecycle",
+            "error",
+            "backpressure",
         }
         assert {k.value for k in EventKind} == expected
 

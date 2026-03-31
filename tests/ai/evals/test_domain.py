@@ -77,11 +77,10 @@ class TestEvalCase:
             case_id="q1",
             input="What is the capital of France?",
             ground_truth=GroundTruth(reference_output="Paris"),
-            expected_tool_calls=(
-                ToolCallExpectation(tool_name="lookup"),
-            ),
+            expected_tool_calls=(ToolCallExpectation(tool_name="lookup"),),
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1",), k=3,
+                expected_ids=("doc-1",),
+                k=3,
             ),
             metadata={"category": "geography"},
         )
@@ -226,9 +225,7 @@ class TestRegressionComparison:
         c = RegressionComparison(
             baseline_run_id="b1",
             current_run_id="c1",
-            deltas=(
-                RegressionDelta("acc", 0.8, 0.85),
-            ),
+            deltas=(RegressionDelta("acc", 0.8, 0.85),),
         )
         assert c.has_regressions is False
         assert len(c.regressions) == 0

@@ -187,11 +187,14 @@ class TestRetrievalScorer:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1",), k=3,
+                expected_ids=("doc-1",),
+                k=3,
             ),
         )
         scores = RetrievalScorer().score(
-            case, "", retrieved_ids=["doc-2", "doc-1", "doc-3"],
+            case,
+            "",
+            retrieved_ids=["doc-2", "doc-1", "doc-3"],
         )
         hit = next(s for s in scores if s.metric.name == "hit_at_k")
         assert hit.metric.value == 1.0
@@ -200,11 +203,14 @@ class TestRetrievalScorer:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1",), k=2,
+                expected_ids=("doc-1",),
+                k=2,
             ),
         )
         scores = RetrievalScorer().score(
-            case, "", retrieved_ids=["doc-2", "doc-3"],
+            case,
+            "",
+            retrieved_ids=["doc-2", "doc-3"],
         )
         hit = next(s for s in scores if s.metric.name == "hit_at_k")
         assert hit.metric.value == 0.0
@@ -213,11 +219,14 @@ class TestRetrievalScorer:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1", "doc-2"), k=3,
+                expected_ids=("doc-1", "doc-2"),
+                k=3,
             ),
         )
         scores = RetrievalScorer().score(
-            case, "", retrieved_ids=["doc-1", "doc-3", "doc-4"],
+            case,
+            "",
+            retrieved_ids=["doc-1", "doc-3", "doc-4"],
         )
         recall = next(s for s in scores if s.metric.name == "recall_at_k")
         assert recall.metric.value == 0.5
@@ -226,11 +235,14 @@ class TestRetrievalScorer:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1",), k=5,
+                expected_ids=("doc-1",),
+                k=5,
             ),
         )
         scores = RetrievalScorer().score(
-            case, "", retrieved_ids=["x", "x", "doc-1", "x", "x"],
+            case,
+            "",
+            retrieved_ids=["x", "x", "doc-1", "x", "x"],
         )
         mrr = next(s for s in scores if s.metric.name == "mrr_at_k")
         assert mrr.metric.value == 1.0 / 3.0
@@ -244,11 +256,14 @@ class TestRetrievalScorer:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1",), k=3,
+                expected_ids=("doc-1",),
+                k=3,
             ),
         )
         scores = RetrievalScorer().score(
-            case, "", retrieved_ids=["doc-1"],
+            case,
+            "",
+            retrieved_ids=["doc-1"],
         )
         assert len(scores) == 3
         names = {s.metric.name for s in scores}
@@ -262,33 +277,27 @@ class TestToolCallScorer:
     def test_name_match(self) -> None:
         case = EvalCase(
             case_id="q1",
-            expected_tool_calls=(
-                ToolCallExpectation(tool_name="search"),
-            ),
+            expected_tool_calls=(ToolCallExpectation(tool_name="search"),),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[{"name": "search", "arguments": {}}],
         )
-        name_score = next(
-            s for s in scores if s.metric.name == "tool_name_match"
-        )
+        name_score = next(s for s in scores if s.metric.name == "tool_name_match")
         assert name_score.metric.value == 1.0
 
     def test_name_mismatch(self) -> None:
         case = EvalCase(
             case_id="q1",
-            expected_tool_calls=(
-                ToolCallExpectation(tool_name="search"),
-            ),
+            expected_tool_calls=(ToolCallExpectation(tool_name="search"),),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[{"name": "browse", "arguments": {}}],
         )
-        name_score = next(
-            s for s in scores if s.metric.name == "tool_name_match"
-        )
+        name_score = next(s for s in scores if s.metric.name == "tool_name_match")
         assert name_score.metric.value == 0.0
 
     def test_arg_match(self) -> None:
@@ -302,12 +311,11 @@ class TestToolCallScorer:
             ),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[{"name": "search", "arguments": {"query": "weather"}}],
         )
-        arg_score = next(
-            s for s in scores if s.metric.name == "tool_arg_match"
-        )
+        arg_score = next(s for s in scores if s.metric.name == "tool_arg_match")
         assert arg_score.metric.value == 1.0
 
     def test_partial_arg_match(self) -> None:
@@ -321,14 +329,13 @@ class TestToolCallScorer:
             ),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[
                 {"name": "search", "arguments": {"query": "weather"}},
             ],
         )
-        arg_score = next(
-            s for s in scores if s.metric.name == "tool_arg_match"
-        )
+        arg_score = next(s for s in scores if s.metric.name == "tool_arg_match")
         assert arg_score.metric.value == 0.5
 
     def test_no_extra_args_penalty(self) -> None:
@@ -343,7 +350,8 @@ class TestToolCallScorer:
             ),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[
                 {
                     "name": "search",
@@ -351,9 +359,7 @@ class TestToolCallScorer:
                 },
             ],
         )
-        arg_score = next(
-            s for s in scores if s.metric.name == "tool_arg_match"
-        )
+        arg_score = next(s for s in scores if s.metric.name == "tool_arg_match")
         assert arg_score.metric.value == 0.5  # 1.0 * 0.5 penalty
 
     def test_no_expected_tool_calls(self) -> None:
@@ -364,14 +370,10 @@ class TestToolCallScorer:
     def test_no_actual_calls(self) -> None:
         case = EvalCase(
             case_id="q1",
-            expected_tool_calls=(
-                ToolCallExpectation(tool_name="search"),
-            ),
+            expected_tool_calls=(ToolCallExpectation(tool_name="search"),),
         )
         scores = ToolCallScorer().score(case, "", tool_calls=[])
-        name_score = next(
-            s for s in scores if s.metric.name == "tool_name_match"
-        )
+        name_score = next(s for s in scores if s.metric.name == "tool_name_match")
         assert name_score.metric.value == 0.0
 
     def test_multiple_expected(self) -> None:
@@ -383,16 +385,15 @@ class TestToolCallScorer:
             ),
         )
         scores = ToolCallScorer().score(
-            case, "",
+            case,
+            "",
             tool_calls=[
                 {"name": "search", "arguments": {}},
                 {"name": "browse", "arguments": {}},
             ],
         )
         assert len(scores) == 4  # 2 name + 2 arg
-        name_scores = [
-            s for s in scores if "tool_name_match" in s.metric.name
-        ]
+        name_scores = [s for s in scores if "tool_name_match" in s.metric.name]
         assert all(s.metric.value == 1.0 for s in name_scores)
 
 

@@ -43,6 +43,7 @@ logger = get_logger(__name__)
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _generate_id(length: int = 32) -> str:
     """Generate a random hexadecimal identifier.
 
@@ -90,9 +91,7 @@ class NoOpSpan:
     def set_attributes(self, attributes: Mapping[str, AttributeValue]) -> None:
         """No-op."""
 
-    def add_event(
-        self, name: str, *, attributes: Attributes | None = None
-    ) -> None:
+    def add_event(self, name: str, *, attributes: Attributes | None = None) -> None:
         """No-op."""
 
     def record_exception(
@@ -240,9 +239,7 @@ class InMemorySpan:
         """Set multiple span attributes at once."""
         self._attributes.update(attributes)
 
-    def add_event(
-        self, name: str, *, attributes: Attributes | None = None
-    ) -> None:
+    def add_event(self, name: str, *, attributes: Attributes | None = None) -> None:
         """Record a named event on the span."""
         self._events.append((name, dict(attributes) if attributes else None))
 
@@ -413,9 +410,7 @@ class OpenTelemetrySpan:
         for k, v in safe.items():
             self._otel_span.set_attribute(k, v)
 
-    def add_event(
-        self, name: str, *, attributes: Attributes | None = None
-    ) -> None:
+    def add_event(self, name: str, *, attributes: Attributes | None = None) -> None:
         """Record an event on the OTel span."""
         safe = self._safe_attrs(attributes or {})
         self._otel_span.add_event(name, attributes=safe)
@@ -482,6 +477,8 @@ class OpenTelemetryTracer:
 
     service_name: str = "electripy-observe"
     redactor: DefaultRedactor | None = None
+    _otel_trace: Any = field(init=False, repr=False)
+    _tracer: Any = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         try:

@@ -72,12 +72,14 @@ logger = get_logger(__name__)
 
 # ── Mapping from EventKind to allowed session states ─────────────────
 
-_INGEST_REQUIRES_ACTIVE: frozenset[EventKind] = frozenset({
-    EventKind.INPUT_TEXT,
-    EventKind.INPUT_AUDIO,
-    EventKind.OUTPUT_TEXT,
-    EventKind.OUTPUT_AUDIO,
-})
+_INGEST_REQUIRES_ACTIVE: frozenset[EventKind] = frozenset(
+    {
+        EventKind.INPUT_TEXT,
+        EventKind.INPUT_AUDIO,
+        EventKind.OUTPUT_TEXT,
+        EventKind.OUTPUT_AUDIO,
+    }
+)
 
 
 class RealtimeSessionService:
@@ -324,7 +326,9 @@ class RealtimeSessionService:
             raise RealtimeError("No tool executor configured")
 
         session = self._get_session(session_id)
-        self._transition(session, SessionState.WAITING_ON_TOOL, reason=f"tool:{tool_call.tool_name}")
+        self._transition(
+            session, SessionState.WAITING_ON_TOOL, reason=f"tool:{tool_call.tool_name}"
+        )
 
         # Record tool call event.
         self.ingest_event(session_id, EventKind.TOOL_CALL, tool_call)

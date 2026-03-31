@@ -69,27 +69,31 @@ class TestPolicyEngineEvaluate:
         assert decision.outcome == DecisionOutcome.ALLOW
 
     def test_deny_when_role_missing(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Admin only",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.DENY,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Admin only",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.DENY,
+                )
+            ]
+        )
         decision = engine.evaluate(_make_context(roles=("viewer",)))
         assert decision.outcome == DecisionOutcome.DENY
         assert decision.blocked
 
     def test_allow_when_role_satisfied(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Admin only",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.DENY,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Admin only",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.DENY,
+                )
+            ]
+        )
         decision = engine.evaluate(_make_context(roles=("admin",)))
         assert decision.outcome == DecisionOutcome.ALLOW
 
@@ -113,26 +117,30 @@ class TestPolicyEngineEvaluate:
 
 class TestPolicyEngineEvidence:
     def test_deny_when_evidence_missing(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Need ticket",
-                required_evidence=(EvidenceKind.TICKET_REFERENCE,),
-                outcome=DecisionOutcome.DENY,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Need ticket",
+                    required_evidence=(EvidenceKind.TICKET_REFERENCE,),
+                    outcome=DecisionOutcome.DENY,
+                )
+            ]
+        )
         decision = engine.evaluate(_make_context())
         assert decision.outcome == DecisionOutcome.DENY
 
     def test_allow_when_evidence_provided(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Need ticket",
-                required_evidence=(EvidenceKind.TICKET_REFERENCE,),
-                outcome=DecisionOutcome.DENY,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Need ticket",
+                    required_evidence=(EvidenceKind.TICKET_REFERENCE,),
+                    outcome=DecisionOutcome.DENY,
+                )
+            ]
+        )
         ctx = _make_context(
             evidence=(EvidenceItem(kind=EvidenceKind.TICKET_REFERENCE, value="JIRA-123"),)
         )
@@ -140,17 +148,19 @@ class TestPolicyEngineEvidence:
         assert decision.outcome == DecisionOutcome.ALLOW
 
     def test_multiple_evidence_requirements(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Need ticket + justification",
-                required_evidence=(
-                    EvidenceKind.TICKET_REFERENCE,
-                    EvidenceKind.JUSTIFICATION,
-                ),
-                outcome=DecisionOutcome.DENY,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Need ticket + justification",
+                    required_evidence=(
+                        EvidenceKind.TICKET_REFERENCE,
+                        EvidenceKind.JUSTIFICATION,
+                    ),
+                    outcome=DecisionOutcome.DENY,
+                )
+            ]
+        )
         # Only ticket, missing justification.
         ctx = _make_context(
             evidence=(EvidenceItem(kind=EvidenceKind.TICKET_REFERENCE, value="J-1"),)
@@ -185,17 +195,17 @@ class TestPolicyEngineEscalation:
         assert len(handler.escalations) == 1
 
     def test_no_escalation_handler_is_safe(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Escalate",
-                required_roles=("security",),
-                outcome=DecisionOutcome.ESCALATE,
-                escalation=EscalationDirective(
-                    level=EscalationLevel.SECURITY, reason="Test"
-                ),
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Escalate",
+                    required_roles=("security",),
+                    outcome=DecisionOutcome.ESCALATE,
+                    escalation=EscalationDirective(level=EscalationLevel.SECURITY, reason="Test"),
+                )
+            ]
+        )
         # Should not raise even without handler.
         decision = engine.evaluate(_make_context(roles=("viewer",)))
         assert decision.outcome == DecisionOutcome.ESCALATE
@@ -206,15 +216,17 @@ class TestPolicyEngineEscalation:
 
 class TestPolicyEngineRedaction:
     def test_redaction_directives_returned(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Redact response",
-                required_roles=("privileged",),
-                outcome=DecisionOutcome.REDACT,
-                redaction=RedactionDirective(field_path="response.body"),
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Redact response",
+                    required_roles=("privileged",),
+                    outcome=DecisionOutcome.REDACT,
+                    redaction=RedactionDirective(field_path="response.body"),
+                )
+            ]
+        )
         decision = engine.evaluate(_make_context(roles=("viewer",)))
         assert decision.outcome == DecisionOutcome.REDACT
         assert len(decision.redactions) == 1
@@ -244,16 +256,18 @@ class TestPolicyEngineObserver:
 
 class TestPolicyEngineApproval:
     def test_request_approval_creates_request(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Approval needed",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-                required_evidence=(EvidenceKind.JUSTIFICATION,),
-                ttl_seconds=600,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Approval needed",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                    required_evidence=(EvidenceKind.JUSTIFICATION,),
+                    ttl_seconds=600,
+                )
+            ]
+        )
         approval = engine.request_approval(_make_context(roles=("viewer",)))
         assert approval.status == ApprovalStatus.PENDING
         assert EvidenceKind.JUSTIFICATION in approval.required_evidence
@@ -265,14 +279,16 @@ class TestPolicyEngineApproval:
             engine.request_approval(_make_context())
 
     def test_grant_approval_produces_token(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Needs approval",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Needs approval",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                )
+            ]
+        )
         approval = engine.request_approval(_make_context(roles=("viewer",)))
         token = engine.grant_approval(
             approval.request_id,
@@ -314,14 +330,16 @@ class TestPolicyEngineApproval:
             engine.grant_approval("nonexistent", granted_by="mgr")
 
     def test_validate_token_success(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Needs approval",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Needs approval",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                )
+            ]
+        )
         approval = engine.request_approval(_make_context(roles=("viewer",)))
         token = engine.grant_approval(approval.request_id, granted_by="mgr")
         validated = engine.validate_token(token.token_id)
@@ -416,15 +434,17 @@ class TestPolicyEngineDeterminism:
         assert d1.reasons == d2.reasons
 
     def test_evaluation_is_idempotent(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Redact",
-                required_roles=("privileged",),
-                outcome=DecisionOutcome.REDACT,
-                redaction=RedactionDirective(field_path="out"),
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Redact",
+                    required_roles=("privileged",),
+                    outcome=DecisionOutcome.REDACT,
+                    redaction=RedactionDirective(field_path="out"),
+                )
+            ]
+        )
         ctx = _make_context(roles=("viewer",))
         results = [engine.evaluate(ctx) for _ in range(5)]
         outcomes = {r.outcome for r in results}
@@ -436,15 +456,17 @@ class TestPolicyEngineDeterminism:
 
 class TestPolicyEngineApprovalTTL:
     def test_ttl_from_rule(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Short TTL",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-                ttl_seconds=120,
-            )
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Short TTL",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                    ttl_seconds=120,
+                )
+            ]
+        )
         approval = engine.request_approval(_make_context(roles=("viewer",)))
         assert approval.ttl == timedelta(seconds=120)
 
@@ -464,21 +486,23 @@ class TestPolicyEngineApprovalTTL:
         assert approval.ttl == timedelta(minutes=30)
 
     def test_shortest_ttl_wins(self) -> None:
-        engine = _make_engine([
-            PolicyRule(
-                rule_id="r1",
-                description="Long",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-                ttl_seconds=7200,
-            ),
-            PolicyRule(
-                rule_id="r2",
-                description="Short",
-                required_roles=("admin",),
-                outcome=DecisionOutcome.REQUIRE_APPROVAL,
-                ttl_seconds=300,
-            ),
-        ])
+        engine = _make_engine(
+            [
+                PolicyRule(
+                    rule_id="r1",
+                    description="Long",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                    ttl_seconds=7200,
+                ),
+                PolicyRule(
+                    rule_id="r2",
+                    description="Short",
+                    required_roles=("admin",),
+                    outcome=DecisionOutcome.REQUIRE_APPROVAL,
+                    ttl_seconds=300,
+                ),
+            ]
+        )
         approval = engine.request_approval(_make_context(roles=("viewer",)))
         assert approval.ttl == timedelta(seconds=300)

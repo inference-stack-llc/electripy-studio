@@ -116,17 +116,13 @@ def _parse_case(obj: dict[str, Any], line_num: int, source: str) -> EvalCase:
     """Parse a JSON object into an EvalCase."""
     case_id = obj.get("id")
     if not case_id:
-        raise DatasetLoadError(
-            f"Missing 'id' on line {line_num} of {source}"
-        )
+        raise DatasetLoadError(f"Missing 'id' on line {line_num} of {source}")
 
     ground_truth: GroundTruth | None = None
     if "reference_output" in obj:
         ground_truth = GroundTruth(
             reference_output=obj["reference_output"],
-            acceptable_alternatives=tuple(
-                obj.get("acceptable_alternatives", [])
-            ),
+            acceptable_alternatives=tuple(obj.get("acceptable_alternatives", [])),
         )
 
     tool_calls: list[ToolCallExpectation] = []
@@ -232,10 +228,7 @@ def _summary_to_dict(summary: EvalSummary) -> dict[str, Any]:
                     }
                     for s in r.scores
                 ],
-                "failures": [
-                    {"reason": f.reason, "details": f.details}
-                    for f in r.failures
-                ],
+                "failures": [{"reason": f.reason, "details": f.details} for f in r.failures],
             }
             for r in summary.results
         ],
@@ -275,8 +268,7 @@ def _summary_to_markdown(summary: EvalSummary) -> list[str]:
             if r.scores:
                 for s in r.scores:
                     lines.append(
-                        f"- **{s.scorer_name}** / {s.metric.name}: "
-                        f"{s.metric.value:.4f}"
+                        f"- **{s.scorer_name}** / {s.metric.name}: " f"{s.metric.value:.4f}"
                     )
             if r.failures:
                 for f in r.failures:

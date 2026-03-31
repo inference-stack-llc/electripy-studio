@@ -119,7 +119,7 @@ class SkillService:
         # Load just the manifest for validation.
         loader = self.loader
         if hasattr(loader, "read_manifest"):
-            manifest = loader.read_manifest(source)  # type: ignore[attr-defined]
+            manifest = loader.read_manifest(source)
         else:
             manifest = loader.load(source).manifest
 
@@ -185,7 +185,7 @@ class SkillService:
             if manifest_path.is_file():
                 try:
                     if hasattr(self.loader, "read_manifest"):
-                        manifest = self.loader.read_manifest(str(child))  # type: ignore[attr-defined]
+                        manifest = self.loader.read_manifest(str(child))
                     else:
                         manifest = self.loader.load(str(child)).manifest
                     results.append(manifest)
@@ -220,7 +220,7 @@ class SkillService:
             The parsed skill manifest.
         """
         if hasattr(self.loader, "read_manifest"):
-            return self.loader.read_manifest(source)  # type: ignore[attr-defined]
+            return self.loader.read_manifest(source)  # type: ignore[no-any-return]
         return self.loader.load(source).manifest
 
     def get_entry_instructions(self, package: SkillPackage) -> str:

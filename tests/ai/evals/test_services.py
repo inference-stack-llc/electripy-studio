@@ -92,7 +92,8 @@ class TestBasicRun:
     def test_run_has_id_and_timestamp(self) -> None:
         runner = EvalRunner(scorers=[ExactMatchScorer()])
         run = runner.run_dataset(
-            _dataset(), outputs={"q1": "Paris", "q2": "Berlin", "q3": "Tokyo"},
+            _dataset(),
+            outputs={"q1": "Paris", "q2": "Berlin", "q3": "Tokyo"},
         )
         assert len(run.run_id) == 12
         assert "T" in run.timestamp
@@ -100,7 +101,8 @@ class TestBasicRun:
     def test_dataset_name_propagated(self) -> None:
         runner = EvalRunner(scorers=[ExactMatchScorer()])
         run = runner.run_dataset(
-            _dataset(), outputs={"q1": "Paris", "q2": "Berlin", "q3": "Tokyo"},
+            _dataset(),
+            outputs={"q1": "Paris", "q2": "Berlin", "q3": "Tokyo"},
         )
         assert run.dataset_name == "capitals"
         assert run.summary.dataset_name == "capitals"
@@ -240,20 +242,18 @@ class TestRetrievalEval:
         case = EvalCase(
             case_id="q1",
             expected_retrieval=RetrievalExpectation(
-                expected_ids=("doc-1", "doc-2"), k=3,
+                expected_ids=("doc-1", "doc-2"),
+                k=3,
             ),
         )
         runner = EvalRunner(scorers=[RetrievalScorer()])
         result = runner.score_case(
-            case, "",
+            case,
+            "",
             retrieved_ids=["doc-1", "doc-3", "doc-2"],
         )
-        hit = next(
-            s for s in result.scores if s.metric.name == "hit_at_k"
-        )
-        recall = next(
-            s for s in result.scores if s.metric.name == "recall_at_k"
-        )
+        hit = next(s for s in result.scores if s.metric.name == "hit_at_k")
+        recall = next(s for s in result.scores if s.metric.name == "recall_at_k")
         assert hit.metric.value == 1.0
         # expected_ids=("doc-1", "doc-2"), both in top-3 → recall = 2/2 = 1.0
         assert recall.metric.value == 1.0
@@ -275,15 +275,14 @@ class TestToolCallEval:
         )
         runner = EvalRunner(scorers=[ToolCallScorer()])
         result = runner.score_case(
-            case, "",
+            case,
+            "",
             tool_calls=[
                 {"name": "search", "arguments": {"query": "weather"}},
             ],
         )
         assert result.passed is True
-        name_score = next(
-            s for s in result.scores if s.metric.name == "tool_name_match"
-        )
+        name_score = next(s for s in result.scores if s.metric.name == "tool_name_match")
         assert name_score.metric.value == 1.0
 
 
@@ -345,7 +344,9 @@ class TestRegressionComparison:
             metrics=(EvalMetric(name="accuracy", value=0.88),),
         )
         comp = runner.compare_runs(
-            baseline, current, thresholds={"accuracy": 0.05},
+            baseline,
+            current,
+            thresholds={"accuracy": 0.05},
         )
         assert comp.has_regressions is False
 
@@ -361,7 +362,9 @@ class TestRegressionComparison:
         )
         with pytest.raises(RegressionError, match="accuracy"):
             runner.compare_runs(
-                baseline, current, fail_on_regression=True,
+                baseline,
+                current,
+                fail_on_regression=True,
             )
 
     def test_missing_baseline_metric_skipped(self) -> None:
@@ -408,7 +411,9 @@ class TestDeterminism:
         assert run1.summary.passed == run2.summary.passed
         assert run1.summary.pass_rate == run2.summary.pass_rate
         for r1, r2 in zip(
-            run1.summary.results, run2.summary.results, strict=True,
+            run1.summary.results,
+            run2.summary.results,
+            strict=True,
         ):
             assert r1.passed == r2.passed
             for s1, s2 in zip(r1.scores, r2.scores, strict=True):

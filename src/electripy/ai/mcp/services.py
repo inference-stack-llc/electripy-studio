@@ -174,9 +174,7 @@ class MCPClient:
         raw_tools = result.get("tools", [])
         if not isinstance(raw_tools, list):
             raw_tools = []
-        self._tools = [
-            MCPToolDefinition.from_dict(t) for t in raw_tools if isinstance(t, dict)
-        ]
+        self._tools = [MCPToolDefinition.from_dict(t) for t in raw_tools if isinstance(t, dict)]
         return list(self._tools)
 
     def call_tool(
@@ -330,9 +328,7 @@ class AsyncMCPClient:
         raw_tools = result.get("tools", [])
         if not isinstance(raw_tools, list):
             raw_tools = []
-        self._tools = [
-            MCPToolDefinition.from_dict(t) for t in raw_tools if isinstance(t, dict)
-        ]
+        self._tools = [MCPToolDefinition.from_dict(t) for t in raw_tools if isinstance(t, dict)]
         return list(self._tools)
 
     async def call_tool(
@@ -367,9 +363,7 @@ class AsyncMCPClient:
     async def ping(self) -> bool:
         """Send a ping asynchronously."""
         try:
-            response = await self.transport.send(
-                MCPRequest(method="ping", id=self._next_id())
-            )
+            response = await self.transport.send(MCPRequest(method="ping", id=self._next_id()))
             return not response.is_error
         except MCPError:
             return False
@@ -497,9 +491,7 @@ class MCPToolServer:
         try:
             tool_result = handler.handle(call)
         except Exception as exc:
-            logger.error(
-                "MCP tool handler raised", extra={"tool": tool_name, "error": str(exc)}
-            )
+            logger.error("MCP tool handler raised", extra={"tool": tool_name, "error": str(exc)})
             return MCPResponse(
                 id=request.id,
                 result={
