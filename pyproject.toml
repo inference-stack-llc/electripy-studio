@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "electripy-studio"
-version = "0.3.1"
+version = "0.4.0"
 description = "The Python substrate for observable agent engineering — LLM routing, policy governance, MCP integration, evaluation, skills packaging, realtime orchestration, and structured tracing."
 readme = "README.md"
 requires-python = ">=3.11"
