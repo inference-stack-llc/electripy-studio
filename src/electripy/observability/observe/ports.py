@@ -14,8 +14,7 @@ from __future__ import annotations
 from collections.abc import Mapping, MutableMapping
 from typing import Protocol, runtime_checkable
 
-from .domain import AttributeValue, Attributes, SpanKind, SpanStatus, TraceContext
-
+from .domain import Attributes, AttributeValue, SpanKind, SpanStatus, TraceContext
 
 # ---------------------------------------------------------------------------
 # SpanPort — lifecycle of a single span

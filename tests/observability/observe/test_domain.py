@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from electripy.observability.observe.domain import (
-    AttributeValue,
     GenAIRequestMetadata,
     GenAIResponseMetadata,
     MCPMetadata,
@@ -15,9 +16,6 @@ from electripy.observability.observe.domain import (
     RedactionRuleKind,
     RetrievalMetadata,
     SpanAttributes,
-    SpanKind,
-    SpanStatus,
-    SpanStatusCode,
     ToolInvocationMetadata,
     TraceContext,
 )
@@ -252,7 +250,7 @@ class TestRedactionRule:
 
     def test_invalid_pattern_raises(self) -> None:
         """An invalid regex pattern is rejected at construction."""
-        with pytest.raises(Exception):
+        with pytest.raises(re.error):
             RedactionRule(kind=RedactionRuleKind.PATTERN, match="[invalid")
 
 

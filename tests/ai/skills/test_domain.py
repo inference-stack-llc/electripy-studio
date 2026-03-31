@@ -90,7 +90,7 @@ class TestSkillVersion:
         v = SkillVersion(1, 0, 0)
         try:
             v.major = 2  # type: ignore[misc]
-            assert False, "Should have raised"
+            raise AssertionError("Should have raised")
         except AttributeError:
             pass
 

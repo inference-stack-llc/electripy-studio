@@ -13,7 +13,6 @@ from .domain import (
     ApprovalRequest,
     ApprovalToken,
     EscalationDirective,
-    EvidenceItem,
     PolicyContext,
     PolicyDecision,
     PolicyRule,

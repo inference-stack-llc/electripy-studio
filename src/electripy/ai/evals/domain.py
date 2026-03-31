@@ -8,10 +8,9 @@ immutability guarantees.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
-
 
 # ── Ground truth & expectations ──────────────────────────────────────
 
@@ -244,7 +243,7 @@ class EvalRun:
 
     run_id: str = field(default_factory=lambda: uuid4().hex[:12])
     timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
     )
     dataset_name: str = ""
     summary: EvalSummary = field(

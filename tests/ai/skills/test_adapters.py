@@ -13,7 +13,6 @@ from electripy.ai.skills import (
     ManifestLoadError,
     SkillVersion,
     TemplateRenderError,
-    ValidationSeverity,
 )
 from electripy.ai.skills.adapters import (
     DefaultSkillResolver,
@@ -26,11 +25,9 @@ from electripy.ai.skills.adapters import (
 from electripy.ai.skills.domain import (
     SkillAsset,
     SkillExecutionContext,
-    SkillInstructionSet,
     SkillManifest,
     SkillPackage,
 )
-
 
 # ── FileSystemAssetReader ────────────────────────────────────────────
 

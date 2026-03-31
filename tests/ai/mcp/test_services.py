@@ -22,7 +22,6 @@ from electripy.ai.mcp.domain import (
 from electripy.ai.mcp.errors import MCPConnectionError, MCPProtocolError, MCPToolExecutionError
 from electripy.ai.mcp.services import AsyncMCPClient, MCPClient, MCPToolServer
 
-
 # ── Test helpers ─────────────────────────────────────────────────────
 
 

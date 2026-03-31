@@ -5,11 +5,9 @@ from __future__ import annotations
 import pytest
 
 from electripy.observability.observe.adapters import (
-    InMemorySpan,
     InMemoryTracer,
     NoOpSpan,
     NoOpTracer,
-    SpanRecord,
 )
 from electripy.observability.observe.domain import (
     RedactionPolicy,

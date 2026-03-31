@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import datetime
 
 import pytest
 
 from electripy.ai.realtime import (
+    VALID_TRANSITIONS,
     BackpressureDirective,
     ChunkStatus,
     EventEnvelope,
@@ -15,22 +16,20 @@ from electripy.ai.realtime import (
     InterruptEvent,
     OutputStreamChunk,
     RealtimeConfig,
+    # Errors
+    RealtimeError,
     RealtimeErrorPayload,
     RealtimeSession,
     SessionLifecycleEvent,
-    SessionState,
-    ToolCallEvent,
-    ToolResultEvent,
-    VALID_TRANSITIONS,
-    # Errors
-    RealtimeError,
     SessionNotFoundError,
+    SessionState,
     SessionStateError,
+    ToolCallEvent,
     ToolExecutionError,
+    ToolResultEvent,
     TransportError,
 )
 from electripy.core.errors import ElectriPyError
-
 
 # ── SessionState ─────────────────────────────────────────────────────
 

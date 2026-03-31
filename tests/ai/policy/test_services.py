@@ -14,7 +14,6 @@ from electripy.ai.policy import (
     EvidenceError,
     EvidenceItem,
     EvidenceKind,
-    InMemoryApprovalStore,
     InMemoryPolicyRepository,
     LoggingEscalationHandler,
     PolicyAction,
@@ -27,10 +26,8 @@ from electripy.ai.policy import (
     PolicyRule,
     PolicySubject,
     RedactionDirective,
-    RulePriority,
 )
-from electripy.ai.policy.domain import ApprovalRequest, ApprovalStatus
-
+from electripy.ai.policy.domain import ApprovalStatus
 
 # ── Helpers ──────────────────────────────────────────────────────────
 

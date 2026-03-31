@@ -147,7 +147,7 @@ class TestObserveTool:
 
         @observe_tool(svc, tool_name="broken")
         def broken_tool() -> None:
-            raise IOError("disk full")
+            raise OSError("disk full")
 
         with pytest.raises(IOError, match="disk full"):
             broken_tool()

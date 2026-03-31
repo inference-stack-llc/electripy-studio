@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
-import pytest
-
 from electripy.observability.observe.domain import (
     RedactionPolicy,
     RedactionRule,
     RedactionRuleKind,
 )
-from electripy.observability.observe.errors import RedactionError
 from electripy.observability.observe.redaction import DefaultRedactor
 
 

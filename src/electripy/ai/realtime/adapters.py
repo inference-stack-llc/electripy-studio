@@ -23,7 +23,6 @@ from .domain import (
     ToolResultEvent,
 )
 
-
 # ── Transport ────────────────────────────────────────────────────────
 
 

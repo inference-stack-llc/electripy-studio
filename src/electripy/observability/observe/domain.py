@@ -25,9 +25,8 @@ from __future__ import annotations
 import re
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Any, TypeAlias
+from typing import TypeAlias
 
 # ---------------------------------------------------------------------------
 # Type aliases

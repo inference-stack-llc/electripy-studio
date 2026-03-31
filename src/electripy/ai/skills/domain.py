@@ -14,7 +14,6 @@ import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Any
 
 __all__ = [
     "AssetKind",

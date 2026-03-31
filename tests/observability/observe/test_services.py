@@ -179,8 +179,8 @@ class TestObservabilityServiceInMemory:
         tracer = InMemoryTracer()
         svc = ObservabilityService(tracer=tracer)
 
-        with svc.start_workflow_span("pipeline") as outer:
-            with svc.start_llm_span(provider="openai", model="gpt-4o") as inner:
+        with svc.start_workflow_span("pipeline"):
+            with svc.start_llm_span(provider="openai", model="gpt-4o"):
                 pass
 
         assert len(tracer.finished_spans) == 2
@@ -194,9 +194,9 @@ class TestObservabilityServiceInMemory:
         tracer = InMemoryTracer()
         svc = ObservabilityService(tracer=tracer)
 
-        with svc.start_workflow_span("pipeline") as w:
-            with svc.start_agent_span("agent") as a:
-                with svc.start_tool_span("calc") as t:
+        with svc.start_workflow_span("pipeline"):
+            with svc.start_agent_span("agent"):
+                with svc.start_tool_span("calc"):
                     pass
 
         assert len(tracer.finished_spans) == 3
@@ -241,7 +241,7 @@ class TestObservabilityServiceInMemory:
         tracer = InMemoryTracer()
         svc = ObservabilityService(tracer=tracer)
 
-        with svc.start_workflow_span("work") as span:
+        with svc.start_workflow_span("work"):
             svc.record_exception(RuntimeError("oops"))
 
         record = tracer.finished_spans[0]
@@ -319,7 +319,7 @@ class TestObserveSpanFunctions:
         tracer = InMemoryTracer()
 
         with pytest.raises(RuntimeError, match="fail"):
-            with observe_span(tracer, "work") as span:
+            with observe_span(tracer, "work"):
                 raise RuntimeError("fail")
 
         assert tracer.finished_spans[0].status.code == SpanStatusCode.ERROR
@@ -348,8 +348,8 @@ class TestObserveSpanFunctions:
         """Nested observe_span calls parent correctly."""
         tracer = InMemoryTracer()
 
-        with observe_span(tracer, "outer") as outer:
-            with observe_span(tracer, "inner") as inner:
+        with observe_span(tracer, "outer"):
+            with observe_span(tracer, "inner"):
                 pass
 
         assert len(tracer.finished_spans) == 2

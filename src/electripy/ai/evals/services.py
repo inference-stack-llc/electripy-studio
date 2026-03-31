@@ -22,7 +22,6 @@ from typing import Any
 from electripy.core.logging import get_logger
 
 from .domain import (
-    EvalArtifact,
     EvalCase,
     EvalDataset,
     EvalFailure,
@@ -34,8 +33,8 @@ from .domain import (
     RegressionComparison,
     RegressionDelta,
 )
-from .errors import RegressionError, ScorerError
-from .ports import ArtifactStorePort, ModelInvocationPort, ReportWriterPort, ScorerPort
+from .errors import RegressionError
+from .ports import ArtifactStorePort, ModelInvocationPort
 
 __all__ = [
     "EvalRunner",

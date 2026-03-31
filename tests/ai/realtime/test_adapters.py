@@ -2,10 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
-
-import pytest
-
 from electripy.ai.realtime import (
     EventEnvelope,
     EventKind,
@@ -17,10 +13,8 @@ from electripy.ai.realtime import (
     RealtimeSession,
     SessionState,
     ToolCallEvent,
-    ToolResultEvent,
 )
 from electripy.ai.realtime.adapters import EchoToolExecutor, NoOpObserver
-
 
 # ── InMemoryTransport ────────────────────────────────────────────────
 

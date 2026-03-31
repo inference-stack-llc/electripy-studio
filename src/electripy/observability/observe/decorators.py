@@ -30,11 +30,10 @@ import asyncio
 import functools
 import time
 from collections.abc import Callable, Mapping
-from typing import Any, ParamSpec, TypeVar, overload
+from typing import ParamSpec, TypeVar
 
 from .domain import AttributeValue, SpanKind, SpanStatus, SpanStatusCode
-from .ports import TracerPort
-from .services import ObservabilityService, _current_span
+from .services import ObservabilityService
 
 P = ParamSpec("P")
 R = TypeVar("R")

@@ -18,18 +18,16 @@ from __future__ import annotations
 
 import importlib
 import os
-import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from types import TracebackType
 from typing import Any
 
 from electripy.core.logging import get_logger
 
 from .domain import (
-    AttributeValue,
     Attributes,
+    AttributeValue,
     SpanKind,
     SpanStatus,
     SpanStatusCode,
@@ -464,8 +462,8 @@ def _import_otel_status_code(code: str) -> Any:
         The corresponding ``opentelemetry.trace.StatusCode`` value.
     """
     mod = importlib.import_module("opentelemetry.trace")
-    status_enum = getattr(mod, "StatusCode")
-    return getattr(status_enum, code, getattr(status_enum, "UNSET"))
+    status_enum = mod.StatusCode
+    return getattr(status_enum, code, status_enum.UNSET)
 
 
 @dataclass(slots=True)
@@ -520,7 +518,7 @@ class OpenTelemetryTracer:
             An :class:`OpenTelemetrySpan` wrapping the OTel handle.
         """
         otel_kind_int = _OTEL_SPAN_KIND_MAP.get(kind, 0)
-        SpanKindEnum = getattr(self._otel_trace, "SpanKind")
+        SpanKindEnum = self._otel_trace.SpanKind
         otel_kind = list(SpanKindEnum)[otel_kind_int]
 
         otel_span = self._tracer.start_span(name=name, kind=otel_kind)

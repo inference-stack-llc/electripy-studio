@@ -33,8 +33,8 @@ from dataclasses import dataclass, field
 from electripy.core.logging import get_logger
 
 from .domain import (
-    AttributeValue,
     Attributes,
+    AttributeValue,
     RedactionPolicy,
     RedactionRule,
     RedactionRuleKind,

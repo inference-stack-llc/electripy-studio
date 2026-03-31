@@ -49,7 +49,7 @@ class TestPolicySubject:
         subject = PolicySubject(actor_id="user-1")
         try:
             subject.actor_id = "changed"  # type: ignore[misc]
-            assert False, "Should have raised"
+            raise AssertionError("Should have raised")
         except AttributeError:
             pass
 

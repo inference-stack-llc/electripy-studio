@@ -10,15 +10,14 @@ import pytest
 from electripy.ai.evals.adapters import (
     CallbackModelInvocation,
     FileArtifactStore,
-    JsonReportWriter,
     JsonlDatasetLoader,
+    JsonReportWriter,
     MarkdownReportWriter,
 )
 from electripy.ai.evals.domain import (
     EvalArtifact,
     EvalMetric,
     EvalResult,
-    EvalScore,
     EvalSummary,
 )
 from electripy.ai.evals.errors import DatasetLoadError
@@ -28,7 +27,6 @@ from electripy.ai.evals.ports import (
     ModelInvocationPort,
     ReportWriterPort,
 )
-
 
 # ── JsonlDatasetLoader ──────────────────────────────────────────────
 

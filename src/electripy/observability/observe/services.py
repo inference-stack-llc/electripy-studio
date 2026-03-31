@@ -34,21 +34,17 @@ from electripy.core.logging import get_logger
 
 from .adapters import NoOpTracer
 from .domain import (
-    AttributeValue,
     Attributes,
+    AttributeValue,
     GenAIRequestMetadata,
     GenAIResponseMetadata,
     MCPMetadata,
     PolicyDecisionMetadata,
     RetrievalMetadata,
     SpanKind,
-    SpanStatus,
-    SpanStatusCode,
     ToolInvocationMetadata,
-    TraceContext,
 )
 from .ports import SpanPort, TracerPort
-from .redaction import DefaultRedactor
 
 logger = get_logger(__name__)
 

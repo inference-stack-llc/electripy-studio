@@ -12,7 +12,6 @@ from electripy.ai.workload_router.domain import (
     CapabilityProfile,
     ContextWindowProfile,
     CostProfile,
-    FallbackPlan,
     LatencyProfile,
     ReliabilityProfile,
     RoutingConstraint,
@@ -24,7 +23,6 @@ from electripy.ai.workload_router.domain import (
 )
 from electripy.ai.workload_router.errors import BudgetExceededError, NoCandidateError
 from electripy.ai.workload_router.services import RoutingService
-
 
 # ── Test fixtures ────────────────────────────────────────────────────
 

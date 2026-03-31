@@ -13,7 +13,6 @@ from electripy.ai.policy import (
     PolicyResource,
     PolicyRule,
     PolicySubject,
-    PolicyViolation,
     RedactionDirective,
     RulePriority,
 )
@@ -24,7 +23,6 @@ from electripy.ai.policy.adapters import (
     LoggingEscalationHandler,
 )
 from electripy.ai.policy.domain import ApprovalRequest, ApprovalToken
-
 
 # ── Helpers ──────────────────────────────────────────────────────────
 

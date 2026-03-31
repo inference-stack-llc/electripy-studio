@@ -10,7 +10,6 @@ import pytest
 from electripy.ai.skills import (
     SkillNotFoundError,
     SkillValidationError,
-    SkillVersion,
 )
 from electripy.ai.skills.domain import (
     SkillExecutionContext,
@@ -19,7 +18,6 @@ from electripy.ai.skills.domain import (
     SkillResolverResult,
     SkillValidationResult,
 )
-from electripy.ai.skills.ports import SkillObserverPort
 from electripy.ai.skills.services import (
     SkillService,
     get_entry_instructions,
@@ -29,7 +27,6 @@ from electripy.ai.skills.services import (
     resolve_skill,
     validate_skill,
 )
-
 
 # ── Observer stub ────────────────────────────────────────────────────
 

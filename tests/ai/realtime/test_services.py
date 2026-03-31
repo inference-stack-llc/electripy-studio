@@ -20,13 +20,11 @@ from electripy.ai.realtime import (
     SessionStateError,
     ToolCallEvent,
     ToolExecutionError,
-    collect_output_text,
-    iter_output_text,
     async_collect_output_text,
     async_iter_output_text,
+    collect_output_text,
+    iter_output_text,
 )
-from electripy.ai.realtime.adapters import EchoToolExecutor
-
 
 # ── Session lifecycle ────────────────────────────────────────────────
 

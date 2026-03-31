@@ -25,7 +25,6 @@ from electripy.ai.evals.scorers import (
 )
 from electripy.ai.evals.services import EvalRunner
 
-
 # ── Fixtures ─────────────────────────────────────────────────────────
 
 

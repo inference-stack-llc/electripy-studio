@@ -31,8 +31,6 @@ from .domain import (
     EvalArtifact,
     EvalCase,
     EvalDataset,
-    EvalMetric,
-    EvalResult,
     EvalSummary,
     GroundTruth,
     RetrievalExpectation,

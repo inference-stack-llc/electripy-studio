@@ -36,6 +36,7 @@ from .adapters import (
     NoOpObserver,
 )
 from .domain import (
+    VALID_TRANSITIONS,
     BackpressureDirective,
     ChunkStatus,
     EventEnvelope,
@@ -51,7 +52,6 @@ from .domain import (
     SessionState,
     ToolCallEvent,
     ToolResultEvent,
-    VALID_TRANSITIONS,
 )
 from .errors import (
     RealtimeError,

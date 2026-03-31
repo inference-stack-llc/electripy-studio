@@ -81,7 +81,7 @@ class FileSystemAssetReader:
         except ValueError:
             raise AssetResolutionError(
                 f"Path traversal detected: {relative_path!r}"
-            )
+            ) from None
         if not full.is_file():
             raise AssetResolutionError(
                 f"Asset not found: {relative_path!r} in {base_path}"
@@ -166,7 +166,7 @@ def _parse_manifest(data: dict[str, Any], source: str) -> SkillManifest:
         except ValueError:
             raise ManifestLoadError(
                 f"Invalid asset kind {kind_str!r} in {source}"
-            )
+            ) from None
         assets.append(
             SkillAsset(
                 name=asset_name,
