@@ -1,4 +1,4 @@
-"""ElectriPy - Production-minded Python components and recipes."""
+"""ElectriPy - The Python substrate for observable agent engineering."""
 
 __version__ = "0.1.0"
 

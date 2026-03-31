@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "electripy-studio"
 version = "0.3.1"
-description = "Production-grade Python toolkit for AI product engineering — LLM gateway, policy guardrails, RAG eval, agent collaboration, telemetry, and more."
+description = "The Python substrate for observable agent engineering — LLM routing, policy governance, MCP integration, evaluation, skills packaging, realtime orchestration, and structured tracing."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -13,10 +13,13 @@ authors = [
     {name = "Inference Stack", email = "team@inferencestack.com"},
 ]
 keywords = [
-    "ai", "llm", "rag", "guardrails", "agent", "evaluation", "telemetry",
+    "ai", "llm", "rag", "agent", "agent-engineering", "mcp",
+    "observability", "tracing", "opentelemetry", "evaluation", "telemetry",
+    "guardrails", "policy", "governance", "skills", "realtime",
     "structured-output", "llmops", "ai-engineering", "openai", "anthropic",
-    "ollama", "circuit-breaker", "json-repair", "pii-detection", "cost-tracking",
-    "prompt-engineering", "caching", "batch-processing", "fallback", "resilience",
+    "ollama", "circuit-breaker", "routing", "workload-router",
+    "json-repair", "pii-detection", "cost-tracking", "prompt-engineering",
+    "caching", "batch-processing", "fallback", "resilience",
     "production", "toolkit", "mlops",
 ]
 classifiers = [

@@ -1,9 +1,9 @@
 site_name: ElectriPy Studio
 site_url: https://inference-stack-llc.github.io/electripy-studio/
 site_description: >-
-  Production-grade Python toolkit for AI product engineering — LLM gateway,
-  provider failover, JSON repair, cost tracking, RAG evaluation, policy
-  guardrails, circuit breaker, PII scanning, and 30+ composable utilities.
+  The Python substrate for observable agent engineering — LLM routing, policy
+  governance, MCP integration, evaluation, skills packaging, realtime
+  orchestration, structured tracing, and 30+ composable components.
 site_author: Inference Stack
 repo_url: https://github.com/inference-stack-llc/electripy-studio
 repo_name: inference-stack-llc/electripy-studio
@@ -37,29 +37,43 @@ nav:
       - Installation: getting-started/installation.md
       - Quickstart: getting-started/quickstart.md
   - User Guide:
-      - Core: user-guide/core.md
-      - Concurrency: user-guide/concurrency.md
-      - IO: user-guide/io.md
-      - CLI: user-guide/cli.md
-      - AI / LLM Gateway: user-guide/ai-llm-gateway.md
-      - AI / Provider Adapters: user-guide/ai-provider-adapters.md
-      - AI / Structured Output: user-guide/ai-structured-output.md
-      - AI / LLM Caching: user-guide/ai-llm-cache.md
-      - AI / Replay Tape: user-guide/ai-replay-tape.md
-      - AI / Eval Assertions: user-guide/ai-eval-assertions.md
-      - AI / RAG Eval Runner: user-guide/ai-rag-eval-runner.md
-      - AI Product Engineering: user-guide/ai-product-engineering.md
-      - AI Telemetry: user-guide/ai-telemetry.md
-      - AI / Policy Gateway: user-guide/ai-policy-gateway.md
-      - AI / Agent Collaboration: user-guide/ai-agent-collaboration.md
-      - AI / Fallback Chain: user-guide/ai-fallback-chain.md
-      - AI / Batch Complete: user-guide/ai-batch-complete.md
-      - AI / Cost Ledger: user-guide/ai-cost-ledger.md
-      - AI / Prompt Fingerprint: user-guide/ai-prompt-fingerprint.md
-      - AI / JSON Repair: user-guide/ai-json-repair.md
-      - AI / Sensitive Data Scanner: user-guide/ai-sensitive-data-scanner.md
-      - Concurrency / Circuit Breaker: user-guide/circuit-breaker.md
-      - Component Maturity Model: user-guide/component-maturity.md
+      - Foundation:
+          - Core: user-guide/core.md
+          - Concurrency: user-guide/concurrency.md
+          - Circuit Breaker: user-guide/circuit-breaker.md
+          - IO: user-guide/io.md
+          - CLI: user-guide/cli.md
+      - Agent Infrastructure:
+          - LLM Gateway: user-guide/ai-llm-gateway.md
+          - Provider Adapters: user-guide/ai-provider-adapters.md
+          - Workload Router: user-guide/ai-workload-router.md
+          - Fallback Chain: user-guide/ai-fallback-chain.md
+          - Batch Complete: user-guide/ai-batch-complete.md
+          - Structured Output: user-guide/ai-structured-output.md
+          - LLM Cache: user-guide/ai-llm-cache.md
+          - Replay Tape: user-guide/ai-replay-tape.md
+      - Observability & Governance:
+          - Observe — Structured Tracing: user-guide/ai-observe.md
+          - Telemetry: user-guide/ai-telemetry.md
+          - Policy Engine: user-guide/ai-policy.md
+          - Policy Gateway: user-guide/ai-policy-gateway.md
+          - Sensitive Data Scanner: user-guide/ai-sensitive-data-scanner.md
+      - Evaluation & Quality:
+          - Evals: user-guide/ai-evals.md
+          - Eval Assertions: user-guide/ai-eval-assertions.md
+          - RAG Eval Runner: user-guide/ai-rag-eval-runner.md
+      - Composition & Packaging:
+          - Skills: user-guide/ai-skills.md
+          - MCP Toolkit: user-guide/ai-mcp.md
+          - Prompt Fingerprint: user-guide/ai-prompt-fingerprint.md
+          - JSON Repair: user-guide/ai-json-repair.md
+          - Cost Ledger: user-guide/ai-cost-ledger.md
+      - Orchestration & Runtime:
+          - Realtime Sessions: user-guide/ai-realtime.md
+          - Agent Collaboration: user-guide/ai-agent-collaboration.md
+      - Reference:
+          - AI Product Engineering Overview: user-guide/ai-product-engineering.md
+          - Component Maturity Model: user-guide/component-maturity.md
   - Recipes:
       - CLI Tool: recipes/cli-tool.md
       - RAG Evaluation Runner: recipes/rag-eval-runner.md

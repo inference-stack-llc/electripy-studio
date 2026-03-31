@@ -1,7 +1,7 @@
 {
   "name": "@electripy/cli",
   "version": "0.1.0",
-  "description": "NPM wrapper for ElectriPy CLI - Production-minded Python components",
+  "description": "NPM wrapper for ElectriPy CLI - The Python substrate for observable agent engineering",
   "keywords": [
     "electripy",
     "cli",

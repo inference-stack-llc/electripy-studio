@@ -62,7 +62,7 @@ Complete API reference for ElectriPy modules.
 
 ::: electripy.cli.app
 
-## AI Utilities Module
+## AI Components
 
 ### Streaming Chat
 
